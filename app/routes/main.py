@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, send_from_directory, current_app
 from flask_login import login_required, current_user
 from datetime import datetime, timedelta
 from sqlalchemy import func
@@ -13,6 +13,21 @@ def index():
     if current_user.is_authenticated:
         return redirect(url_for('main.dashboard'))
     return redirect(url_for('auth.login'))
+
+
+@bp.route('/offline')
+def offline():
+    """Offline page for PWA"""
+    return render_template('offline.html')
+
+
+@bp.route('/sw.js')
+def service_worker():
+    """Serve service worker from root URL for proper scope"""
+    return send_from_directory(
+        current_app.static_folder, 'sw.js',
+        mimetype='application/javascript'
+    )
 
 
 @bp.route('/dashboard')

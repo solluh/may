@@ -124,6 +124,10 @@ def view(vehicle_id):
     # Get reminders for this vehicle (not completed, ordered by due date)
     reminders = vehicle.reminders.filter_by(is_completed=False).order_by(Reminder.due_date).all()
 
+    # Check if DVLA integration is configured
+    from app.services.dvla import DVLAService
+    dvla_configured = DVLAService.is_configured()
+
     return render_template('vehicles/view.html',
                            vehicle=vehicle,
                            recent_logs=recent_logs,
@@ -131,7 +135,8 @@ def view(vehicle_id):
                            specs=specs,
                            stats=stats,
                            reminders=reminders,
-                           reminder_types=REMINDER_TYPES)
+                           reminder_types=REMINDER_TYPES,
+                           dvla_configured=dvla_configured)
 
 
 @bp.route('/<int:vehicle_id>/edit', methods=['GET', 'POST'])

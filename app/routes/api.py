@@ -67,6 +67,15 @@ def get_api_user():
 # API Key Management (Web UI routes)
 # =============================================================================
 
+@bp.route('/toggle-dark-mode', methods=['POST'])
+@login_required
+def toggle_dark_mode():
+    """Toggle dark mode for the current user"""
+    current_user.dark_mode = not current_user.dark_mode
+    db.session.commit()
+    return jsonify({'dark_mode': current_user.dark_mode})
+
+
 @bp.route('/key/generate', methods=['POST'])
 @login_required
 def generate_api_key():
@@ -755,6 +764,120 @@ def api_list_categories():
     return jsonify({
         'categories': [{'id': c[0], 'name': c[1]} for c in EXPENSE_CATEGORIES]
     })
+
+
+# =============================================================================
+# DVLA Integration (UK Vehicles)
+# =============================================================================
+
+@bp.route('/dvla/lookup', methods=['POST'])
+@login_required
+def dvla_lookup():
+    """
+    Look up vehicle information from DVLA (UK vehicles only)
+
+    Expects JSON body with 'registration' field
+    """
+    from app.services.dvla import DVLAService
+
+    if not DVLAService.is_configured():
+        return jsonify({'success': False, 'error': 'DVLA integration not configured'}), 400
+
+    data = request.get_json()
+    if not data or not data.get('registration'):
+        return jsonify({'success': False, 'error': 'Registration number required'}), 400
+
+    success, result = DVLAService.lookup_vehicle(data['registration'])
+
+    if success:
+        # Convert dates to strings for JSON
+        if result.get('mot_expiry_date'):
+            result['mot_expiry_date'] = result['mot_expiry_date'].isoformat()
+        if result.get('tax_due_date'):
+            result['tax_due_date'] = result['tax_due_date'].isoformat()
+        if result.get('date_of_last_v5c_issued'):
+            result['date_of_last_v5c_issued'] = result['date_of_last_v5c_issued'].isoformat()
+        return jsonify({'success': True, 'vehicle': result})
+    else:
+        return jsonify({'success': False, 'error': result}), 400
+
+
+@bp.route('/dvla/test', methods=['POST'])
+@login_required
+def dvla_test_key():
+    """Test DVLA API key (admin only)"""
+    if not current_user.is_admin:
+        return jsonify({'success': False, 'error': 'Access denied'}), 403
+
+    from app.services.dvla import DVLAService
+
+    api_key = request.form.get('dvla_api_key')
+    if not api_key:
+        return jsonify({'success': False, 'error': 'API key required'}), 400
+
+    success, message = DVLAService.test_api_key(api_key)
+    return jsonify({'success': success, 'message': message})
+
+
+@bp.route('/dvla/status')
+@login_required
+def dvla_status():
+    """Check if DVLA integration is available"""
+    from app.services.dvla import DVLAService
+    return jsonify({'configured': DVLAService.is_configured()})
+
+
+@bp.route('/vehicles/<int:vehicle_id>/dvla-refresh', methods=['POST'])
+@login_required
+def refresh_vehicle_dvla(vehicle_id):
+    """
+    Refresh vehicle MOT and tax status from DVLA
+
+    Updates the vehicle's MOT and tax status fields if the vehicle has a UK registration
+    """
+    from app.services.dvla import DVLAService
+
+    vehicle = Vehicle.query.get_or_404(vehicle_id)
+
+    if vehicle not in current_user.get_all_vehicles():
+        return jsonify({'success': False, 'error': 'Access denied'}), 403
+
+    if not vehicle.registration:
+        return jsonify({'success': False, 'error': 'Vehicle has no registration number'}), 400
+
+    if not DVLAService.is_configured():
+        return jsonify({'success': False, 'error': 'DVLA integration not configured'}), 400
+
+    success, result = DVLAService.lookup_vehicle(vehicle.registration)
+
+    if success:
+        # Update vehicle with DVLA data
+        vehicle.mot_status = result.get('mot_status')
+        vehicle.mot_expiry = result.get('mot_expiry_date')
+        vehicle.tax_status = result.get('tax_status')
+        vehicle.tax_due = result.get('tax_due_date')
+        vehicle.dvla_colour = result.get('colour')
+        vehicle.dvla_last_updated = datetime.utcnow()
+
+        # Optionally update make if empty
+        if not vehicle.make and result.get('make'):
+            vehicle.make = result['make']
+
+        # Optionally update year if empty
+        if not vehicle.year and result.get('year_of_manufacture'):
+            vehicle.year = result['year_of_manufacture']
+
+        db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'mot_status': vehicle.mot_status,
+            'mot_expiry': vehicle.mot_expiry.isoformat() if vehicle.mot_expiry else None,
+            'tax_status': vehicle.tax_status,
+            'tax_due': vehicle.tax_due.isoformat() if vehicle.tax_due else None,
+        })
+    else:
+        return jsonify({'success': False, 'error': result}), 400
 
 
 # =============================================================================

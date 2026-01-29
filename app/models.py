@@ -27,6 +27,7 @@ class User(UserMixin, db.Model):
     volume_unit = db.Column(db.String(10), default='L')  # L, gal, us_gal
     consumption_unit = db.Column(db.String(10), default='L/100km')  # L/100km, mpg, mpg_us
     currency = db.Column(db.String(10), default='USD')
+    dark_mode = db.Column(db.Boolean, default=False)  # Dark mode preference
 
     # Notification preferences
     email_reminders = db.Column(db.Boolean, default=True)
@@ -109,6 +110,14 @@ class Vehicle(db.Model):
 
     # Notes
     notes = db.Column(db.Text)
+
+    # DVLA data (UK vehicles)
+    mot_status = db.Column(db.String(50))  # Valid, Not valid, No details held
+    mot_expiry = db.Column(db.Date)
+    tax_status = db.Column(db.String(50))  # Taxed, Untaxed, SORN, etc.
+    tax_due = db.Column(db.Date)
+    dvla_colour = db.Column(db.String(50))  # Colour from DVLA
+    dvla_last_updated = db.Column(db.DateTime)  # When DVLA data was last fetched
 
     # Relationships
     fuel_logs = db.relationship('FuelLog', backref='vehicle', lazy='dynamic',

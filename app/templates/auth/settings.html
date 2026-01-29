@@ -298,6 +298,51 @@
                         </div>
                     </div>
 
+                    {% if current_user.is_admin %}
+                    <!-- DVLA Integration (Admin Only) -->
+                    <div class="bg-white dark:bg-gray-800 shadow rounded-lg divide-y divide-gray-200 dark:divide-gray-700">
+                        <div class="p-6">
+                            <div class="flex items-center">
+                                <svg class="h-5 w-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                </svg>
+                                <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ _('DVLA Integration') }}</h2>
+                                <span class="ml-2 px-2 py-1 text-xs font-medium bg-amber-100 text-amber-800 rounded">{{ _('Admin') }}</span>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ _('Look up UK vehicle MOT and tax status from DVLA') }}</p>
+                        </div>
+
+                        <form method="POST" action="{{ url_for('auth.dvla_settings') }}" class="p-6 space-y-4">
+                            <p class="text-sm text-gray-600 dark:text-gray-300">
+                                {{ _('The DVLA Vehicle Enquiry Service allows you to look up MOT status, tax status, and vehicle details for UK registered vehicles.') }}
+                                <a href="https://developer-portal.driver-vehicle-licensing.api.gov.uk/" target="_blank" class="text-primary-600 hover:underline">{{ _('Get an API key') }}</a>
+                            </p>
+
+                            <div>
+                                <label for="dvla_api_key" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('DVLA API Key') }}</label>
+                                <div class="mt-1 flex gap-2">
+                                    <input type="password" name="dvla_api_key" id="dvla_api_key"
+                                           value="{{ dvla_settings.api_key or '' }}"
+                                           placeholder="Enter your DVLA VES API key"
+                                           class="flex-1 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                    <button type="button" onclick="testDvlaKey()"
+                                            class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        {{ _('Test') }}
+                                    </button>
+                                </div>
+                                <span id="dvla-test-result" class="block mt-2 text-sm"></span>
+                            </div>
+
+                            <div class="flex justify-end">
+                                <button type="submit"
+                                        class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                    {{ _('Save DVLA Settings') }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    {% endif %}
+
                     <!-- Export Data -->
                     <div class="bg-white shadow rounded-lg divide-y divide-gray-200">
                         <div class="p-6">
@@ -1041,6 +1086,35 @@ function testSmtpSettings() {
         .catch(err => {
             resultSpan.textContent = 'Error sending email';
             resultSpan.className = 'ml-3 text-sm text-red-600';
+            console.error(err);
+        });
+}
+
+function testDvlaKey() {
+    const resultSpan = document.getElementById('dvla-test-result');
+    resultSpan.textContent = 'Testing...';
+    resultSpan.className = 'text-sm text-gray-500 dark:text-gray-400';
+
+    const formData = new FormData();
+    formData.append('dvla_api_key', document.getElementById('dvla_api_key').value);
+
+    fetch('/api/dvla/test', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                resultSpan.textContent = 'API key is valid!';
+                resultSpan.className = 'text-sm text-green-600 dark:text-green-400';
+            } else {
+                resultSpan.textContent = data.message || 'Invalid API key';
+                resultSpan.className = 'text-sm text-red-600 dark:text-red-400';
+            }
+        })
+        .catch(err => {
+            resultSpan.textContent = 'Error testing API key';
+            resultSpan.className = 'text-sm text-red-600 dark:text-red-400';
             console.error(err);
         });
 }

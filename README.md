@@ -4,7 +4,7 @@
 
 A modern, self-hosted vehicle management application for tracking fuel consumption, expenses, reminders, and maintenance across your entire fleet.
 
-![Flask](https://img.shields.io/badge/Flask-Python-blue) ![Version](https://img.shields.io/badge/version-0.1.0-blue) ![License](https://img.shields.io/badge/license-MIT-green) ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED)
+![Flask](https://img.shields.io/badge/Flask-Python-blue) ![Version](https://img.shields.io/badge/version-0.2.0-blue) ![License](https://img.shields.io/badge/license-MIT-green) ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED) ![PWA](https://img.shields.io/badge/PWA-Ready-5A0FC8)
 
 Named after James May, completing the trio of Top Gear presenters (alongside [Clarkson](https://github.com/linuxserver/Clarkson) and [Hammond](https://github.com/AlfHou/hammond)).
 
@@ -22,7 +22,10 @@ Named after James May, completing the trio of Top Gear presenters (alongside [Cl
 - **🔧 Customizable Units**: Support for metric/imperial, multiple currencies
 - **🌍 Internationalization**: Available in multiple languages (English, German, Spanish, French, and more)
 - **🎨 Custom Branding**: Personalize with your own logo, colors, and app name
-- **📥 Import Support**: Import data from Fuelly CSV exports
+- **🌙 Dark Mode**: Toggle between light and dark themes
+- **📥 Import/Export**: Import from Fuelly CSV, export all data as JSON or CSV
+- **🇬🇧 DVLA Integration**: Look up UK vehicle MOT and tax status automatically
+- **📱 PWA Support**: Install as a mobile app with offline capabilities
 - **🔌 REST API**: Full API access for integrations and automation
 - **🐳 Docker Ready**: Easy self-hosting via Docker
 
@@ -135,6 +138,7 @@ Configure your preferred notification method:
 Administrators can configure:
 - **SMTP Settings**: Email server for notifications
 - **Pushover**: Application token for push notifications
+- **DVLA API**: API key for UK vehicle lookups ([get one here](https://developer-portal.driver-vehicle-licensing.api.gov.uk/))
 - **Branding**: Custom logo, app name, tagline, and primary color
 - **User Management**: Create, edit, and manage user accounts
 

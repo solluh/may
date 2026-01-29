@@ -126,11 +126,19 @@ def settings():
         AppSettings.get('pushover_app_token')
     )
 
+    # Get DVLA settings for admins
+    dvla_settings = {}
+    if current_user.is_admin:
+        dvla_settings = {
+            'api_key': AppSettings.get('dvla_api_key'),
+        }
+
     return render_template('auth/settings.html',
                            branding=branding,
                            smtp_settings=smtp_settings,
                            smtp_configured=smtp_configured,
-                           pushover_configured=pushover_configured)
+                           pushover_configured=pushover_configured,
+                           dvla_settings=dvla_settings)
 
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'}
@@ -211,6 +219,21 @@ def branding():
 
     flash('Branding settings updated successfully', 'success')
     return redirect(url_for('auth.settings') + '#branding')
+
+
+@bp.route('/dvla-settings', methods=['POST'])
+@login_required
+def dvla_settings():
+    """Update DVLA API settings (admin only)"""
+    if not current_user.is_admin:
+        flash('Access denied', 'error')
+        return redirect(url_for('auth.settings'))
+
+    api_key = request.form.get('dvla_api_key', '').strip()
+    AppSettings.set('dvla_api_key', api_key)
+
+    flash('DVLA settings updated', 'success')
+    return redirect(url_for('auth.settings') + '#integrations')
 
 
 @bp.route('/users')
