@@ -28,6 +28,14 @@ class User(UserMixin, db.Model):
     consumption_unit = db.Column(db.String(10), default='L/100km')  # L/100km, mpg, mpg_us
     currency = db.Column(db.String(10), default='USD')
 
+    # Notification preferences
+    email_reminders = db.Column(db.Boolean, default=True)
+    reminder_days_before = db.Column(db.Integer, default=7)  # Days before due date to notify
+    notification_method = db.Column(db.String(20), default='email')  # email, webhook, ntfy, pushover, none
+    webhook_url = db.Column(db.String(500))  # URL to POST notifications to
+    ntfy_topic = db.Column(db.String(200))  # ntfy.sh topic or custom server URL
+    pushover_user_key = db.Column(db.String(50))  # Pushover user key
+
     # API access
     api_key = db.Column(db.String(64), unique=True, index=True)
     api_key_created_at = db.Column(db.DateTime)
@@ -298,6 +306,74 @@ class VehicleSpec(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
+class Reminder(db.Model):
+    """Reminders for vehicle-related dates and events"""
+    __tablename__ = 'reminders'
+
+    id = db.Column(db.Integer, primary_key=True)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    reminder_type = db.Column(db.String(50), nullable=False)  # service, mot, insurance, tax, custom
+    due_date = db.Column(db.Date, nullable=False)
+
+    # Relationships (defined here since this class is defined last)
+    vehicle = db.relationship('Vehicle', backref=db.backref('reminders', lazy='dynamic', cascade='all, delete-orphan'))
+    user_rel = db.relationship('User', backref=db.backref('reminders', lazy='dynamic'))
+
+    # Recurrence settings
+    recurrence = db.Column(db.String(20), default='none')  # none, monthly, yearly
+    recurrence_interval = db.Column(db.Integer, default=1)  # e.g., every 1 year, every 6 months
+
+    # Notification settings
+    notify_days_before = db.Column(db.Integer, default=7)
+    notification_sent = db.Column(db.Boolean, default=False)
+
+    # Status
+    is_completed = db.Column(db.Boolean, default=False)
+    completed_at = db.Column(db.DateTime)
+
+    # Tracking
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def is_overdue(self):
+        """Check if reminder is past due date"""
+        from datetime import date
+        return not self.is_completed and self.due_date < date.today()
+
+    def is_upcoming(self, days=7):
+        """Check if reminder is coming up within specified days"""
+        from datetime import date, timedelta
+        if self.is_completed:
+            return False
+        today = date.today()
+        return today <= self.due_date <= today + timedelta(days=days)
+
+    def days_until_due(self):
+        """Calculate days until due date"""
+        from datetime import date
+        return (self.due_date - date.today()).days
+
+    def to_dict(self):
+        """Serialize reminder to dictionary"""
+        return {
+            'id': self.id,
+            'vehicle_id': self.vehicle_id,
+            'title': self.title,
+            'description': self.description,
+            'reminder_type': self.reminder_type,
+            'due_date': self.due_date.isoformat() if self.due_date else None,
+            'recurrence': self.recurrence,
+            'is_completed': self.is_completed,
+            'is_overdue': self.is_overdue(),
+            'days_until_due': self.days_until_due(),
+            'created_at': self.created_at.isoformat() if self.created_at else None
+        }
+
+
 class AppSettings(db.Model):
     """Application-wide settings for branding and customization"""
     __tablename__ = 'app_settings'
@@ -399,4 +475,26 @@ FUEL_TYPES = [
     ('hydrogen', 'Hydrogen'),
     ('e85', 'E85/Flex Fuel'),
     ('other', 'Other')
+]
+
+# Reminder types
+REMINDER_TYPES = [
+    ('mot', 'MOT/Inspection'),
+    ('service', 'Service Due'),
+    ('insurance', 'Insurance Renewal'),
+    ('tax', 'Road Tax'),
+    ('registration', 'Registration Renewal'),
+    ('warranty', 'Warranty Expiry'),
+    ('tire_change', 'Tire Change'),
+    ('oil_change', 'Oil Change'),
+    ('custom', 'Custom')
+]
+
+# Recurrence options
+RECURRENCE_OPTIONS = [
+    ('none', 'No Repeat'),
+    ('monthly', 'Monthly'),
+    ('quarterly', 'Quarterly (3 months)'),
+    ('biannual', 'Every 6 months'),
+    ('yearly', 'Yearly'),
 ]

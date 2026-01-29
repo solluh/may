@@ -98,7 +98,39 @@ def settings():
         return redirect(url_for('auth.settings'))
 
     branding = AppSettings.get_all_branding() if current_user.is_admin else {}
-    return render_template('auth/settings.html', branding=branding)
+
+    # Get SMTP settings for admins
+    smtp_settings = {}
+    smtp_configured = False
+    if current_user.is_admin:
+        smtp_settings = {
+            'enabled': AppSettings.get('smtp_enabled', 'true'),
+            'host': AppSettings.get('smtp_host'),
+            'port': AppSettings.get('smtp_port', '587'),
+            'username': AppSettings.get('smtp_username'),
+            'password': AppSettings.get('smtp_password'),
+            'sender': AppSettings.get('smtp_sender'),
+            'sender_name': AppSettings.get('smtp_sender_name'),
+            'tls': AppSettings.get('smtp_tls', 'true'),
+            'ssl': AppSettings.get('smtp_ssl', 'false'),
+            'pushover_enabled': AppSettings.get('pushover_enabled', 'false'),
+            'pushover_app_token': AppSettings.get('pushover_app_token'),
+        }
+    smtp_configured = bool(
+        AppSettings.get('smtp_enabled', 'true') == 'true' and
+        AppSettings.get('smtp_host') and
+        AppSettings.get('smtp_username')
+    )
+    pushover_configured = bool(
+        AppSettings.get('pushover_enabled') == 'true' and
+        AppSettings.get('pushover_app_token')
+    )
+
+    return render_template('auth/settings.html',
+                           branding=branding,
+                           smtp_settings=smtp_settings,
+                           smtp_configured=smtp_configured,
+                           pushover_configured=pushover_configured)
 
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'}
@@ -106,6 +138,48 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'}
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@bp.route('/notifications', methods=['POST'])
+@login_required
+def notifications():
+    """Update user notification preferences"""
+    current_user.email_reminders = request.form.get('email_reminders') == 'true'
+    current_user.reminder_days_before = int(request.form.get('reminder_days_before', 7))
+    current_user.notification_method = request.form.get('notification_method', 'email')
+    current_user.webhook_url = request.form.get('webhook_url') or None
+    current_user.ntfy_topic = request.form.get('ntfy_topic') or None
+    current_user.pushover_user_key = request.form.get('pushover_user_key') or None
+    db.session.commit()
+    flash('Notification preferences updated', 'success')
+    return redirect(url_for('auth.settings') + '#notifications')
+
+
+@bp.route('/smtp-settings', methods=['POST'])
+@login_required
+def smtp_settings():
+    """Update notification service settings (admin only)"""
+    if not current_user.is_admin:
+        flash('Access denied', 'error')
+        return redirect(url_for('auth.settings'))
+
+    # SMTP settings
+    AppSettings.set('smtp_enabled', 'true' if request.form.get('smtp_enabled') else 'false')
+    AppSettings.set('smtp_host', request.form.get('smtp_host', ''))
+    AppSettings.set('smtp_port', request.form.get('smtp_port', '587'))
+    AppSettings.set('smtp_username', request.form.get('smtp_username', ''))
+    AppSettings.set('smtp_password', request.form.get('smtp_password', ''))
+    AppSettings.set('smtp_sender', request.form.get('smtp_sender', ''))
+    AppSettings.set('smtp_sender_name', request.form.get('smtp_sender_name', ''))
+    AppSettings.set('smtp_tls', 'true' if request.form.get('smtp_tls') else 'false')
+    AppSettings.set('smtp_ssl', 'true' if request.form.get('smtp_ssl') else 'false')
+
+    # Pushover settings
+    AppSettings.set('pushover_enabled', 'true' if request.form.get('pushover_enabled') else 'false')
+    AppSettings.set('pushover_app_token', request.form.get('pushover_app_token', ''))
+
+    flash('Notification settings updated', 'success')
+    return redirect(url_for('auth.settings') + '#notifications')
 
 
 @bp.route('/branding', methods=['POST'])

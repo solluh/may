@@ -75,13 +75,14 @@ def create_app(config_class=Config):
             'PRIMARY_COLOR': branding.get('primary_color', '#0284c7'),
         }
 
-    from app.routes import main, auth, vehicles, fuel, expenses, api
+    from app.routes import main, auth, vehicles, fuel, expenses, api, reminders
     app.register_blueprint(main.bp)
     app.register_blueprint(auth.bp)
     app.register_blueprint(vehicles.bp)
     app.register_blueprint(fuel.bp)
     app.register_blueprint(expenses.bp)
     app.register_blueprint(api.bp)
+    app.register_blueprint(reminders.bp)
 
     with app.app_context():
         db.create_all()

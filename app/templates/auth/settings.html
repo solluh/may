@@ -42,6 +42,14 @@
                         {{ _('API') }}
                     </a>
                 </li>
+                <li>
+                    <a href="#notifications" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('notifications')">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        {{ _('Notifications') }}
+                    </a>
+                </li>
                 {% if current_user.is_admin %}
                 <li>
                     <a href="#branding" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('branding')">
@@ -411,6 +419,341 @@
                 </div>
             </div>
 
+            <!-- Notifications Section -->
+            <div id="section-notifications" class="settings-section hidden">
+                <div class="space-y-6">
+                    <!-- User Notification Preferences -->
+                    <form method="POST" action="{{ url_for('auth.notifications') }}">
+                        <div class="bg-white shadow rounded-lg divide-y divide-gray-200">
+                            <div class="p-6">
+                                <h2 class="text-lg font-medium text-gray-900">{{ _('Notification Preferences') }}</h2>
+                                <p class="mt-1 text-sm text-gray-500">{{ _('Configure how you receive reminders about your vehicles') }}</p>
+                            </div>
+
+                            <div class="p-6 space-y-6">
+                                <!-- Enable Notifications Toggle -->
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="text-sm font-medium text-gray-900">{{ _('Enable Reminders') }}</h3>
+                                        <p class="text-sm text-gray-500">{{ _('Receive notifications for upcoming reminders') }}</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" name="email_reminders" value="true"
+                                               {% if current_user.email_reminders %}checked{% endif %}
+                                               class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+                                    </label>
+                                </div>
+
+                                <!-- Default Reminder Days -->
+                                <div>
+                                    <label for="reminder_days_before" class="block text-sm font-medium text-gray-700">{{ _('Default Reminder Lead Time') }}</label>
+                                    <p class="text-sm text-gray-500 mb-2">{{ _('How many days before the due date should you be notified?') }}</p>
+                                    <select name="reminder_days_before" id="reminder_days_before"
+                                            class="block w-full sm:w-48 rounded-md border border-gray-300 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                        <option value="0" {% if current_user.reminder_days_before == 0 %}selected{% endif %}>{{ _('On the due date') }}</option>
+                                        <option value="1" {% if current_user.reminder_days_before == 1 %}selected{% endif %}>{{ _('1 day before') }}</option>
+                                        <option value="3" {% if current_user.reminder_days_before == 3 %}selected{% endif %}>{{ _('3 days before') }}</option>
+                                        <option value="7" {% if current_user.reminder_days_before == 7 %}selected{% endif %}>{{ _('1 week before') }}</option>
+                                        <option value="14" {% if current_user.reminder_days_before == 14 %}selected{% endif %}>{{ _('2 weeks before') }}</option>
+                                        <option value="30" {% if current_user.reminder_days_before == 30 %}selected{% endif %}>{{ _('1 month before') }}</option>
+                                    </select>
+                                </div>
+
+                                <!-- Notification Method -->
+                                <div>
+                                    <label for="notification_method" class="block text-sm font-medium text-gray-700">{{ _('Notification Method') }}</label>
+                                    <p class="text-sm text-gray-500 mb-2">{{ _('Choose how you want to receive notifications') }}</p>
+                                    <select name="notification_method" id="notification_method"
+                                            onchange="toggleNotificationFields()"
+                                            class="block w-full sm:w-64 rounded-md border border-gray-300 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                        <option value="email" {% if current_user.notification_method == 'email' or not current_user.notification_method %}selected{% endif %} {% if not smtp_configured %}disabled{% endif %}>
+                                            {{ _('Email') }}{% if not smtp_configured %} ({{ _('not configured') }}){% endif %}
+                                        </option>
+                                        <option value="ntfy" {% if current_user.notification_method == 'ntfy' %}selected{% endif %}>{{ _('ntfy (Push Notifications)') }}</option>
+                                        <option value="pushover" {% if current_user.notification_method == 'pushover' %}selected{% endif %} {% if not pushover_configured %}disabled{% endif %}>
+                                            {{ _('Pushover') }}{% if not pushover_configured %} ({{ _('not configured') }}){% endif %}
+                                        </option>
+                                        <option value="webhook" {% if current_user.notification_method == 'webhook' %}selected{% endif %}>{{ _('Webhook (HTTP POST)') }}</option>
+                                    </select>
+                                </div>
+
+                                <!-- Email-specific info -->
+                                <div id="notification-email" class="notification-field p-4 bg-gray-50 rounded-lg">
+                                    <p class="text-sm text-gray-600">
+                                        <svg class="inline h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                        </svg>
+                                        {{ _('Notifications will be sent to') }} <strong>{{ current_user.email }}</strong>
+                                    </p>
+                                    {% if not smtp_configured %}
+                                    <p class="text-sm text-amber-600 mt-2">
+                                        <svg class="inline h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                        </svg>
+                                        {{ _('Email not configured. Ask an administrator to configure SMTP settings.') }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+
+                                <!-- ntfy settings -->
+                                <div id="notification-ntfy" class="notification-field hidden p-4 bg-gray-50 rounded-lg space-y-3">
+                                    <p class="text-sm text-gray-600">
+                                        <a href="https://ntfy.sh" target="_blank" class="text-primary-600 hover:underline">ntfy.sh</a>
+                                        {{ _('is a simple pub-sub notification service. Enter your topic below.') }}
+                                    </p>
+                                    <div>
+                                        <label for="ntfy_topic" class="block text-sm font-medium text-gray-700">{{ _('ntfy Topic or Server URL') }}</label>
+                                        <input type="text" name="ntfy_topic" id="ntfy_topic"
+                                               value="{{ current_user.ntfy_topic or '' }}"
+                                               placeholder="my-vehicle-reminders or https://ntfy.example.com/topic"
+                                               class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                        <p class="mt-1 text-xs text-gray-500">{{ _('For ntfy.sh, just enter your topic name. For self-hosted, enter the full URL.') }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Pushover settings -->
+                                <div id="notification-pushover" class="notification-field hidden p-4 bg-gray-50 rounded-lg space-y-3">
+                                    <p class="text-sm text-gray-600">
+                                        <a href="https://pushover.net" target="_blank" class="text-primary-600 hover:underline">Pushover</a>
+                                        {{ _('sends notifications to your devices. Enter your User Key below.') }}
+                                    </p>
+                                    <div>
+                                        <label for="pushover_user_key" class="block text-sm font-medium text-gray-700">{{ _('Pushover User Key') }}</label>
+                                        <input type="text" name="pushover_user_key" id="pushover_user_key"
+                                               value="{{ current_user.pushover_user_key or '' }}"
+                                               placeholder="uQiRzpo4DXghDmr9QzzfQu27cmVRsG"
+                                               class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                        <p class="mt-1 text-xs text-gray-500">{{ _('Find your User Key on your Pushover dashboard.') }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Webhook settings -->
+                                <div id="notification-webhook" class="notification-field hidden p-4 bg-gray-50 rounded-lg space-y-3">
+                                    <p class="text-sm text-gray-600">
+                                        {{ _('Notifications will be sent as JSON POST requests to your webhook URL.') }}
+                                    </p>
+                                    <div>
+                                        <label for="webhook_url" class="block text-sm font-medium text-gray-700">{{ _('Webhook URL') }}</label>
+                                        <input type="url" name="webhook_url" id="webhook_url"
+                                               value="{{ current_user.webhook_url or '' }}"
+                                               placeholder="https://example.com/webhook"
+                                               class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                        <p class="mt-1 text-xs text-gray-500">{{ _('JSON payload: {title, message, reminder_id, vehicle_name, due_date}') }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Test Notification Button -->
+                                <div class="pt-4 border-t border-gray-200">
+                                    <button type="button" onclick="sendTestNotification()"
+                                            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                        <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                                        </svg>
+                                        {{ _('Send Test Notification') }}
+                                    </button>
+                                    <span id="test-notification-result" class="ml-3 text-sm"></span>
+                                </div>
+                            </div>
+
+                            <div class="px-6 py-4 bg-gray-50 rounded-b-lg flex justify-end">
+                                <button type="submit"
+                                        class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                    {{ _('Save Preferences') }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    {% if current_user.is_admin %}
+                    <!-- Admin Notification Configuration -->
+                    <div class="bg-white shadow rounded-lg divide-y divide-gray-200">
+                        <div class="p-6">
+                            <div class="flex items-center">
+                                <svg class="h-5 w-5 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                <h2 class="text-lg font-medium text-gray-900">{{ _('Notification Services') }}</h2>
+                                <span class="ml-2 px-2 py-1 text-xs font-medium bg-amber-100 text-amber-800 rounded">{{ _('Admin') }}</span>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-500">{{ _('Configure notification services available to all users') }}</p>
+                        </div>
+
+                        <div class="p-6">
+                            <form method="POST" action="{{ url_for('auth.smtp_settings') }}" class="space-y-6">
+                                <!-- Email (SMTP) Settings -->
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex items-center">
+                                            <svg class="h-5 w-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                            </svg>
+                                            <h3 class="text-sm font-medium text-gray-900">{{ _('Email (SMTP)') }}</h3>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" name="smtp_enabled" value="true"
+                                                   {% if smtp_settings.enabled != 'false' %}checked{% endif %}
+                                                   class="sr-only peer">
+                                            <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary-600"></div>
+                                        </label>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                        <div>
+                                            <label for="smtp_host" class="block text-sm font-medium text-gray-700">{{ _('SMTP Host') }}</label>
+                                            <input type="text" name="smtp_host" id="smtp_host"
+                                                   value="{{ smtp_settings.host or '' }}"
+                                                   placeholder="smtp.gmail.com"
+                                                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                        </div>
+                                        <div>
+                                            <label for="smtp_port" class="block text-sm font-medium text-gray-700">{{ _('SMTP Port') }}</label>
+                                            <input type="number" name="smtp_port" id="smtp_port"
+                                                   value="{{ smtp_settings.port or '587' }}"
+                                                   placeholder="587"
+                                                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                        </div>
+                                        <div>
+                                            <label for="smtp_username" class="block text-sm font-medium text-gray-700">{{ _('SMTP Username') }}</label>
+                                            <input type="text" name="smtp_username" id="smtp_username"
+                                                   value="{{ smtp_settings.username or '' }}"
+                                                   placeholder="your-email@gmail.com"
+                                                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                        </div>
+                                        <div>
+                                            <label for="smtp_password" class="block text-sm font-medium text-gray-700">{{ _('SMTP Password') }}</label>
+                                            <input type="password" name="smtp_password" id="smtp_password"
+                                                   value="{{ smtp_settings.password or '' }}"
+                                                   placeholder="{% if smtp_settings.password %}••••••••{% else %}App password{% endif %}"
+                                                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                        </div>
+                                        <div>
+                                            <label for="smtp_sender" class="block text-sm font-medium text-gray-700">{{ _('Sender Email') }}</label>
+                                            <input type="email" name="smtp_sender" id="smtp_sender"
+                                                   value="{{ smtp_settings.sender or '' }}"
+                                                   placeholder="noreply@example.com"
+                                                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                        </div>
+                                        <div>
+                                            <label for="smtp_sender_name" class="block text-sm font-medium text-gray-700">{{ _('Sender Name') }}</label>
+                                            <input type="text" name="smtp_sender_name" id="smtp_sender_name"
+                                                   value="{{ smtp_settings.sender_name or '' }}"
+                                                   placeholder="{{ APP_NAME }}"
+                                                   class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 flex items-center gap-6">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="smtp_tls" value="true"
+                                                   {% if smtp_settings.tls != 'false' %}checked{% endif %}
+                                                   class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                            <span class="ml-2 text-sm text-gray-700">{{ _('Use TLS') }}</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="smtp_ssl" value="true"
+                                                   {% if smtp_settings.ssl == 'true' %}checked{% endif %}
+                                                   class="rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                                            <span class="ml-2 text-sm text-gray-700">{{ _('Use SSL') }}</span>
+                                        </label>
+                                        <button type="button" onclick="testSmtpSettings()"
+                                                class="ml-auto inline-flex items-center px-3 py-1.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                            {{ _('Test') }}
+                                        </button>
+                                    </div>
+                                    <span id="test-smtp-result" class="block mt-2 text-sm"></span>
+                                </div>
+
+                                <!-- Pushover Settings -->
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex items-center">
+                                            <svg class="h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                                            </svg>
+                                            <h3 class="text-sm font-medium text-gray-900">{{ _('Pushover') }}</h3>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" name="pushover_enabled" value="true"
+                                                   {% if smtp_settings.pushover_enabled == 'true' %}checked{% endif %}
+                                                   class="sr-only peer">
+                                            <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary-600"></div>
+                                        </label>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mb-3">
+                                        <a href="https://pushover.net" target="_blank" class="text-primary-600 hover:underline">Pushover</a>
+                                        {{ _('sends push notifications to iOS and Android devices.') }}
+                                    </p>
+                                    <div>
+                                        <label for="pushover_app_token" class="block text-sm font-medium text-gray-700">{{ _('Application Token') }}</label>
+                                        <input type="text" name="pushover_app_token" id="pushover_app_token"
+                                               value="{{ smtp_settings.pushover_app_token or '' }}"
+                                               placeholder="azGDORePK8gMaC0QOYAMyEEuzJnyUi"
+                                               class="mt-1 block w-full sm:w-96 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                        <p class="mt-1 text-xs text-gray-500">{{ _('Create an application at pushover.net to get your token') }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- ntfy Info -->
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex items-center mb-2">
+                                        <svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                        </svg>
+                                        <h3 class="text-sm font-medium text-gray-900">{{ _('ntfy') }}</h3>
+                                        <span class="ml-2 px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded">{{ _('Always available') }}</span>
+                                    </div>
+                                    <p class="text-sm text-gray-500">
+                                        <a href="https://ntfy.sh" target="_blank" class="text-primary-600 hover:underline">ntfy.sh</a>
+                                        {{ _('is a free, open-source notification service that requires no admin configuration. Users can set their own topic.') }}
+                                    </p>
+                                </div>
+
+                                <!-- Webhook Info -->
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex items-center mb-2">
+                                        <svg class="h-5 w-5 text-purple-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                        </svg>
+                                        <h3 class="text-sm font-medium text-gray-900">{{ _('Webhook') }}</h3>
+                                        <span class="ml-2 px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded">{{ _('Always available') }}</span>
+                                    </div>
+                                    <p class="text-sm text-gray-500">
+                                        {{ _('Webhooks allow users to integrate with any service that accepts HTTP POST requests (Home Assistant, Discord, Slack, etc.)') }}
+                                    </p>
+                                </div>
+
+                                <div class="flex justify-end">
+                                    <button type="submit"
+                                            class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                        {{ _('Save Notification Settings') }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Upcoming Reminders Link -->
+                    <div class="bg-white shadow rounded-lg divide-y divide-gray-200">
+                        <div class="p-6">
+                            <h2 class="text-lg font-medium text-gray-900">{{ _('Manage Reminders') }}</h2>
+                            <p class="mt-1 text-sm text-gray-500">{{ _('View and manage your upcoming reminders') }}</p>
+                        </div>
+                        <div class="p-6">
+                            <a href="{{ url_for('reminders.index') }}"
+                               class="inline-flex items-center text-sm text-primary-600 hover:text-primary-500">
+                                {{ _('View all reminders') }}
+                                <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Branding Section (Admin Only) -->
             {% if current_user.is_admin %}
             <div id="section-branding" class="settings-section hidden">
@@ -518,7 +861,7 @@ function showSection(section) {
 // Handle initial hash on page load
 document.addEventListener('DOMContentLoaded', function() {
     const hash = window.location.hash.slice(1);
-    if (hash && ['units', 'account', 'integrations', 'api', 'branding'].includes(hash)) {
+    if (hash && ['units', 'account', 'integrations', 'api', 'notifications', 'branding'].includes(hash)) {
         const navItem = document.querySelector(`a[href="#${hash}"]`);
         if (navItem) {
             navItem.click();
@@ -601,6 +944,103 @@ function revokeApiKey() {
         })
         .catch(err => {
             alert('Failed to revoke API key');
+            console.error(err);
+        });
+}
+
+// Notification Settings
+function toggleNotificationFields() {
+    const method = document.getElementById('notification_method').value;
+
+    // Hide all notification fields
+    document.querySelectorAll('.notification-field').forEach(el => {
+        el.classList.add('hidden');
+    });
+
+    // Show the relevant field
+    const fieldId = 'notification-' + method;
+    const field = document.getElementById(fieldId);
+    if (field) {
+        field.classList.remove('hidden');
+    }
+}
+
+// Initialize notification fields on page load
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById('notification_method')) {
+        toggleNotificationFields();
+    }
+});
+
+function sendTestNotification() {
+    const resultSpan = document.getElementById('test-notification-result');
+    resultSpan.textContent = 'Sending...';
+    resultSpan.className = 'ml-3 text-sm text-gray-500';
+
+    // Gather current form values
+    const formData = new FormData();
+    formData.append('notification_method', document.getElementById('notification_method').value);
+
+    const ntfyTopic = document.getElementById('ntfy_topic');
+    if (ntfyTopic) formData.append('ntfy_topic', ntfyTopic.value);
+
+    const pushoverKey = document.getElementById('pushover_user_key');
+    if (pushoverKey) formData.append('pushover_user_key', pushoverKey.value);
+
+    const webhookUrl = document.getElementById('webhook_url');
+    if (webhookUrl) formData.append('webhook_url', webhookUrl.value);
+
+    fetch('/api/notifications/test', { method: 'POST', body: formData })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                resultSpan.textContent = 'Test notification sent!';
+                resultSpan.className = 'ml-3 text-sm text-green-600';
+            } else {
+                resultSpan.textContent = data.error || 'Failed to send notification';
+                resultSpan.className = 'ml-3 text-sm text-red-600';
+            }
+        })
+        .catch(err => {
+            resultSpan.textContent = 'Error sending notification';
+            resultSpan.className = 'ml-3 text-sm text-red-600';
+            console.error(err);
+        });
+}
+
+function testSmtpSettings() {
+    const resultSpan = document.getElementById('test-smtp-result');
+    resultSpan.textContent = 'Sending...';
+    resultSpan.className = 'ml-3 text-sm text-gray-500';
+
+    // Gather SMTP settings from the form
+    const formData = new FormData();
+    formData.append('smtp_host', document.getElementById('smtp_host').value);
+    formData.append('smtp_port', document.getElementById('smtp_port').value);
+    formData.append('smtp_username', document.getElementById('smtp_username').value);
+    formData.append('smtp_password', document.getElementById('smtp_password').value);
+    formData.append('smtp_sender', document.getElementById('smtp_sender').value);
+    formData.append('smtp_sender_name', document.getElementById('smtp_sender_name').value);
+    formData.append('smtp_tls', document.querySelector('input[name="smtp_tls"]').checked);
+    formData.append('smtp_ssl', document.querySelector('input[name="smtp_ssl"]').checked);
+
+    fetch('/api/smtp/test', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                resultSpan.textContent = 'Test email sent!';
+                resultSpan.className = 'ml-3 text-sm text-green-600';
+            } else {
+                resultSpan.textContent = data.error || 'Failed to send email';
+                resultSpan.className = 'ml-3 text-sm text-red-600';
+            }
+        })
+        .catch(err => {
+            resultSpan.textContent = 'Error sending email';
+            resultSpan.className = 'ml-3 text-sm text-red-600';
             console.error(err);
         });
 }

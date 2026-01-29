@@ -89,6 +89,110 @@ def revoke_api_key():
 
 
 # =============================================================================
+# Notification Testing
+# =============================================================================
+
+@bp.route('/notifications/test', methods=['POST'])
+@login_required
+def test_notification():
+    """Send a test notification using the form values (not saved settings)"""
+    from app.services.notifications import NotificationService
+
+    # Get the method and settings from the form
+    method = request.form.get('notification_method', 'email')
+    title = "Test Notification from May"
+    message = "This is a test notification to verify your settings are working correctly."
+
+    if method == 'email':
+        success, error = NotificationService.send_email(
+            current_user.email,
+            title,
+            message,
+            f"<html><body><h2>{title}</h2><p>{message}</p></body></html>"
+        )
+    elif method == 'ntfy':
+        topic = request.form.get('ntfy_topic')
+        if not topic:
+            return jsonify({'success': False, 'error': 'Please enter an ntfy topic'})
+        success, error = NotificationService.send_ntfy(topic, title, message)
+    elif method == 'pushover':
+        user_key = request.form.get('pushover_user_key')
+        if not user_key:
+            return jsonify({'success': False, 'error': 'Please enter your Pushover user key'})
+        success, error = NotificationService.send_pushover(user_key, title, message)
+    elif method == 'webhook':
+        webhook_url = request.form.get('webhook_url')
+        if not webhook_url:
+            return jsonify({'success': False, 'error': 'Please enter a webhook URL'})
+        payload = {
+            'title': title,
+            'message': message,
+            'user_email': current_user.email,
+            'test': True,
+        }
+        success, error = NotificationService.send_webhook(webhook_url, payload)
+    else:
+        return jsonify({'success': False, 'error': f'Unknown method: {method}'})
+
+    if success:
+        return jsonify({'success': True})
+    else:
+        return jsonify({'success': False, 'error': error})
+
+
+@bp.route('/smtp/test', methods=['POST'])
+@login_required
+def test_smtp():
+    """Test SMTP settings (admin only)"""
+    if not current_user.is_admin:
+        return jsonify({'success': False, 'error': 'Access denied'})
+
+    from app.services.notifications import NotificationService
+
+    config = {
+        'host': request.form.get('smtp_host'),
+        'port': request.form.get('smtp_port', '587'),
+        'username': request.form.get('smtp_username'),
+        'password': request.form.get('smtp_password'),
+        'use_tls': request.form.get('smtp_tls') == 'true',
+        'use_ssl': request.form.get('smtp_ssl') == 'true',
+    }
+
+    success, message = NotificationService.test_smtp(config)
+
+    if success:
+        # If connection test passed, try sending an actual test email
+        from app.models import AppSettings
+        sender = request.form.get('smtp_sender') or config['username']
+        sender_name = request.form.get('smtp_sender_name') or 'May'
+
+        # Temporarily set the config for sending
+        old_config = NotificationService.get_smtp_config()
+        AppSettings.set('smtp_host', config['host'])
+        AppSettings.set('smtp_port', config['port'])
+        AppSettings.set('smtp_username', config['username'])
+        AppSettings.set('smtp_password', config['password'])
+        AppSettings.set('smtp_sender', sender)
+        AppSettings.set('smtp_sender_name', sender_name)
+        AppSettings.set('smtp_tls', 'true' if config['use_tls'] else 'false')
+        AppSettings.set('smtp_ssl', 'true' if config['use_ssl'] else 'false')
+
+        send_success, send_error = NotificationService.send_email(
+            current_user.email,
+            "Test Email from May",
+            "This is a test email to verify your SMTP settings are configured correctly.",
+            "<html><body><h2>Test Email</h2><p>This is a test email to verify your SMTP settings are configured correctly.</p></body></html>"
+        )
+
+        if send_success:
+            return jsonify({'success': True})
+        else:
+            return jsonify({'success': False, 'error': f'Connection OK, but send failed: {send_error}'})
+    else:
+        return jsonify({'success': False, 'error': message})
+
+
+# =============================================================================
 # File Serving
 # =============================================================================
 

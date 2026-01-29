@@ -6,7 +6,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request,
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from app import db
-from app.models import Vehicle, VehicleSpec, FuelLog, Expense, User, VEHICLE_TYPES, FUEL_TYPES, VEHICLE_SPEC_TYPES, AppSettings
+from app.models import Vehicle, VehicleSpec, FuelLog, Expense, User, Reminder, VEHICLE_TYPES, FUEL_TYPES, VEHICLE_SPEC_TYPES, REMINDER_TYPES, AppSettings
 
 bp = Blueprint('vehicles', __name__, url_prefix='/vehicles')
 
@@ -121,12 +121,17 @@ def view(vehicle_id):
         'expenses_count': vehicle.expenses.count()
     }
 
+    # Get reminders for this vehicle (not completed, ordered by due date)
+    reminders = vehicle.reminders.filter_by(is_completed=False).order_by(Reminder.due_date).all()
+
     return render_template('vehicles/view.html',
                            vehicle=vehicle,
                            recent_logs=recent_logs,
                            recent_expenses=recent_expenses,
                            specs=specs,
-                           stats=stats)
+                           stats=stats,
+                           reminders=reminders,
+                           reminder_types=REMINDER_TYPES)
 
 
 @bp.route('/<int:vehicle_id>/edit', methods=['GET', 'POST'])
