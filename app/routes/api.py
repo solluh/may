@@ -1,9 +1,12 @@
+import csv
+import io
+import json
 from functools import wraps
 from datetime import datetime
-from flask import Blueprint, jsonify, request, send_from_directory, current_app, url_for, render_template
+from flask import Blueprint, jsonify, request, send_from_directory, current_app, url_for, render_template, Response
 from flask_login import login_required, current_user
 from app import db
-from app.models import User, Vehicle, FuelLog, Expense, EXPENSE_CATEGORIES
+from app.models import User, Vehicle, VehicleSpec, FuelLog, Expense, EXPENSE_CATEGORIES
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -645,3 +648,191 @@ def api_list_categories():
     return jsonify({
         'categories': [{'id': c[0], 'name': c[1]} for c in EXPENSE_CATEGORIES]
     })
+
+
+# =============================================================================
+# Data Export (Web UI routes, session-authenticated)
+# =============================================================================
+
+@bp.route('/export/csv')
+@login_required
+def export_csv():
+    """
+    Export all user data as CSV files in a ZIP archive.
+    Includes: vehicles.csv, fuel_logs.csv, expenses.csv
+    """
+    import zipfile
+
+    # Create a BytesIO buffer for the ZIP file
+    zip_buffer = io.BytesIO()
+
+    with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+        # Export Vehicles
+        vehicles_csv = io.StringIO()
+        writer = csv.writer(vehicles_csv)
+        writer.writerow([
+            'id', 'name', 'vehicle_type', 'make', 'model', 'year',
+            'registration', 'vin', 'fuel_type', 'tank_capacity',
+            'is_active', 'notes', 'created_at'
+        ])
+        for vehicle in current_user.get_all_vehicles():
+            writer.writerow([
+                vehicle.id, vehicle.name, vehicle.vehicle_type,
+                vehicle.make, vehicle.model, vehicle.year,
+                vehicle.registration, vehicle.vin, vehicle.fuel_type,
+                vehicle.tank_capacity, vehicle.is_active, vehicle.notes,
+                vehicle.created_at.isoformat() if vehicle.created_at else ''
+            ])
+        zip_file.writestr('vehicles.csv', vehicles_csv.getvalue())
+
+        # Export Vehicle Specs
+        specs_csv = io.StringIO()
+        writer = csv.writer(specs_csv)
+        writer.writerow(['vehicle_id', 'vehicle_name', 'spec_type', 'label', 'value'])
+        for vehicle in current_user.get_all_vehicles():
+            for spec in vehicle.specs.all():
+                writer.writerow([
+                    vehicle.id, vehicle.name, spec.spec_type, spec.label, spec.value
+                ])
+        zip_file.writestr('vehicle_specs.csv', specs_csv.getvalue())
+
+        # Export Fuel Logs
+        fuel_csv = io.StringIO()
+        writer = csv.writer(fuel_csv)
+        writer.writerow([
+            'id', 'vehicle_id', 'vehicle_name', 'date', 'odometer',
+            'volume', 'price_per_unit', 'total_cost', 'is_full_tank',
+            'is_missed', 'station', 'notes', 'created_at'
+        ])
+        for vehicle in current_user.get_all_vehicles():
+            for log in vehicle.fuel_logs.order_by(FuelLog.date.desc()).all():
+                writer.writerow([
+                    log.id, vehicle.id, vehicle.name, log.date.isoformat(),
+                    log.odometer, log.volume, log.price_per_unit, log.total_cost,
+                    log.is_full_tank, log.is_missed, log.station, log.notes,
+                    log.created_at.isoformat() if log.created_at else ''
+                ])
+        zip_file.writestr('fuel_logs.csv', fuel_csv.getvalue())
+
+        # Export Expenses
+        expenses_csv = io.StringIO()
+        writer = csv.writer(expenses_csv)
+        writer.writerow([
+            'id', 'vehicle_id', 'vehicle_name', 'date', 'category',
+            'description', 'cost', 'odometer', 'vendor', 'notes', 'created_at'
+        ])
+        for vehicle in current_user.get_all_vehicles():
+            for expense in vehicle.expenses.order_by(Expense.date.desc()).all():
+                writer.writerow([
+                    expense.id, vehicle.id, vehicle.name, expense.date.isoformat(),
+                    expense.category, expense.description, expense.cost,
+                    expense.odometer, expense.vendor, expense.notes,
+                    expense.created_at.isoformat() if expense.created_at else ''
+                ])
+        zip_file.writestr('expenses.csv', expenses_csv.getvalue())
+
+    zip_buffer.seek(0)
+
+    # Generate filename with timestamp
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    filename = f'may_export_{timestamp}.zip'
+
+    return Response(
+        zip_buffer.getvalue(),
+        mimetype='application/zip',
+        headers={'Content-Disposition': f'attachment; filename={filename}'}
+    )
+
+
+@bp.route('/export/json')
+@login_required
+def export_json():
+    """
+    Export all user data as a single JSON file.
+    Complete backup including all vehicles, specs, fuel logs, and expenses.
+    """
+    export_data = {
+        'export_info': {
+            'exported_at': datetime.utcnow().isoformat(),
+            'username': current_user.username,
+            'app_version': '1.0.0'
+        },
+        'user_preferences': {
+            'language': current_user.language,
+            'distance_unit': current_user.distance_unit,
+            'volume_unit': current_user.volume_unit,
+            'consumption_unit': current_user.consumption_unit,
+            'currency': current_user.currency
+        },
+        'vehicles': []
+    }
+
+    for vehicle in current_user.get_all_vehicles():
+        vehicle_data = {
+            'id': vehicle.id,
+            'name': vehicle.name,
+            'vehicle_type': vehicle.vehicle_type,
+            'make': vehicle.make,
+            'model': vehicle.model,
+            'year': vehicle.year,
+            'registration': vehicle.registration,
+            'vin': vehicle.vin,
+            'fuel_type': vehicle.fuel_type,
+            'tank_capacity': vehicle.tank_capacity,
+            'is_active': vehicle.is_active,
+            'notes': vehicle.notes,
+            'created_at': vehicle.created_at.isoformat() if vehicle.created_at else None,
+            'specifications': [],
+            'fuel_logs': [],
+            'expenses': []
+        }
+
+        # Add specifications
+        for spec in vehicle.specs.all():
+            vehicle_data['specifications'].append({
+                'spec_type': spec.spec_type,
+                'label': spec.label,
+                'value': spec.value
+            })
+
+        # Add fuel logs
+        for log in vehicle.fuel_logs.order_by(FuelLog.date.desc()).all():
+            vehicle_data['fuel_logs'].append({
+                'id': log.id,
+                'date': log.date.isoformat() if log.date else None,
+                'odometer': log.odometer,
+                'volume': log.volume,
+                'price_per_unit': log.price_per_unit,
+                'total_cost': log.total_cost,
+                'is_full_tank': log.is_full_tank,
+                'is_missed': log.is_missed,
+                'station': log.station,
+                'notes': log.notes,
+                'created_at': log.created_at.isoformat() if log.created_at else None
+            })
+
+        # Add expenses
+        for expense in vehicle.expenses.order_by(Expense.date.desc()).all():
+            vehicle_data['expenses'].append({
+                'id': expense.id,
+                'date': expense.date.isoformat() if expense.date else None,
+                'category': expense.category,
+                'description': expense.description,
+                'cost': expense.cost,
+                'odometer': expense.odometer,
+                'vendor': expense.vendor,
+                'notes': expense.notes,
+                'created_at': expense.created_at.isoformat() if expense.created_at else None
+            })
+
+        export_data['vehicles'].append(vehicle_data)
+
+    # Generate filename with timestamp
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    filename = f'may_backup_{timestamp}.json'
+
+    return Response(
+        json.dumps(export_data, indent=2),
+        mimetype='application/json',
+        headers={'Content-Disposition': f'attachment; filename={filename}'}
+    )
