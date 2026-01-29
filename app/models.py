@@ -22,6 +22,7 @@ class User(UserMixin, db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # User preferences
+    language = db.Column(db.String(10), default='en')  # en, de, fr, es, etc.
     distance_unit = db.Column(db.String(10), default='km')  # km, mi
     volume_unit = db.Column(db.String(10), default='L')  # L, gal, us_gal
     consumption_unit = db.Column(db.String(10), default='L/100km')  # L/100km, mpg, mpg_us
@@ -98,6 +99,9 @@ class Vehicle(db.Model):
     # Image
     image_filename = db.Column(db.String(255))
 
+    # Notes
+    notes = db.Column(db.Text)
+
     # Relationships
     fuel_logs = db.relationship('FuelLog', backref='vehicle', lazy='dynamic',
                                 cascade='all, delete-orphan')
@@ -105,6 +109,8 @@ class Vehicle(db.Model):
                                cascade='all, delete-orphan')
     attachments = db.relationship('Attachment', backref='vehicle', lazy='dynamic',
                                   cascade='all, delete-orphan')
+    specs = db.relationship('VehicleSpec', backref='vehicle', lazy='dynamic',
+                            cascade='all, delete-orphan')
 
     def get_total_fuel_cost(self):
         return sum(log.total_cost for log in self.fuel_logs.all() if log.total_cost)
@@ -279,6 +285,83 @@ class Attachment(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
+class VehicleSpec(db.Model):
+    """Custom specifications/attributes for vehicles"""
+    __tablename__ = 'vehicle_specs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.id'), nullable=False)
+
+    spec_type = db.Column(db.String(50), nullable=False)  # predefined or custom type
+    label = db.Column(db.String(100), nullable=False)  # display label
+    value = db.Column(db.String(255), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+class AppSettings(db.Model):
+    """Application-wide settings for branding and customization"""
+    __tablename__ = 'app_settings'
+
+    id = db.Column(db.Integer, primary_key=True)
+    key = db.Column(db.String(50), unique=True, nullable=False, index=True)
+    value = db.Column(db.Text)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    @staticmethod
+    def get(key, default=None):
+        """Get a setting value by key"""
+        setting = AppSettings.query.filter_by(key=key).first()
+        return setting.value if setting else default
+
+    @staticmethod
+    def set(key, value):
+        """Set a setting value"""
+        setting = AppSettings.query.filter_by(key=key).first()
+        if setting:
+            setting.value = value
+        else:
+            setting = AppSettings(key=key, value=value)
+            db.session.add(setting)
+        db.session.commit()
+        return setting
+
+    @staticmethod
+    def get_all_branding():
+        """Get all branding settings as a dictionary"""
+        defaults = {
+            'app_name': 'May',
+            'app_tagline': 'Vehicle Management',
+            'primary_color': '#0284c7',
+            'logo_filename': None,
+            'favicon_filename': None,
+        }
+        settings = AppSettings.query.filter(AppSettings.key.in_(defaults.keys())).all()
+        result = defaults.copy()
+        for s in settings:
+            result[s.key] = s.value
+        return result
+
+
+# Predefined vehicle specification types
+VEHICLE_SPEC_TYPES = [
+    ('tire_size_front', 'Front Tire Size'),
+    ('tire_size_rear', 'Rear Tire Size'),
+    ('wheel_size', 'Wheel Size'),
+    ('oil_type', 'Engine Oil Type'),
+    ('oil_capacity', 'Oil Capacity'),
+    ('coolant_type', 'Coolant Type'),
+    ('wiper_front', 'Front Wiper Size'),
+    ('wiper_rear', 'Rear Wiper Size'),
+    ('battery_type', 'Battery Type'),
+    ('spark_plug', 'Spark Plug Type'),
+    ('air_filter', 'Air Filter Part #'),
+    ('cabin_filter', 'Cabin Filter Part #'),
+    ('brake_pads_front', 'Front Brake Pads'),
+    ('brake_pads_rear', 'Rear Brake Pads'),
+    ('transmission_fluid', 'Transmission Fluid'),
+    ('custom', 'Custom'),
+]
+
 # Expense categories
 EXPENSE_CATEGORIES = [
     ('maintenance', 'Maintenance'),
@@ -298,15 +381,22 @@ VEHICLE_TYPES = [
     ('car', 'Car'),
     ('van', 'Van'),
     ('motorbike', 'Motorbike'),
-    ('scooter', 'Scooter')
+    ('scooter', 'Scooter'),
+    ('truck', 'Truck'),
+    ('suv', 'SUV'),
+    ('other', 'Other')
 ]
 
 # Fuel types
 FUEL_TYPES = [
-    ('petrol', 'Petrol'),
+    ('petrol', 'Petrol/Gasoline'),
     ('diesel', 'Diesel'),
     ('electric', 'Electric'),
     ('hybrid', 'Hybrid'),
+    ('plugin_hybrid', 'Plug-in Hybrid'),
     ('lpg', 'LPG'),
-    ('cng', 'CNG')
+    ('cng', 'CNG'),
+    ('hydrogen', 'Hydrogen'),
+    ('e85', 'E85/Flex Fuel'),
+    ('other', 'Other')
 ]

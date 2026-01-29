@@ -3,26 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}May{% endblock %} - Vehicle Management</title>
+    <title>{% block title %}{{ APP_NAME }}{% endblock %} - {{ APP_TAGLINE }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script>
+        // Generate color palette from primary color
+        function hexToHSL(hex) {
+            hex = hex.replace('#', '');
+            const r = parseInt(hex.substring(0, 2), 16) / 255;
+            const g = parseInt(hex.substring(2, 4), 16) / 255;
+            const b = parseInt(hex.substring(4, 6), 16) / 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+            if (max === min) {
+                h = s = 0;
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                    case g: h = ((b - r) / d + 2) / 6; break;
+                    case b: h = ((r - g) / d + 4) / 6; break;
+                }
+            }
+            return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+        }
+        function hslToHex(h, s, l) {
+            s /= 100; l /= 100;
+            const a = s * Math.min(l, 1 - l);
+            const f = n => {
+                const k = (n + h / 30) % 12;
+                const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                return Math.round(255 * color).toString(16).padStart(2, '0');
+            };
+            return `#${f(0)}${f(8)}${f(4)}`;
+        }
+        const baseColor = '{{ PRIMARY_COLOR }}';
+        const [h, s, l] = hexToHSL(baseColor);
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
+                            50: hslToHex(h, Math.max(s - 40, 10), 97),
+                            100: hslToHex(h, Math.max(s - 30, 15), 94),
+                            200: hslToHex(h, Math.max(s - 20, 20), 86),
+                            300: hslToHex(h, Math.max(s - 10, 30), 74),
+                            400: hslToHex(h, s, 60),
+                            500: hslToHex(h, s, 50),
+                            600: baseColor,
+                            700: hslToHex(h, s, Math.max(l - 15, 20)),
+                            800: hslToHex(h, s, Math.max(l - 25, 15)),
+                            900: hslToHex(h, s, Math.max(l - 35, 10)),
                         }
                     }
                 }
@@ -41,7 +74,13 @@
                 <div class="flex h-16 justify-between">
                     <div class="flex">
                         <div class="flex flex-shrink-0 items-center">
-                            <a href="{{ url_for('main.dashboard') }}" class="text-2xl font-bold text-primary-600">May</a>
+                            <a href="{{ url_for('main.dashboard') }}" class="flex items-center">
+                                {% if APP_LOGO %}
+                                <img src="{{ url_for('api.uploaded_file', filename=APP_LOGO) }}" alt="{{ APP_NAME }}" class="h-8 w-auto">
+                                {% else %}
+                                <span class="text-2xl font-bold text-primary-600">{{ APP_NAME }}</span>
+                                {% endif %}
+                            </a>
                         </div>
                         <div class="hidden sm:ml-8 sm:flex sm:space-x-4">
                             <a href="{{ url_for('main.dashboard') }}" class="inline-flex items-center px-3 py-2 text-sm font-medium {% if request.endpoint == 'main.dashboard' %}text-primary-600 border-b-2 border-primary-600{% else %}text-gray-500 hover:text-gray-700{% endif %}">

@@ -34,6 +34,16 @@
                         Integrations
                     </a>
                 </li>
+                {% if current_user.is_admin %}
+                <li>
+                    <a href="#branding" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('branding')">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                        </svg>
+                        Branding
+                    </a>
+                </li>
+                {% endif %}
             </ul>
         </nav>
 
@@ -50,6 +60,16 @@
 
                         <div class="p-6 space-y-6">
                             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                                <div class="sm:col-span-2">
+                                    <label for="language" class="block text-sm font-medium text-gray-700">Language</label>
+                                    <select name="language" id="language"
+                                            class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                        {% for code, name in LANGUAGES.items() %}
+                                        <option value="{{ code }}" {% if current_user.language == code %}selected{% endif %}>{{ name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
                                 <div>
                                     <label for="distance_unit" class="block text-sm font-medium text-gray-700">Distance</label>
                                     <select name="distance_unit" id="distance_unit"
@@ -368,6 +388,72 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Branding Section (Admin Only) -->
+            {% if current_user.is_admin %}
+            <div id="section-branding" class="settings-section hidden">
+                <form method="POST" action="{{ url_for('auth.branding') }}" enctype="multipart/form-data">
+                    <div class="bg-white shadow rounded-lg divide-y divide-gray-200">
+                        <div class="p-6">
+                            <h2 class="text-lg font-medium text-gray-900">Application Branding</h2>
+                            <p class="mt-1 text-sm text-gray-500">Customize how May appears to all users</p>
+                        </div>
+
+                        <div class="p-6 space-y-6">
+                            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                                <div class="sm:col-span-2">
+                                    <label for="app_name" class="block text-sm font-medium text-gray-700">Application Name</label>
+                                    <input type="text" name="app_name" id="app_name"
+                                           value="{{ branding.app_name or 'May' }}"
+                                           placeholder="May"
+                                           class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                </div>
+
+                                <div class="sm:col-span-2">
+                                    <label for="app_tagline" class="block text-sm font-medium text-gray-700">Tagline</label>
+                                    <input type="text" name="app_tagline" id="app_tagline"
+                                           value="{{ branding.app_tagline or 'Vehicle Management' }}"
+                                           placeholder="Vehicle Management"
+                                           class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                </div>
+
+                                <div>
+                                    <label for="primary_color" class="block text-sm font-medium text-gray-700">Primary Color</label>
+                                    <div class="mt-1 flex items-center gap-3">
+                                        <input type="color" name="primary_color" id="primary_color"
+                                               value="{{ branding.primary_color or '#0284c7' }}"
+                                               class="h-10 w-14 rounded border border-gray-300 cursor-pointer">
+                                        <input type="text" id="primary_color_hex" readonly
+                                               value="{{ branding.primary_color or '#0284c7' }}"
+                                               class="flex-1 rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm font-mono">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Logo</label>
+                                    {% if branding.logo_filename %}
+                                    <div class="mt-2 mb-2 flex items-center gap-3">
+                                        <img src="{{ url_for('api.uploaded_file', filename=branding.logo_filename) }}"
+                                             alt="Current logo" class="h-10 w-auto">
+                                        <span class="text-xs text-gray-500">Current logo</span>
+                                    </div>
+                                    {% endif %}
+                                    <input type="file" name="logo" accept="image/*"
+                                           class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="px-6 py-4 bg-gray-50 rounded-b-lg flex justify-end">
+                            <button type="submit"
+                                    class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                Save Branding
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -410,11 +496,20 @@ function showSection(section) {
 // Handle initial hash on page load
 document.addEventListener('DOMContentLoaded', function() {
     const hash = window.location.hash.slice(1);
-    if (hash && ['units', 'account', 'integrations'].includes(hash)) {
+    if (hash && ['units', 'account', 'integrations', 'branding'].includes(hash)) {
         const navItem = document.querySelector(`a[href="#${hash}"]`);
         if (navItem) {
             navItem.click();
         }
+    }
+
+    // Sync color picker with hex input
+    const colorPicker = document.getElementById('primary_color');
+    const colorHex = document.getElementById('primary_color_hex');
+    if (colorPicker && colorHex) {
+        colorPicker.addEventListener('input', function() {
+            colorHex.value = this.value;
+        });
     }
 });
 

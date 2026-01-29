@@ -1,7 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+import os
+import uuid
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_user, logout_user, login_required, current_user
+from werkzeug.utils import secure_filename
 from app import db
-from app.models import User
+from app.models import User, AppSettings
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -74,6 +77,7 @@ def logout():
 @login_required
 def settings():
     if request.method == 'POST':
+        current_user.language = request.form.get('language', 'en')
         current_user.distance_unit = request.form.get('distance_unit', 'km')
         current_user.volume_unit = request.form.get('volume_unit', 'L')
         current_user.consumption_unit = request.form.get('consumption_unit', 'L/100km')
@@ -85,14 +89,54 @@ def settings():
             confirm_password = request.form.get('confirm_new_password')
             if new_password != confirm_password:
                 flash('Passwords do not match', 'error')
-                return render_template('auth/settings.html')
+                branding = AppSettings.get_all_branding() if current_user.is_admin else {}
+                return render_template('auth/settings.html', branding=branding)
             current_user.set_password(new_password)
 
         db.session.commit()
         flash('Settings updated successfully', 'success')
         return redirect(url_for('auth.settings'))
 
-    return render_template('auth/settings.html')
+    branding = AppSettings.get_all_branding() if current_user.is_admin else {}
+    return render_template('auth/settings.html', branding=branding)
+
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'}
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@bp.route('/branding', methods=['POST'])
+@login_required
+def branding():
+    if not current_user.is_admin:
+        flash('Access denied', 'error')
+        return redirect(url_for('auth.settings'))
+
+    # Save branding settings
+    AppSettings.set('app_name', request.form.get('app_name', 'May'))
+    AppSettings.set('app_tagline', request.form.get('app_tagline', 'Vehicle Management'))
+    AppSettings.set('primary_color', request.form.get('primary_color', '#0284c7'))
+
+    # Handle logo upload
+    if 'logo' in request.files:
+        file = request.files['logo']
+        if file and file.filename and allowed_file(file.filename):
+            # Delete old logo
+            old_logo = AppSettings.get('logo_filename')
+            if old_logo:
+                old_path = os.path.join(current_app.config['UPLOAD_FOLDER'], old_logo)
+                if os.path.exists(old_path):
+                    os.remove(old_path)
+
+            filename = f"logo_{uuid.uuid4().hex}_{secure_filename(file.filename)}"
+            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+            AppSettings.set('logo_filename', filename)
+
+    flash('Branding settings updated successfully', 'success')
+    return redirect(url_for('auth.settings') + '#branding')
 
 
 @bp.route('/users')

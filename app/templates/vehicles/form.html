@@ -115,6 +115,57 @@
             </div>
         </div>
 
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">Specifications</h2>
+            <p class="text-sm text-gray-500 mb-4">Add technical details like tire sizes, oil type, wiper sizes, etc.</p>
+
+            <div id="specs-container" class="space-y-3">
+                {% if specs %}
+                    {% for spec in specs %}
+                    <div class="spec-row flex items-center gap-3">
+                        <select name="spec_type[]" onchange="handleSpecTypeChange(this)"
+                                class="w-40 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                            {% for value, label in spec_types %}
+                            <option value="{{ value }}" {% if spec.spec_type == value %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="text" name="spec_label[]" value="{{ spec.label }}"
+                               placeholder="Custom label"
+                               class="spec-label w-32 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 {% if spec.spec_type != 'custom' %}hidden{% endif %}">
+                        <input type="text" name="spec_value[]" value="{{ spec.value }}"
+                               placeholder="Value"
+                               class="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                        <button type="button" onclick="removeSpecRow(this)"
+                                class="p-2 text-gray-400 hover:text-red-500">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <button type="button" onclick="addSpecRow()"
+                    class="mt-4 inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Add Specification
+            </button>
+        </div>
+
+        <div class="bg-white shadow rounded-lg p-6">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">Notes</h2>
+
+            <div>
+                <label for="notes" class="block text-sm font-medium text-gray-700">General Notes</label>
+                <textarea name="notes" id="notes" rows="4"
+                          placeholder="Any additional notes about this vehicle..."
+                          class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">{{ vehicle.notes if vehicle and vehicle.notes else '' }}</textarea>
+            </div>
+        </div>
+
         {% if vehicle %}
         <div class="bg-white shadow rounded-lg p-6">
             <h2 class="text-lg font-medium text-gray-900 mb-4">Status</h2>
@@ -139,4 +190,59 @@
         </div>
     </form>
 </div>
+
+<script>
+const specTypes = [
+    {% for value, label in spec_types %}
+    { value: '{{ value }}', label: '{{ label }}' },
+    {% endfor %}
+];
+
+function addSpecRow() {
+    const container = document.getElementById('specs-container');
+    const row = document.createElement('div');
+    row.className = 'spec-row flex items-center gap-3';
+
+    let options = specTypes.map(t => `<option value="${t.value}">${t.label}</option>`).join('');
+
+    row.innerHTML = `
+        <select name="spec_type[]" onchange="handleSpecTypeChange(this)"
+                class="w-40 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+            ${options}
+        </select>
+        <input type="text" name="spec_label[]" value=""
+               placeholder="Custom label"
+               class="spec-label w-32 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 hidden">
+        <input type="text" name="spec_value[]" value=""
+               placeholder="Value"
+               class="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+        <button type="button" onclick="removeSpecRow(this)"
+                class="p-2 text-gray-400 hover:text-red-500">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+        </button>
+    `;
+
+    container.appendChild(row);
+}
+
+function removeSpecRow(btn) {
+    btn.closest('.spec-row').remove();
+}
+
+function handleSpecTypeChange(select) {
+    const row = select.closest('.spec-row');
+    const labelInput = row.querySelector('.spec-label');
+
+    if (select.value === 'custom') {
+        labelInput.classList.remove('hidden');
+        labelInput.required = true;
+    } else {
+        labelInput.classList.add('hidden');
+        labelInput.required = false;
+        labelInput.value = '';
+    }
+}
+</script>
 {% endblock %}
