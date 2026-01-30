@@ -10,6 +10,7 @@ from flask import Blueprint, jsonify, request, send_from_directory, current_app,
 from flask_login import login_required, current_user
 from app import db
 from app.models import User, Vehicle, VehicleSpec, FuelLog, Expense, EXPENSE_CATEGORIES
+from config import APP_VERSION
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -985,7 +986,7 @@ def export_json():
         'export_info': {
             'exported_at': datetime.utcnow().isoformat(),
             'username': current_user.username,
-            'app_version': '1.0.0'
+            'app_version': APP_VERSION
         },
         'user_preferences': {
             'language': current_user.language,

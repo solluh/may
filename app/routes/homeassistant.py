@@ -38,6 +38,7 @@ from app.models import (
 )
 from datetime import date, timedelta
 from sqlalchemy import func
+from config import APP_VERSION
 
 bp = Blueprint('homeassistant', __name__, url_prefix='/api/ha')
 
@@ -75,7 +76,7 @@ def status(user):
     return jsonify({
         'status': 'online',
         'user': user.username,
-        'version': '1.0.0'
+        'version': APP_VERSION
     })
 
 

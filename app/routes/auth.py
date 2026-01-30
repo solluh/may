@@ -1,10 +1,12 @@
 import os
 import uuid
-from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
+import requests
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 from app import db
 from app.models import User, AppSettings
+from config import APP_VERSION, GITHUB_REPO
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -157,7 +159,9 @@ def settings():
                            smtp_settings=smtp_settings,
                            smtp_configured=smtp_configured,
                            pushover_configured=pushover_configured,
-                           dvla_settings=dvla_settings)
+                           dvla_settings=dvla_settings,
+                           app_version=APP_VERSION,
+                           github_repo=GITHUB_REPO)
 
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'}
@@ -315,3 +319,31 @@ def delete_user(user_id):
         flash(f'User {user.username} deleted', 'success')
 
     return redirect(url_for('auth.users'))
+
+
+@bp.route('/check-updates')
+@login_required
+def check_updates():
+    """Check GitHub for newer releases"""
+    try:
+        response = requests.get(
+            f'https://api.github.com/repos/{GITHUB_REPO}/releases/latest',
+            timeout=10,
+            headers={'Accept': 'application/vnd.github.v3+json'}
+        )
+        if response.status_code == 200:
+            data = response.json()
+            latest_version = data.get('tag_name', '').lstrip('v')
+            return jsonify({
+                'success': True,
+                'latest_version': latest_version,
+                'current_version': APP_VERSION,
+                'update_available': latest_version != APP_VERSION,
+                'release_url': data.get('html_url'),
+                'release_notes': data.get('body', ''),
+                'published_at': data.get('published_at')
+            })
+        else:
+            return jsonify({'success': False, 'error': 'Could not fetch release info'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
