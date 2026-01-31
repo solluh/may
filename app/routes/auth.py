@@ -48,6 +48,8 @@ def get_start_page_url(user):
         'recurring': 'recurring.index',
         'documents': 'documents.index',
         'stations': 'stations.index',
+        'trips': 'trips.index',
+        'charging': 'charging.index',
     }
     route = page_routes.get(start_page, 'main.dashboard')
     return url_for(route)
@@ -356,7 +358,10 @@ def check_updates():
         response = requests.get(
             f'https://api.github.com/repos/{GITHUB_REPO}/releases/latest',
             timeout=10,
-            headers={'Accept': 'application/vnd.github.v3+json'}
+            headers={
+                'Accept': 'application/vnd.github.v3+json',
+                'User-Agent': f'May/{APP_VERSION}'
+            }
         )
         if response.status_code == 200:
             data = response.json()
