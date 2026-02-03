@@ -7,6 +7,7 @@ from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from app import db
 from app.models import Vehicle, VehicleSpec, VehiclePart, FuelLog, Expense, User, Reminder, VEHICLE_TYPES, FUEL_TYPES, VEHICLE_SPEC_TYPES, REMINDER_TYPES, PART_TYPES, AppSettings
+from app.services.tessie import TessieService
 
 bp = Blueprint('vehicles', __name__, url_prefix='/vehicles')
 
@@ -86,11 +87,13 @@ def new():
         flash(f'Vehicle "{vehicle.name}" added successfully', 'success')
         return redirect(url_for('vehicles.view', vehicle_id=vehicle.id))
 
+    tessie_configured = TessieService.is_configured()
     return render_template('vehicles/form.html',
                            vehicle=None,
                            vehicle_types=VEHICLE_TYPES,
                            fuel_types=FUEL_TYPES,
-                           spec_types=VEHICLE_SPEC_TYPES)
+                           spec_types=VEHICLE_SPEC_TYPES,
+                           tessie_configured=tessie_configured)
 
 
 @bp.route('/<int:vehicle_id>')
@@ -131,6 +134,9 @@ def view(vehicle_id):
     from app.services.dvla import DVLAService
     dvla_configured = DVLAService.is_configured()
 
+    # Check if Tessie integration is configured
+    tessie_configured = TessieService.is_configured()
+
     return render_template('vehicles/view.html',
                            vehicle=vehicle,
                            recent_logs=recent_logs,
@@ -141,7 +147,8 @@ def view(vehicle_id):
                            reminder_types=REMINDER_TYPES,
                            parts=parts,
                            part_types=PART_TYPES,
-                           dvla_configured=dvla_configured)
+                           dvla_configured=dvla_configured,
+                           tessie_configured=tessie_configured)
 
 
 @bp.route('/<int:vehicle_id>/edit', methods=['GET', 'POST'])
@@ -165,6 +172,10 @@ def edit(vehicle_id):
         vehicle.fuel_type = request.form.get('fuel_type')
         vehicle.tank_capacity = float(request.form.get('tank_capacity')) if request.form.get('tank_capacity') else None
         vehicle.notes = request.form.get('notes')
+
+        # Handle Tessie integration fields
+        vehicle.tessie_vin = request.form.get('tessie_vin') or None
+        vehicle.tessie_enabled = request.form.get('tessie_enabled') == 'on'
 
         # Handle image upload
         if 'image' in request.files:
@@ -203,12 +214,14 @@ def edit(vehicle_id):
         return redirect(url_for('vehicles.view', vehicle_id=vehicle.id))
 
     specs = vehicle.specs.all()
+    tessie_configured = TessieService.is_configured()
     return render_template('vehicles/form.html',
                            vehicle=vehicle,
                            vehicle_types=VEHICLE_TYPES,
                            fuel_types=FUEL_TYPES,
                            spec_types=VEHICLE_SPEC_TYPES,
-                           specs=specs)
+                           specs=specs,
+                           tessie_configured=tessie_configured)
 
 
 @bp.route('/<int:vehicle_id>/delete', methods=['POST'])

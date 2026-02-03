@@ -240,6 +240,91 @@
 </div>
 {% endif %}
 
+<!-- Tessie Status Section (Tesla Vehicles) -->
+{% if vehicle.tessie_enabled and vehicle.tessie_vin and tessie_configured %}
+<div class="bg-white dark:bg-gray-800 shadow rounded-lg mb-8" id="tessie-section">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+        <div class="flex items-center">
+            <svg class="h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ _('Tessie Status') }}</h2>
+            <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                {{ _('Live') }}
+            </span>
+        </div>
+        <button onclick="refreshTessieStatus({{ vehicle.id }})" id="tessie-refresh-btn"
+                class="inline-flex items-center px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            {{ _('Refresh') }}
+        </button>
+    </div>
+    <div class="p-6">
+        {% if vehicle.tessie_last_updated %}
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div>
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ _('Odometer') }}</dt>
+                <dd class="mt-1 text-sm text-gray-900 dark:text-white">
+                    {% if vehicle.tessie_last_odometer %}
+                    {{ "%.0f"|format(vehicle.tessie_last_odometer) }} {{ current_user.distance_unit }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ _('Battery Level') }}</dt>
+                <dd class="mt-1">
+                    {% if vehicle.tessie_battery_level is not none %}
+                    <div class="flex items-center gap-2">
+                        <div class="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div class="h-full {% if vehicle.tessie_battery_level > 50 %}bg-green-500{% elif vehicle.tessie_battery_level > 20 %}bg-yellow-500{% else %}bg-red-500{% endif %}"
+                                 style="width: {{ vehicle.tessie_battery_level }}%"></div>
+                        </div>
+                        <span class="text-sm text-gray-900 dark:text-white">{{ vehicle.tessie_battery_level }}%</span>
+                    </div>
+                    {% else %}
+                    <span class="text-sm text-gray-500 dark:text-gray-400">-</span>
+                    {% endif %}
+                </dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ _('Est. Range') }}</dt>
+                <dd class="mt-1 text-sm text-gray-900 dark:text-white">
+                    {% if vehicle.tessie_battery_range %}
+                    {{ "%.0f"|format(vehicle.tessie_battery_range) }} {{ current_user.distance_unit }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ _('VIN') }}</dt>
+                <dd class="mt-1 text-sm text-gray-900 dark:text-white font-mono">{{ vehicle.tessie_vin }}</dd>
+            </div>
+        </div>
+        <p class="mt-4 text-xs text-gray-500 dark:text-gray-400">
+            {{ _('Last updated') }}: {{ vehicle.tessie_last_updated.strftime('%d %b %Y at %H:%M') }}
+        </p>
+        {% else %}
+        <div class="text-center py-4">
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">{{ _('No Tessie data available for this vehicle yet.') }}</p>
+            <button onclick="refreshTessieStatus({{ vehicle.id }})"
+                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700">
+                <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                {{ _('Fetch from Tessie') }}
+            </button>
+        </div>
+        {% endif %}
+        <div id="tessie-error" class="hidden mt-3 p-3 bg-red-50 dark:bg-red-900/30 rounded-md text-sm text-red-600 dark:text-red-400"></div>
+    </div>
+</div>
+{% endif %}
+
 {% if not vehicle.is_active %}
 <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8">
     <div class="flex">
@@ -644,6 +729,51 @@ function refreshDvlaStatus(vehicleId) {
             } else {
                 // Show error
                 errorDiv.textContent = data.error || 'Failed to refresh DVLA status';
+                errorDiv.classList.remove('hidden');
+
+                // Reset button
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>Refresh';
+                }
+            }
+        })
+        .catch(err => {
+            errorDiv.textContent = 'Error connecting to server';
+            errorDiv.classList.remove('hidden');
+            console.error(err);
+
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>Refresh';
+            }
+        });
+}
+
+function refreshTessieStatus(vehicleId) {
+    const btn = document.getElementById('tessie-refresh-btn');
+    const errorDiv = document.getElementById('tessie-error');
+
+    // Hide any previous errors
+    errorDiv.classList.add('hidden');
+
+    // Show loading state
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<svg class="animate-spin h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Loading...';
+    }
+
+    fetch('/api/vehicles/' + vehicleId + '/tessie-refresh', {
+        method: 'POST'
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Reload the page to show updated data
+                location.reload();
+            } else {
+                // Show error
+                errorDiv.textContent = data.error || 'Failed to refresh Tessie status';
                 errorDiv.classList.remove('hidden');
 
                 // Reset button

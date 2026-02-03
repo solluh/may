@@ -888,6 +888,96 @@ def refresh_vehicle_dvla(vehicle_id):
 
 
 # =============================================================================
+# Tessie Integration (Tesla vehicles via Tessie API)
+# =============================================================================
+
+@bp.route('/tessie/test', methods=['POST'])
+@login_required
+def tessie_test_token():
+    """Test Tessie API token (admin only)"""
+    if not current_user.is_admin:
+        return jsonify({'success': False, 'error': 'Access denied'}), 403
+
+    from app.services.tessie import TessieService
+
+    api_token = request.form.get('tessie_api_token')
+    if not api_token:
+        return jsonify({'success': False, 'error': 'API token required'}), 400
+
+    success, message = TessieService.test_api_token(api_token)
+    return jsonify({'success': success, 'message': message})
+
+
+@bp.route('/tessie/status')
+@login_required
+def tessie_status():
+    """Check if Tessie integration is available"""
+    from app.services.tessie import TessieService
+    return jsonify({'configured': TessieService.is_configured()})
+
+
+@bp.route('/tessie/vehicles')
+@login_required
+def tessie_vehicles():
+    """Get list of vehicles from Tessie account (for linking)"""
+    from app.services.tessie import TessieService
+
+    if not TessieService.is_configured():
+        return jsonify({'success': False, 'error': 'Tessie not configured'}), 400
+
+    success, result = TessieService.get_vehicles()
+    if success:
+        return jsonify({'success': True, 'vehicles': result})
+    else:
+        return jsonify({'success': False, 'error': result}), 400
+
+
+@bp.route('/vehicles/<int:vehicle_id>/tessie-refresh', methods=['POST'])
+@login_required
+def refresh_vehicle_tessie(vehicle_id):
+    """
+    Refresh vehicle data from Tessie
+
+    Updates the vehicle's odometer, battery level, and range from Tessie
+    """
+    from app.services.tessie import TessieService
+
+    vehicle = Vehicle.query.get_or_404(vehicle_id)
+
+    if vehicle not in current_user.get_all_vehicles():
+        return jsonify({'success': False, 'error': 'Access denied'}), 403
+
+    if not vehicle.tessie_vin:
+        return jsonify({'success': False, 'error': 'Vehicle not linked to Tessie'}), 400
+
+    if not vehicle.tessie_enabled:
+        return jsonify({'success': False, 'error': 'Tessie not enabled for this vehicle'}), 400
+
+    if not TessieService.is_configured():
+        return jsonify({'success': False, 'error': 'Tessie integration not configured'}), 400
+
+    success, result = TessieService.get_vehicle_state(vehicle.tessie_vin)
+
+    if success:
+        vehicle.tessie_last_odometer = result['odometer_km']
+        vehicle.tessie_battery_level = result.get('battery_level')
+        vehicle.tessie_battery_range = result.get('battery_range_km')
+        vehicle.tessie_last_updated = datetime.utcnow()
+
+        db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'odometer': vehicle.tessie_last_odometer,
+            'battery_level': vehicle.tessie_battery_level,
+            'battery_range': vehicle.tessie_battery_range,
+            'updated': vehicle.tessie_last_updated.isoformat()
+        })
+    else:
+        return jsonify({'success': False, 'error': result}), 400
+
+
+# =============================================================================
 # Data Export (Web UI routes, session-authenticated)
 # =============================================================================
 

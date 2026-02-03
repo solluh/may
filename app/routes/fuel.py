@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 from app import db
 from app.models import Vehicle, FuelLog, Attachment, FuelStation, FuelPriceHistory
 from app.security import validate_file_upload, secure_filename_with_uuid, validate_positive_number
+from app.services.tessie import TessieService
 
 bp = Blueprint('fuel', __name__, url_prefix='/fuel')
 

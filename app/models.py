@@ -134,6 +134,14 @@ class Vehicle(db.Model):
     dvla_colour = db.Column(db.String(50))  # Colour from DVLA
     dvla_last_updated = db.Column(db.DateTime)  # When DVLA data was last fetched
 
+    # Tessie integration (Tesla vehicles)
+    tessie_vin = db.Column(db.String(20))  # VIN for Tessie API
+    tessie_enabled = db.Column(db.Boolean, default=False)  # Enable Tessie odometer tracking
+    tessie_last_odometer = db.Column(db.Float)  # Last fetched odometer in km
+    tessie_battery_level = db.Column(db.Integer)  # Last fetched battery %
+    tessie_battery_range = db.Column(db.Float)  # Last fetched range in km
+    tessie_last_updated = db.Column(db.DateTime)  # When Tessie data was last fetched
+
     # Relationships
     fuel_logs = db.relationship('FuelLog', backref='vehicle', lazy='dynamic',
                                 cascade='all, delete-orphan')
@@ -176,8 +184,23 @@ class Vehicle(db.Model):
             return (total_fuel / total_distance) * 100  # L/100km
         return None
 
+    def uses_tessie_odometer(self):
+        """Check if this vehicle uses Tessie for odometer tracking"""
+        from app.services.tessie import TessieService
+        return (self.tessie_enabled and
+                self.tessie_vin and
+                TessieService.is_configured())
+
     def get_last_odometer(self):
-        """Get the most recent odometer reading from fuel logs, trips, or charging sessions"""
+        """Get the most recent odometer reading.
+
+        If Tessie is enabled for this vehicle, returns the Tessie odometer.
+        Otherwise, returns the highest from fuel logs, trips, or charging sessions.
+        """
+        # If Tessie is enabled, use Tessie odometer exclusively
+        if self.uses_tessie_odometer() and self.tessie_last_odometer:
+            return self.tessie_last_odometer
+
         last_fuel = self.fuel_logs.order_by(FuelLog.odometer.desc()).first()
         fuel_odo = last_fuel.odometer if last_fuel else 0
 
