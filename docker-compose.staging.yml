@@ -21,7 +21,7 @@ services:
   # Optional: Watchtower to auto-pull new dev images
   watchtower:
     image: containrrr/watchtower
-    container_name: may-staging-watchtower
+    container_name: may-dev-watchtower
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
