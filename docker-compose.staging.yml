@@ -14,9 +14,6 @@ services:
       - RELEASE_CHANNEL=dev
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
-    networks:
-      - default
-      - docker_default
 
   # Optional: Watchtower to auto-pull new dev images
   watchtower:
@@ -33,7 +30,3 @@ services:
 
 volumes:
   may_staging_data:
-
-networks:
-  docker_default:
-    external: true
