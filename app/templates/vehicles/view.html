@@ -439,7 +439,7 @@
         {% if recent_logs %}
         <ul class="divide-y divide-gray-200 dark:divide-gray-700">
             {% for log in recent_logs %}
-            <li class="px-6 py-4 hover:bg-gray-50 dark:bg-gray-700">
+            <li class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-900 dark:text-white">{{ log.date.strftime('%b %d, %Y') }}</p>
@@ -449,20 +449,29 @@
                             {% if log.is_full_tank %}<span class="text-green-600">(Full)</span>{% endif %}
                         </p>
                     </div>
-                    <div class="text-right">
-                        <p class="text-sm font-medium text-gray-900 dark:text-white">{{ "%.2f"|format(log.total_cost or 0) }} {{ current_user.currency }}</p>
-                        {% set consumption = log.get_consumption() %}
-                        {% if consumption %}
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ "%.1f"|format(consumption) }} {{ current_user.consumption_unit }}</p>
-                        {% endif %}
+                    <div class="flex items-center gap-3">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-900 dark:text-white">{{ "%.2f"|format(log.total_cost or 0) }} {{ current_user.currency }}</p>
+                            {% set consumption = log.get_consumption() %}
+                            {% if consumption %}
+                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ "%.1f"|format(consumption) }} {{ current_user.consumption_unit }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <a href="{{ url_for('fuel.edit', log_id=log.id) }}" class="p-1.5 text-gray-400 hover:text-primary-600 rounded hover:bg-gray-100 dark:hover:bg-gray-600" title="Edit">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                            </a>
+                            <form method="POST" action="{{ url_for('fuel.delete', log_id=log.id) }}" class="inline" onsubmit="return confirm('Delete this fuel log?');">
+                                <button type="submit" class="p-1.5 text-gray-400 hover:text-red-600 rounded hover:bg-gray-100 dark:hover:bg-gray-600" title="Delete">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-                <div class="mt-2 flex space-x-4">
-                    <a href="{{ url_for('fuel.edit', log_id=log.id) }}" class="text-xs text-primary-600 hover:text-primary-500">Edit</a>
-                    <form method="POST" action="{{ url_for('fuel.delete', log_id=log.id) }}" class="inline"
-                          onsubmit="return confirm('Delete this fuel log?');">
-                        <button type="submit" class="text-xs text-red-600 hover:text-red-500">Delete</button>
-                    </form>
                 </div>
             </li>
             {% endfor %}
@@ -480,23 +489,32 @@
         {% if recent_expenses %}
         <ul class="divide-y divide-gray-200 dark:divide-gray-700">
             {% for expense in recent_expenses %}
-            <li class="px-6 py-4 hover:bg-gray-50 dark:bg-gray-700">
+            <li class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700">
                 <div class="flex items-center justify-between">
-                    <div>
+                    <div class="min-w-0 flex-1">
                         <p class="text-sm font-medium text-gray-900 dark:text-white">{{ expense.description }}</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400">
                             {{ expense.date.strftime('%b %d, %Y') }} &middot;
                             <span class="capitalize">{{ expense.category }}</span>
                         </p>
                     </div>
-                    <p class="text-sm font-medium text-gray-900 dark:text-white">{{ "%.2f"|format(expense.cost) }} {{ current_user.currency }}</p>
-                </div>
-                <div class="mt-2 flex space-x-4">
-                    <a href="{{ url_for('expenses.edit', expense_id=expense.id) }}" class="text-xs text-primary-600 hover:text-primary-500">Edit</a>
-                    <form method="POST" action="{{ url_for('expenses.delete', expense_id=expense.id) }}" class="inline"
-                          onsubmit="return confirm('Delete this expense?');">
-                        <button type="submit" class="text-xs text-red-600 hover:text-red-500">Delete</button>
-                    </form>
+                    <div class="flex items-center gap-3 ml-4">
+                        <p class="text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">{{ "%.2f"|format(expense.cost) }} {{ current_user.currency }}</p>
+                        <div class="flex items-center gap-1">
+                            <a href="{{ url_for('expenses.edit', expense_id=expense.id) }}" class="p-1.5 text-gray-400 hover:text-primary-600 rounded hover:bg-gray-100 dark:hover:bg-gray-600" title="Edit">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                            </a>
+                            <form method="POST" action="{{ url_for('expenses.delete', expense_id=expense.id) }}" class="inline" onsubmit="return confirm('Delete this expense?');">
+                                <button type="submit" class="p-1.5 text-gray-400 hover:text-red-600 rounded hover:bg-gray-100 dark:hover:bg-gray-600" title="Delete">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </li>
             {% endfor %}
