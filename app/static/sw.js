@@ -1,5 +1,5 @@
 // May - Service Worker
-const CACHE_NAME = 'may-v1';
+const CACHE_NAME = 'may-v2';
 const OFFLINE_URL = '/offline';
 
 // Assets to cache on install
@@ -7,9 +7,7 @@ const PRECACHE_ASSETS = [
   '/',
   '/offline',
   '/static/manifest.json',
-  'https://cdn.tailwindcss.com',
-  'https://unpkg.com/htmx.org@1.9.10',
-  'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js'
+  '/static/vendor/tailwindcss.js'
 ];
 
 // Install event - cache core assets
@@ -18,7 +16,9 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('[SW] Caching core assets');
-        return cache.addAll(PRECACHE_ASSETS);
+        return Promise.allSettled(
+          PRECACHE_ASSETS.map((asset) => cache.add(asset))
+        );
       })
       .then(() => {
         console.log('[SW] Installed');
