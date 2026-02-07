@@ -138,6 +138,11 @@ UPLOAD_FOLDER=/app/data/uploads
 | `SECRET_KEY` | Session encryption key | Random |
 | `DATABASE_URL` | Database connection string | `sqlite:///data/may.db` |
 | `UPLOAD_FOLDER` | Path for file uploads | `/app/data/uploads` |
+| `TAILWIND_ASSET_URL` | Local Tailwind Play CDN JS path | `/static/vendor/tailwindcss.js` |
+| `TAILWIND_CDN_URL` | Tailwind CDN fallback URL | `https://cdn.tailwindcss.com` |
+| `HTMX_CDN_URL` | HTMX CDN URL | `https://unpkg.com/htmx.org@1.9.10` |
+
+By default, Tailwind loads from `app/static/vendor/tailwindcss.js` and falls back to the CDN URL if the local asset is missing.
 
 ## 🎯 Usage
 

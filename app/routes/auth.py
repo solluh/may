@@ -122,7 +122,11 @@ def settings():
         current_user.distance_unit = request.form.get('distance_unit', 'km')
         current_user.volume_unit = request.form.get('volume_unit', 'L')
         current_user.consumption_unit = request.form.get('consumption_unit', 'L/100km')
-        current_user.currency = request.form.get('currency', 'USD')
+        currency = (request.form.get('currency', 'USD') or 'USD').strip()
+        if currency == 'custom':
+            custom_currency = (request.form.get('custom_currency') or '').strip()
+            currency = custom_currency or 'USD'
+        current_user.currency = currency[:10]
 
         # Update password if provided
         new_password = request.form.get('new_password')

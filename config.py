@@ -8,6 +8,9 @@ APP_VERSION = '0.6.1'
 RELEASE_CHANNEL = os.environ.get('RELEASE_CHANNEL', 'stable')
 GIT_SHA = os.environ.get('GIT_SHA', '')[:7]  # Short SHA
 GITHUB_REPO = 'dannymcc/may'
+TAILWIND_ASSET_URL = os.environ.get('TAILWIND_ASSET_URL', '/static/vendor/tailwindcss.js')
+TAILWIND_CDN_URL = os.environ.get('TAILWIND_CDN_URL', 'https://cdn.tailwindcss.com')
+HTMX_CDN_URL = os.environ.get('HTMX_CDN_URL', 'https://unpkg.com/htmx.org@1.9.10')
 
 # Build display version (e.g., "0.5.0" for stable, "0.5.0-dev+abc1234" for dev)
 if RELEASE_CHANNEL == 'dev' and GIT_SHA:
@@ -24,6 +27,9 @@ class Config:
     RELEASE_CHANNEL = RELEASE_CHANNEL
     GIT_SHA = GIT_SHA
     GITHUB_REPO = GITHUB_REPO
+    TAILWIND_ASSET_URL = TAILWIND_ASSET_URL
+    TAILWIND_CDN_URL = TAILWIND_CDN_URL
+    HTMX_CDN_URL = HTMX_CDN_URL
     SECRET_KEY = os.environ.get('SECRET_KEY')
     if not SECRET_KEY:
         import secrets

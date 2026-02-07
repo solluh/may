@@ -149,6 +149,9 @@ def create_app(config_class=Config):
             'APP_TAGLINE': branding.get('app_tagline', 'Vehicle Management'),
             'APP_LOGO': branding.get('logo_filename'),
             'PRIMARY_COLOR': branding.get('primary_color', '#0284c7'),
+            'TAILWIND_ASSET_URL': app.config.get('TAILWIND_ASSET_URL', '/static/vendor/tailwindcss.js'),
+            'TAILWIND_CDN_URL': app.config.get('TAILWIND_CDN_URL', 'https://cdn.tailwindcss.com'),
+            'HTMX_CDN_URL': app.config.get('HTMX_CDN_URL', 'https://unpkg.com/htmx.org@1.9.10'),
         }
 
     from app.routes import main, auth, vehicles, fuel, expenses, api, reminders, maintenance, documents, stations, recurring, homeassistant, calendar, trips, charging

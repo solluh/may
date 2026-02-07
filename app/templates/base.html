@@ -5,6 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ APP_NAME }}{% endblock %} - {{ APP_TAGLINE }}</title>
 
+    <script>
+        (function() {
+            const serverPref = {% if current_user.is_authenticated %}{{ 'true' if current_user.dark_mode else 'false' }}{% else %}null{% endif %};
+            const storedTheme = localStorage.getItem('may-theme');
+            let useDark = serverPref;
+
+            if (useDark === null) {
+                if (storedTheme) {
+                    useDark = storedTheme === 'dark';
+                } else if (window.matchMedia) {
+                    useDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                }
+            }
+
+            if (useDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+
+            if (serverPref !== null) {
+                localStorage.setItem('may-theme', serverPref ? 'dark' : 'light');
+            }
+        })();
+    </script>
+
     <!-- PWA Meta Tags -->
     <meta name="description" content="Track fuel consumption, expenses, and maintenance for your vehicles">
     <meta name="theme-color" content="{{ PRIMARY_COLOR }}">
@@ -17,12 +43,8 @@
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/icon.svg') }}">
 
     <!-- Tailwind CSS - Critical for styling, loaded first -->
-    <script src="https://cdn.tailwindcss.com" defer></script>
-    <!-- HTMX - Non-critical, deferred -->
-    <script src="https://unpkg.com/htmx.org@1.9.10" defer></script>
-    <!-- Chart.js - Only loaded on pages that need it via block -->
-    {% block extra_scripts %}{% endblock %}
     <script>
+        window.tailwind = window.tailwind || {};
         // Generate color palette from primary color
         function hexToHSL(hex) {
             hex = hex.replace('#', '');
@@ -56,33 +78,80 @@
         }
         const baseColor = '{{ PRIMARY_COLOR }}';
         const [h, s, l] = hexToHSL(baseColor);
+        const primaryPalette = {
+            50: hslToHex(h, Math.max(s - 40, 10), 97),
+            100: hslToHex(h, Math.max(s - 30, 15), 94),
+            200: hslToHex(h, Math.max(s - 20, 20), 86),
+            300: hslToHex(h, Math.max(s - 10, 30), 74),
+            400: hslToHex(h, s, 60),
+            500: hslToHex(h, s, 50),
+            600: baseColor,
+            700: hslToHex(h, s, Math.max(l - 15, 20)),
+            800: hslToHex(h, s, Math.max(l - 25, 15)),
+            900: hslToHex(h, s, Math.max(l - 35, 10)),
+        };
+        const rootStyle = document.documentElement.style;
+        Object.entries(primaryPalette).forEach(([key, value]) => {
+            rootStyle.setProperty(`--primary-${key}`, value);
+        });
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        primary: {
-                            50: hslToHex(h, Math.max(s - 40, 10), 97),
-                            100: hslToHex(h, Math.max(s - 30, 15), 94),
-                            200: hslToHex(h, Math.max(s - 20, 20), 86),
-                            300: hslToHex(h, Math.max(s - 10, 30), 74),
-                            400: hslToHex(h, s, 60),
-                            500: hslToHex(h, s, 50),
-                            600: baseColor,
-                            700: hslToHex(h, s, Math.max(l - 15, 20)),
-                            800: hslToHex(h, s, Math.max(l - 25, 15)),
-                            900: hslToHex(h, s, Math.max(l - 35, 10)),
-                        }
+                        primary: primaryPalette
                     }
                 }
             }
-        }
+        };
+        window.tailwind.config = tailwind.config;
     </script>
+    <script>
+        window.__loadTailwindFallback = function() {
+            if (window.__tailwindFallbackLoaded) {
+                return;
+            }
+            window.__tailwindFallbackLoaded = true;
+            var fallbackScript = document.createElement('script');
+            fallbackScript.src = '{{ TAILWIND_CDN_URL }}';
+            document.head.appendChild(fallbackScript);
+        };
+    </script>
+    <script src="{{ TAILWIND_ASSET_URL }}" onerror="window.__loadTailwindFallback()"></script>
+    <!-- HTMX - Non-critical, deferred -->
+    <script src="{{ HTMX_CDN_URL }}" defer></script>
+    <!-- Chart.js - Only loaded on pages that need it via block -->
+    {% block extra_scripts %}{% endblock %}
     <style>
         [x-cloak] { display: none !important; }
+        .text-primary-400 { color: var(--primary-400); }
+        .text-primary-500 { color: var(--primary-500); }
+        .text-primary-600 { color: var(--primary-600); }
+        .text-primary-700 { color: var(--primary-700); }
+        .bg-primary-50 { background-color: var(--primary-50); }
+        .bg-primary-100 { background-color: var(--primary-100); }
+        .bg-primary-600 { background-color: var(--primary-600); }
+        .bg-primary-700 { background-color: var(--primary-700); }
+        .border-primary-200 { border-color: var(--primary-200); }
+        .border-primary-300 { border-color: var(--primary-300); }
+        .border-primary-600 { border-color: var(--primary-600); }
+        .border-primary-800 { border-color: var(--primary-800); }
+        .from-primary-100 {
+            --tw-gradient-from: var(--primary-100);
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgb(0 0 0 / 0));
+        }
+        .to-primary-200 { --tw-gradient-to: var(--primary-200); }
+        .ring-primary-500 { --tw-ring-color: var(--primary-500); }
+        .hover\:bg-primary-700:hover { background-color: var(--primary-700); }
+        .hover\:text-primary-500:hover { color: var(--primary-500); }
+        .hover\:text-primary-600:hover { color: var(--primary-600); }
+        .hover\:text-primary-700:hover { color: var(--primary-700); }
+        .dark .dark\:text-primary-400 { color: var(--primary-400); }
+        .dark .dark\:bg-primary-600 { background-color: var(--primary-600); }
+        .dark .dark\:border-primary-800 { border-color: var(--primary-800); }
     </style>
 </head>
-<body class="h-full bg-gray-50 dark:bg-gray-700 dark:bg-gray-900 transition-colors duration-200">
+<body class="h-full bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
     {% if current_user.is_authenticated %}
     <div class="min-h-full">
         <nav class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
@@ -284,10 +353,13 @@
             .then(data => {
                 if (data.dark_mode) {
                     document.documentElement.classList.add('dark');
+                    localStorage.setItem('may-theme', 'dark');
                 } else {
                     document.documentElement.classList.remove('dark');
+                    localStorage.setItem('may-theme', 'light');
                 }
-            });
+            })
+            .catch(() => {});
     }
 
     // Close dropdown when clicking outside

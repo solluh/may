@@ -4,6 +4,34 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import db
 
+# Currency symbols for display in UI
+CURRENCY_SYMBOLS = {
+    'USD': '$',
+    'EUR': '\u20ac',
+    'GBP': '\u00a3',
+    'AUD': '$',
+    'CAD': '$',
+    'INR': '\u20b9',
+    'JPY': '\u00a5',
+    'CHF': 'Fr',
+    'NZD': '$',
+    'SEK': 'kr',
+    'NOK': 'kr',
+    'DKK': 'kr',
+    'PLN': 'z\u0142',
+    'BRL': 'R$',
+    'MXN': '$',
+    'ZAR': 'R',
+}
+
+
+def get_currency_symbol(currency_code):
+    if not currency_code:
+        return ''
+    code = currency_code.strip().upper()
+    return CURRENCY_SYMBOLS.get(code, currency_code)
+
+
 # Association table for vehicle sharing
 vehicle_users = db.Table('vehicle_users',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
@@ -164,6 +192,10 @@ class Vehicle(db.Model):
 
     def get_total_cost(self):
         return self.get_total_fuel_cost() + self.get_total_expense_cost()
+
+    @property
+    def currency_symbol(self):
+        return get_currency_symbol(self.owner.currency if self.owner else None)
 
     def get_total_distance(self, distance_unit=None):
         """Get total distance for the vehicle.
