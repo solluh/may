@@ -536,7 +536,9 @@
 <!-- Consumption Chart -->
 <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-8">
     <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Fuel Consumption Trend</h2>
-    <canvas id="consumptionChart" height="100"></canvas>
+    <div style="position: relative; height: 300px;">
+        <canvas id="consumptionChart"></canvas>
+    </div>
 </div>
 
 <!-- Recent Activity -->
@@ -682,7 +684,6 @@
                     <p class="text-sm text-gray-500 dark:text-gray-400">Once you delete a vehicle, there is no going back. This will also delete all associated fuel logs and expenses.</p>
                 </div>
                 <form method="POST" action="{{ url_for('vehicles.delete', vehicle_id=vehicle.id) }}"
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                       onsubmit="return confirm('Are you sure you want to delete this vehicle? This action cannot be undone.');">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <button type="submit"
