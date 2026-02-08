@@ -110,13 +110,9 @@
 
             <div class="flex justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
                 {% if document %}
-                <form method="POST" action="{{ url_for('documents.delete', document_id=document.id) }}"
-                      onsubmit="return confirm('{{ _('Delete this document?') }}');" class="inline">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <button type="submit" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-sm">
-                        {{ _('Delete') }}
-                    </button>
-                </form>
+                <button type="button" onclick="deleteDocument()" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-sm">
+                    {{ _('Delete') }}
+                </button>
                 {% else %}
                 <div></div>
                 {% endif %}
@@ -132,6 +128,19 @@
                 </div>
             </div>
         </form>
+
+        {% if document %}
+        <form id="delete-form" method="POST" action="{{ url_for('documents.delete', document_id=document.id) }}" class="hidden">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        </form>
+        <script>
+        function deleteDocument() {
+            if (confirm('{{ _("Delete this document?") }}')) {
+                document.getElementById('delete-form').submit();
+            }
+        }
+        </script>
+        {% endif %}
     </div>
 </div>
 

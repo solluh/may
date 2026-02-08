@@ -348,8 +348,14 @@
 
     <script>
     function toggleDarkMode() {
-        fetch('/api/toggle-dark-mode', { method: 'POST' })
-            .then(response => response.json())
+        fetch('/api/toggle-dark-mode', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error('Toggle failed');
+                return response.json();
+            })
             .then(data => {
                 if (data.dark_mode) {
                     document.documentElement.classList.add('dark');
@@ -358,6 +364,7 @@
                     document.documentElement.classList.remove('dark');
                     localStorage.setItem('may-theme', 'light');
                 }
+                window.location.reload();
             })
             .catch(() => {});
     }

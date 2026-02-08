@@ -109,20 +109,16 @@
             <div>
                 <label for="remind_days_before" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Remind days before') }}</label>
                 <input type="number" name="remind_days_before" id="remind_days_before"
-                       value="{{ recurring.remind_days_before if recurring else 7 }}"
+                       value="{{ recurring.notify_before_days if recurring else 7 }}"
                        min="0" max="90"
                        class="mt-1 block w-24 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
             </div>
 
             <div class="flex justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
                 {% if recurring %}
-                <form method="POST" action="{{ url_for('recurring.delete', recurring_id=recurring.id) }}"
-                      onsubmit="return confirm('{{ _('Delete this recurring expense?') }}');" class="inline">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <button type="submit" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-sm">
-                        {{ _('Delete') }}
-                    </button>
-                </form>
+                <button type="button" onclick="deleteRecurring()" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-sm">
+                    {{ _('Delete') }}
+                </button>
                 {% else %}
                 <div></div>
                 {% endif %}
@@ -138,6 +134,19 @@
                 </div>
             </div>
         </form>
+
+        {% if recurring %}
+        <form id="delete-form" method="POST" action="{{ url_for('recurring.delete', recurring_id=recurring.id) }}" class="hidden">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        </form>
+        <script>
+        function deleteRecurring() {
+            if (confirm('{{ _("Delete this recurring expense?") }}')) {
+                document.getElementById('delete-form').submit();
+            }
+        }
+        </script>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

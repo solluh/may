@@ -103,7 +103,7 @@ def edit(recurring_id):
         recurring.next_due = next_due
         recurring.description = request.form.get('description')
         recurring.auto_create = request.form.get('auto_create') == 'on'
-        recurring.remind_days_before = int(request.form.get('remind_days_before', 7))
+        recurring.notify_before_days = int(request.form.get('remind_days_before', 7))
 
         db.session.commit()
 
@@ -141,11 +141,11 @@ def generate(recurring_id):
         Vehicle.owner_id == current_user.id
     ).first_or_404()
 
-    # Create expense entry
+    # Create expense entry using the recurring expense's due date
     expense = Expense(
         vehicle_id=recurring.vehicle_id,
         user_id=recurring.user_id,
-        date=date.today(),
+        date=recurring.next_due or date.today(),
         category=recurring.category,
         cost=recurring.amount or 0,
         description=f"{recurring.name} (auto-generated)"
