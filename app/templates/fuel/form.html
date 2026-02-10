@@ -32,7 +32,7 @@
 
                 <div>
                     <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Date *</label>
-                    <input type="date" name="date" id="date" required
+                    <input type="text" name="date" id="date" required data-datepicker data-default-today
                            value="{{ log.date.strftime('%Y-%m-%d') if log else '' }}"
                            class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
                 </div>
@@ -204,14 +204,8 @@ function updateStationName(select) {
     }
 }
 
-// Set default date to today
+// Initialize odometer for selected vehicle
 document.addEventListener('DOMContentLoaded', function() {
-    const dateInput = document.getElementById('date');
-    if (!dateInput.value) {
-        dateInput.value = new Date().toISOString().split('T')[0];
-    }
-
-    // Initialize odometer for selected vehicle
     const vehicleSelect = document.getElementById('vehicle_id');
     updateVehicleOdometer(vehicleSelect.value);
 });

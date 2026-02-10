@@ -64,7 +64,7 @@
             <!-- Due Date -->
             <div>
                 <label for="due_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Due Date</label>
-                <input type="date" name="due_date" id="due_date" required
+                <input type="text" name="due_date" id="due_date" required data-datepicker
                        value="{{ reminder.due_date.strftime('%Y-%m-%d') if reminder else '' }}"
                        class="block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500">
             </div>

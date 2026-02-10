@@ -75,13 +75,13 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label for="issue_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Issue Date') }}</label>
-                    <input type="date" name="issue_date" id="issue_date"
+                    <input type="text" name="issue_date" id="issue_date" data-datepicker
                            value="{{ document.issue_date.strftime('%Y-%m-%d') if document and document.issue_date else '' }}"
                            class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
                 </div>
                 <div>
                     <label for="expiry_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Expiry Date') }}</label>
-                    <input type="date" name="expiry_date" id="expiry_date"
+                    <input type="text" name="expiry_date" id="expiry_date" data-datepicker
                            value="{{ document.expiry_date.strftime('%Y-%m-%d') if document and document.expiry_date else '' }}"
                            class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
                 </div>

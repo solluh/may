@@ -40,7 +40,7 @@
 
                 <div>
                     <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Date') }} *</label>
-                    <input type="date" name="date" id="date" required
+                    <input type="text" name="date" id="date" required data-datepicker data-default-today
                            value="{{ trip.date.strftime('%Y-%m-%d') if trip else '' }}"
                            class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
                 </div>
@@ -152,12 +152,6 @@ function calculateDistance() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Set default date to today
-    const dateInput = document.getElementById('date');
-    if (!dateInput.value) {
-        dateInput.value = new Date().toISOString().split('T')[0];
-    }
-
     // Initialize distance calculation
     calculateDistance();
 

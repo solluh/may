@@ -36,6 +36,8 @@
     <meta name="theme-color" content="{{ PRIMARY_COLOR }}">
     <!-- CSRF Token for AJAX requests -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- User date format preference for flatpickr -->
+    <meta name="date-format" content="{{ current_user.date_format if current_user.is_authenticated and current_user.date_format else 'DD/MM/YYYY' }}">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="{{ APP_NAME }}">
@@ -132,6 +134,21 @@
         };
     </script>
     <script src="{{ HTMX_ASSET_URL }}" defer onerror="window.__loadHtmxFallback()"></script>
+    <!-- Flatpickr date picker - CSS with CDN fallback -->
+    <link rel="stylesheet" href="{{ FLATPICKR_CSS_ASSET_URL }}" onerror="this.onerror=null;this.href='{{ FLATPICKR_CSS_CDN_URL }}';">
+    <!-- Flatpickr JS with CDN fallback -->
+    <script>
+        window.__loadFlatpickrFallback = function() {
+            if (window.__flatpickrFallbackLoaded) {
+                return;
+            }
+            window.__flatpickrFallbackLoaded = true;
+            var fallbackScript = document.createElement('script');
+            fallbackScript.src = '{{ FLATPICKR_JS_CDN_URL }}';
+            document.head.appendChild(fallbackScript);
+        };
+    </script>
+    <script src="{{ FLATPICKR_JS_ASSET_URL }}" onerror="window.__loadFlatpickrFallback()"></script>
     <!-- Chart.js - Only loaded on pages that need it via block -->
     {% block extra_scripts %}{% endblock %}
     <style>
@@ -174,6 +191,49 @@
         .dark .dark\:text-primary-400 { color: var(--primary-400); }
         .dark .dark\:bg-primary-600 { background-color: var(--primary-600); }
         .dark .dark\:border-primary-800 { border-color: var(--primary-800); }
+
+        /* Flatpickr dark mode overrides */
+        html.dark .flatpickr-calendar {
+            background: #1f2937;
+            border-color: #374151;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+        }
+        html.dark .flatpickr-months .flatpickr-month,
+        html.dark .flatpickr-current-month .flatpickr-monthDropdown-months,
+        html.dark span.flatpickr-weekday,
+        html.dark .flatpickr-months .flatpickr-prev-month,
+        html.dark .flatpickr-months .flatpickr-next-month {
+            color: #f9fafb;
+            fill: #f9fafb;
+        }
+        html.dark .flatpickr-current-month .flatpickr-monthDropdown-months {
+            background: #1f2937;
+        }
+        html.dark .flatpickr-current-month input.cur-year {
+            color: #f9fafb;
+        }
+        html.dark .flatpickr-day {
+            color: #d1d5db;
+        }
+        html.dark .flatpickr-day:hover {
+            background: #374151;
+            border-color: #374151;
+        }
+        html.dark .flatpickr-day.today {
+            border-color: #6b7280;
+        }
+        html.dark .flatpickr-day.selected {
+            background: var(--primary-600);
+            border-color: var(--primary-600);
+            color: #fff;
+        }
+        html.dark .flatpickr-day.prevMonthDay,
+        html.dark .flatpickr-day.nextMonthDay {
+            color: #6b7280;
+        }
+        html.dark .flatpickr-calendar .flatpickr-innerContainer {
+            border-bottom-color: #374151;
+        }
     </style>
 </head>
 <body class="h-full bg-gray-50 dark:bg-gray-900">
@@ -458,6 +518,42 @@
         document.addEventListener('htmx:configRequest', function(event) {
             event.detail.headers['X-CSRFToken'] = csrfToken;
         });
+    })();
+
+    // Flatpickr date picker initialization
+    (function() {
+        var formatMap = {
+            'DD/MM/YYYY': 'd/m/Y',
+            'MM/DD/YYYY': 'm/d/Y',
+            'YYYY-MM-DD': 'Y-m-d',
+            'DD.MM.YYYY': 'd.m.Y'
+        };
+        var meta = document.querySelector('meta[name="date-format"]');
+        var userFormat = meta ? meta.getAttribute('content') : 'DD/MM/YYYY';
+        var fpFormat = formatMap[userFormat] || 'd/m/Y';
+
+        function initDatePickers() {
+            if (typeof flatpickr === 'undefined') return;
+            document.querySelectorAll('[data-datepicker]').forEach(function(el) {
+                if (el._flatpickr) return;
+                var opts = {
+                    dateFormat: 'Y-m-d',
+                    altInput: true,
+                    altFormat: fpFormat,
+                    allowInput: true
+                };
+                if (el.hasAttribute('data-default-today') && !el.value) {
+                    opts.defaultDate = 'today';
+                }
+                flatpickr(el, opts);
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDatePickers);
+        } else {
+            initDatePickers();
+        }
     })();
     </script>
 </body>

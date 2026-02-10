@@ -1,7 +1,7 @@
 from datetime import datetime, date, timedelta
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
-from app import db
+from app import db, DATE_FORMATS
 from app.models import Reminder, Vehicle, REMINDER_TYPES, RECURRENCE_OPTIONS
 
 bp = Blueprint('reminders', __name__, url_prefix='/reminders')
@@ -178,7 +178,9 @@ def complete(reminder_id):
             notify_days_before=reminder.notify_days_before
         )
         db.session.add(new_reminder)
-        flash(f'Reminder completed. Next occurrence created for {new_due_date.strftime("%B %d, %Y")}', 'success')
+        user_format = getattr(current_user, 'date_format', None) or 'DD/MM/YYYY'
+        fmt = DATE_FORMATS.get(user_format, DATE_FORMATS['DD/MM/YYYY'])['default']
+        flash(f'Reminder completed. Next occurrence created for {new_due_date.strftime(fmt)}', 'success')
     else:
         flash('Reminder marked as completed', 'success')
 

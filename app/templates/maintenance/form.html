@@ -98,7 +98,7 @@
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
                     <label for="last_performed_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Date') }}</label>
-                    <input type="date" name="last_performed_date" id="last_performed_date"
+                    <input type="text" name="last_performed_date" id="last_performed_date" data-datepicker
                            value="{{ schedule.last_performed_date.strftime('%Y-%m-%d') if schedule and schedule.last_performed_date else '' }}"
                            class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
                 </div>

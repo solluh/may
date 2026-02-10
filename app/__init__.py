@@ -35,6 +35,37 @@ LANGUAGES = {
     'ko': '한국어'
 }
 
+DATE_FORMATS = {
+    'DD/MM/YYYY': {
+        'default': '%d/%m/%Y',
+        'short': '%d %b',
+        'long': '%d %B %Y',
+        'datetime': '%d/%m/%Y %H:%M',
+        'long_datetime': '%d %B %Y at %H:%M',
+    },
+    'MM/DD/YYYY': {
+        'default': '%m/%d/%Y',
+        'short': '%b %d',
+        'long': '%B %d, %Y',
+        'datetime': '%m/%d/%Y %H:%M',
+        'long_datetime': '%B %d, %Y at %H:%M',
+    },
+    'YYYY-MM-DD': {
+        'default': '%Y-%m-%d',
+        'short': '%b %d',
+        'long': '%Y-%m-%d',
+        'datetime': '%Y-%m-%d %H:%M',
+        'long_datetime': '%Y-%m-%d %H:%M',
+    },
+    'DD.MM.YYYY': {
+        'default': '%d.%m.%Y',
+        'short': '%d %b',
+        'long': '%d %B %Y',
+        'datetime': '%d.%m.%Y %H:%M',
+        'long_datetime': '%d %B %Y at %H:%M',
+    },
+}
+
 
 def _run_schema_migrations(app):
     """Add missing columns to existing tables.
@@ -156,39 +187,11 @@ def create_app(config_class=Config):
             'TAILWIND_CDN_URL': app.config.get('TAILWIND_CDN_URL', 'https://cdn.tailwindcss.com'),
             'HTMX_ASSET_URL': app.config.get('HTMX_ASSET_URL', '/static/vendor/htmx.min.js'),
             'HTMX_CDN_URL': app.config.get('HTMX_CDN_URL', 'https://unpkg.com/htmx.org@1.9.10'),
+            'FLATPICKR_JS_ASSET_URL': app.config.get('FLATPICKR_JS_ASSET_URL', '/static/vendor/flatpickr.min.js'),
+            'FLATPICKR_JS_CDN_URL': app.config.get('FLATPICKR_JS_CDN_URL', 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js'),
+            'FLATPICKR_CSS_ASSET_URL': app.config.get('FLATPICKR_CSS_ASSET_URL', '/static/vendor/flatpickr.min.css'),
+            'FLATPICKR_CSS_CDN_URL': app.config.get('FLATPICKR_CSS_CDN_URL', 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css'),
         }
-
-    # Date format filter for templates
-    DATE_FORMATS = {
-        'DD/MM/YYYY': {
-            'default': '%d/%m/%Y',
-            'short': '%d %b',
-            'long': '%d %B %Y',
-            'datetime': '%d/%m/%Y %H:%M',
-            'long_datetime': '%d %B %Y at %H:%M',
-        },
-        'MM/DD/YYYY': {
-            'default': '%m/%d/%Y',
-            'short': '%b %d',
-            'long': '%B %d, %Y',
-            'datetime': '%m/%d/%Y %H:%M',
-            'long_datetime': '%B %d, %Y at %H:%M',
-        },
-        'YYYY-MM-DD': {
-            'default': '%Y-%m-%d',
-            'short': '%b %d',
-            'long': '%Y-%m-%d',
-            'datetime': '%Y-%m-%d %H:%M',
-            'long_datetime': '%Y-%m-%d %H:%M',
-        },
-        'DD.MM.YYYY': {
-            'default': '%d.%m.%Y',
-            'short': '%d %b',
-            'long': '%d %B %Y',
-            'datetime': '%d.%m.%Y %H:%M',
-            'long_datetime': '%d %B %Y at %H:%M',
-        },
-    }
 
     @app.template_filter('format_date')
     def format_date_filter(value, style='default'):

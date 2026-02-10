@@ -12,6 +12,10 @@ TAILWIND_ASSET_URL = os.environ.get('TAILWIND_ASSET_URL', '/static/vendor/tailwi
 TAILWIND_CDN_URL = os.environ.get('TAILWIND_CDN_URL', 'https://cdn.tailwindcss.com')
 HTMX_ASSET_URL = os.environ.get('HTMX_ASSET_URL', '/static/vendor/htmx.min.js')
 HTMX_CDN_URL = os.environ.get('HTMX_CDN_URL', 'https://unpkg.com/htmx.org@1.9.10')
+FLATPICKR_JS_ASSET_URL = os.environ.get('FLATPICKR_JS_ASSET_URL', '/static/vendor/flatpickr.min.js')
+FLATPICKR_JS_CDN_URL = os.environ.get('FLATPICKR_JS_CDN_URL', 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js')
+FLATPICKR_CSS_ASSET_URL = os.environ.get('FLATPICKR_CSS_ASSET_URL', '/static/vendor/flatpickr.min.css')
+FLATPICKR_CSS_CDN_URL = os.environ.get('FLATPICKR_CSS_CDN_URL', 'https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css')
 
 # Build display version (e.g., "0.5.0" for stable, "0.5.0-dev+abc1234" for dev)
 if RELEASE_CHANNEL == 'dev' and GIT_SHA:
@@ -32,6 +36,10 @@ class Config:
     TAILWIND_CDN_URL = TAILWIND_CDN_URL
     HTMX_ASSET_URL = HTMX_ASSET_URL
     HTMX_CDN_URL = HTMX_CDN_URL
+    FLATPICKR_JS_ASSET_URL = FLATPICKR_JS_ASSET_URL
+    FLATPICKR_JS_CDN_URL = FLATPICKR_JS_CDN_URL
+    FLATPICKR_CSS_ASSET_URL = FLATPICKR_CSS_ASSET_URL
+    FLATPICKR_CSS_CDN_URL = FLATPICKR_CSS_CDN_URL
     SECRET_KEY = os.environ.get('SECRET_KEY')
     if not SECRET_KEY:
         import secrets
