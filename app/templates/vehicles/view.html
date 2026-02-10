@@ -192,7 +192,7 @@
                 <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ _('MOT Expiry') }}</dt>
                 <dd class="mt-1 text-sm text-gray-900 dark:text-white">
                     {% if vehicle.mot_expiry %}
-                    {{ vehicle.mot_expiry.strftime('%d %b %Y') }}
+                    {{ vehicle.mot_expiry|format_date }}
                     {% else %}
                     -
                     {% endif %}
@@ -220,7 +220,7 @@
                 <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ _('Tax Due') }}</dt>
                 <dd class="mt-1 text-sm text-gray-900 dark:text-white">
                     {% if vehicle.tax_due %}
-                    {{ vehicle.tax_due.strftime('%d %b %Y') }}
+                    {{ vehicle.tax_due|format_date }}
                     {% else %}
                     -
                     {% endif %}
@@ -228,7 +228,7 @@
             </div>
         </div>
         <p class="mt-4 text-xs text-gray-500 dark:text-gray-400">
-            {{ _('Last updated') }}: {{ vehicle.dvla_last_updated.strftime('%d %b %Y at %H:%M') }}
+            {{ _('Last updated') }}: {{ vehicle.dvla_last_updated|format_date('long_datetime') }}
         </p>
         {% else %}
         <div class="text-center py-4">
@@ -330,7 +330,7 @@
             </div>
         </div>
         <p class="mt-4 text-xs text-gray-500 dark:text-gray-400">
-            {{ _('Last updated') }}: {{ vehicle.tessie_last_updated.strftime('%d %b %Y at %H:%M') }}
+            {{ _('Last updated') }}: {{ vehicle.tessie_last_updated|format_date('long_datetime') }}
         </p>
         {% else %}
         <div class="text-center py-4">
@@ -403,7 +403,7 @@
                 <div class="flex items-center space-x-4">
                     <div class="text-right">
                         <p class="text-sm {% if reminder.is_overdue() %}text-red-600 font-medium{% elif reminder.is_upcoming(7) %}text-amber-600{% else %}text-gray-900 dark:text-white{% endif %}">
-                            {{ reminder.due_date.strftime('%b %d, %Y') }}
+                            {{ reminder.due_date|format_date }}
                         </p>
                         <p class="text-xs text-gray-500 dark:text-gray-400">
                             {% if reminder.is_overdue() %}
@@ -554,7 +554,7 @@
             <li class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-medium text-gray-900 dark:text-white">{{ log.date.strftime('%b %d, %Y') }}</p>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">{{ log.date|format_date }}</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400">
                             {{ "%.0f"|format(log.odometer) }} {{ current_user.distance_unit }} &middot;
                             {{ "%.1f"|format(log.volume or 0) }} {{ current_user.volume_unit }}
@@ -607,7 +607,7 @@
                     <div class="min-w-0 flex-1">
                         <p class="text-sm font-medium text-gray-900 dark:text-white">{{ expense.description }}</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400">
-                            {{ expense.date.strftime('%b %d, %Y') }} &middot;
+                            {{ expense.date|format_date }} &middot;
                             <span class="capitalize">{{ expense.category }}</span>
                         </p>
                     </div>

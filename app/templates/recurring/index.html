@@ -63,7 +63,7 @@
                     <div class="text-right">
                         <p class="text-xs text-gray-500 dark:text-gray-400">{{ _('Next due') }}</p>
                         <p class="text-sm {% if item.is_due() %}text-red-600{% elif item.is_due_soon() %}text-amber-600{% else %}text-gray-900 dark:text-white{% endif %}">
-                            {{ item.next_due.strftime('%d %b %Y') }}
+                            {{ item.next_due|format_date }}
                         </p>
                     </div>
                     {% endif %}

@@ -56,6 +56,7 @@ class User(UserMixin, db.Model):
     consumption_unit = db.Column(db.String(10), default='L/100km')  # L/100km, mpg, mpg_us
     currency = db.Column(db.String(10), default='USD')
     dark_mode = db.Column(db.Boolean, default=False)  # Dark mode preference
+    date_format = db.Column(db.String(20), default='DD/MM/YYYY')  # DD/MM/YYYY, MM/DD/YYYY, YYYY-MM-DD, DD.MM.YYYY
 
     # Notification preferences
     email_reminders = db.Column(db.Boolean, default=True)

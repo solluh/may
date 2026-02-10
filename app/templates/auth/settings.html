@@ -101,13 +101,24 @@
 
                         <div class="p-6 space-y-6">
                             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                                <div class="sm:col-span-2">
+                                <div>
                                     <label for="language" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Language') }}</label>
                                     <select name="language" id="language"
                                             class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
                                         {% for code, name in LANGUAGES.items() %}
                                         <option value="{{ code }}" {% if current_user.language == code %}selected{% endif %}>{{ name }}</option>
                                         {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label for="date_format" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Date Format') }}</label>
+                                    <select name="date_format" id="date_format"
+                                            class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                                        <option value="DD/MM/YYYY" {% if current_user.date_format == 'DD/MM/YYYY' %}selected{% endif %}>DD/MM/YYYY (15/01/2024)</option>
+                                        <option value="MM/DD/YYYY" {% if current_user.date_format == 'MM/DD/YYYY' %}selected{% endif %}>MM/DD/YYYY (01/15/2024)</option>
+                                        <option value="YYYY-MM-DD" {% if current_user.date_format == 'YYYY-MM-DD' %}selected{% endif %}>YYYY-MM-DD (2024-01-15)</option>
+                                        <option value="DD.MM.YYYY" {% if current_user.date_format == 'DD.MM.YYYY' %}selected{% endif %}>DD.MM.YYYY (15.01.2024)</option>
                                     </select>
                                 </div>
 
@@ -206,7 +217,7 @@
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Member Since') }}</label>
-                                    <p class="mt-1 text-sm text-gray-900 dark:text-white">{{ current_user.created_at.strftime('%B %d, %Y') }}</p>
+                                    <p class="mt-1 text-sm text-gray-900 dark:text-white">{{ current_user.created_at|format_date('long') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -617,7 +628,7 @@
                                             {{ _('Copy') }}
                                         </button>
                                     </div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{{ _('Created') }}: {{ current_user.api_key_created_at.strftime('%B %d, %Y at %H:%M') }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{{ _('Created') }}: {{ current_user.api_key_created_at|format_date('long_datetime') }}</p>
                                     <div class="flex gap-3">
                                         <button type="button" onclick="regenerateApiKey()"
                                                 class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 dark:bg-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600">

@@ -34,7 +34,7 @@
         {% for price in prices %}
         <li class="px-6 py-4 flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-900 dark:text-white">{{ price.date.strftime('%b %d, %Y') }}</p>
+                <p class="text-sm font-medium text-gray-900 dark:text-white">{{ price.date|format_date }}</p>
                 <p class="text-sm text-gray-500 dark:text-gray-400 capitalize">{{ price.fuel_type }}</p>
             </div>
             <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ "%.3f"|format(price.price_per_unit) }} {{ current_user.currency }}/{{ current_user.volume_unit }}</p>

@@ -54,6 +54,9 @@ def _run_schema_migrations(app):
             ('tessie_battery_range', 'FLOAT'),
             ('tessie_last_updated', 'DATETIME'),
         ],
+        'users': [
+            ('date_format', "VARCHAR(20) DEFAULT 'DD/MM/YYYY'"),
+        ],
         'charging_sessions': [
             ('tessie_charge_id', 'VARCHAR(50)'),
         ],
@@ -153,6 +156,49 @@ def create_app(config_class=Config):
             'TAILWIND_CDN_URL': app.config.get('TAILWIND_CDN_URL', 'https://cdn.tailwindcss.com'),
             'HTMX_CDN_URL': app.config.get('HTMX_CDN_URL', 'https://unpkg.com/htmx.org@1.9.10'),
         }
+
+    # Date format filter for templates
+    DATE_FORMATS = {
+        'DD/MM/YYYY': {
+            'default': '%d/%m/%Y',
+            'short': '%d %b',
+            'long': '%d %B %Y',
+            'datetime': '%d/%m/%Y %H:%M',
+            'long_datetime': '%d %B %Y at %H:%M',
+        },
+        'MM/DD/YYYY': {
+            'default': '%m/%d/%Y',
+            'short': '%b %d',
+            'long': '%B %d, %Y',
+            'datetime': '%m/%d/%Y %H:%M',
+            'long_datetime': '%B %d, %Y at %H:%M',
+        },
+        'YYYY-MM-DD': {
+            'default': '%Y-%m-%d',
+            'short': '%b %d',
+            'long': '%Y-%m-%d',
+            'datetime': '%Y-%m-%d %H:%M',
+            'long_datetime': '%Y-%m-%d %H:%M',
+        },
+        'DD.MM.YYYY': {
+            'default': '%d.%m.%Y',
+            'short': '%d %b',
+            'long': '%d %B %Y',
+            'datetime': '%d.%m.%Y %H:%M',
+            'long_datetime': '%d %B %Y at %H:%M',
+        },
+    }
+
+    @app.template_filter('format_date')
+    def format_date_filter(value, style='default'):
+        if value is None:
+            return ''
+        user_format = 'DD/MM/YYYY'
+        if current_user and current_user.is_authenticated:
+            user_format = getattr(current_user, 'date_format', None) or 'DD/MM/YYYY'
+        formats = DATE_FORMATS.get(user_format, DATE_FORMATS['DD/MM/YYYY'])
+        fmt = formats.get(style, formats['default'])
+        return value.strftime(fmt)
 
     from app.routes import main, auth, vehicles, fuel, expenses, api, reminders, maintenance, documents, stations, recurring, homeassistant, calendar, trips, charging
     app.register_blueprint(main.bp)

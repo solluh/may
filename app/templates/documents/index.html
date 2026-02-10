@@ -73,7 +73,7 @@
                         <div class="text-right">
                             <p class="text-xs text-gray-500 dark:text-gray-400">{{ _('Expires') }}</p>
                             <p class="text-sm {% if doc.is_expired() %}text-red-600{% elif doc.is_expiring_soon() %}text-amber-600{% else %}text-gray-900 dark:text-white{% endif %}">
-                                {{ doc.expiry_date.strftime('%d %b %Y') }}
+                                {{ doc.expiry_date|format_date }}
                             </p>
                         </div>
                         {% endif %}

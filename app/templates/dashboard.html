@@ -201,7 +201,7 @@
                 <div class="flex justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-900 dark:text-white">{{ log.vehicle.name }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ log.date.strftime('%b %d, %Y') }} - {{ "%.1f"|format(log.volume or 0) }} {{ current_user.volume_unit }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ log.date|format_date }} - {{ "%.1f"|format(log.volume or 0) }} {{ current_user.volume_unit }}</p>
                     </div>
                     <p class="text-sm font-medium text-gray-900 dark:text-white">{{ "%.2f"|format(log.total_cost or 0) }} {{ current_user.currency }}</p>
                 </div>
@@ -225,7 +225,7 @@
                 <div class="flex justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-900 dark:text-white">{{ expense.description }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ expense.vehicle.name }} - {{ expense.date.strftime('%b %d, %Y') }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ expense.vehicle.name }} - {{ expense.date|format_date }}</p>
                     </div>
                     <p class="text-sm font-medium text-gray-900 dark:text-white">{{ "%.2f"|format(expense.cost) }} {{ current_user.currency }}</p>
                 </div>

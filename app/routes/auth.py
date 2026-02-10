@@ -127,6 +127,7 @@ def settings():
             custom_currency = (request.form.get('custom_currency') or '').strip()
             currency = custom_currency or 'USD'
         current_user.currency = currency[:10]
+        current_user.date_format = request.form.get('date_format', 'DD/MM/YYYY')
 
         # Update password if provided
         new_password = request.form.get('new_password')

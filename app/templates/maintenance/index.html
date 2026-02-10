@@ -56,7 +56,7 @@
                 <div class="ml-4 flex-shrink-0 text-right">
                     {% if schedule.next_due_date %}
                     <p class="text-sm {% if is_due %}text-red-600 dark:text-red-400{% elif is_due_soon %}text-amber-600 dark:text-amber-400{% else %}text-gray-900 dark:text-white{% endif %}">
-                        {{ schedule.next_due_date.strftime('%d %b %Y') }}
+                        {{ schedule.next_due_date|format_date }}
                     </p>
                     {% endif %}
                     {% if schedule.next_due_odometer %}

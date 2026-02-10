@@ -44,7 +44,7 @@
                             {{ "%.3f"|format(price.price_per_unit) }} {{ current_user.currency }}
                         </p>
                         <p class="text-xs text-gray-500 dark:text-gray-400">
-                            {{ price.date.strftime('%b %d') }}
+                            {{ price.date|format_date('short') }}
                         </p>
                     </div>
                     <a href="{{ url_for('stations.price_history', station_id=price.station_id) }}"
