@@ -451,6 +451,50 @@ def edit_user(user_id):
     return render_template('auth/edit_user.html', user=user)
 
 
+@bp.route('/users/create', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def create_user():
+    """Create a new user (admin only)"""
+    if request.method == 'POST':
+        username = request.form.get('username', '').strip()
+        email = request.form.get('email', '').strip()
+        password = request.form.get('password', '')
+        confirm_password = request.form.get('confirm_password', '')
+        is_admin = request.form.get('is_admin') == 'on'
+
+        if not username or not email or not password:
+            flash('Username, email, and password are required', 'error')
+            return render_template('auth/create_user.html')
+
+        if password != confirm_password:
+            flash('Passwords do not match', 'error')
+            return render_template('auth/create_user.html')
+
+        is_valid, error_msg = validate_password_strength(password)
+        if not is_valid:
+            flash(error_msg, 'error')
+            return render_template('auth/create_user.html')
+
+        if User.query.filter_by(username=username).first():
+            flash('Username already exists', 'error')
+            return render_template('auth/create_user.html')
+
+        if User.query.filter_by(email=email).first():
+            flash('Email already in use', 'error')
+            return render_template('auth/create_user.html')
+
+        user = User(username=username, email=email, is_admin=is_admin)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+
+        flash(f'User {username} created successfully', 'success')
+        return redirect(url_for('auth.users'))
+
+    return render_template('auth/create_user.html')
+
+
 @bp.route('/check-updates')
 @login_required
 def check_updates():
