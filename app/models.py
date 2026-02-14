@@ -66,6 +66,10 @@ class User(UserMixin, db.Model):
     ntfy_topic = db.Column(db.String(200))  # ntfy.sh topic or custom server URL
     pushover_user_key = db.Column(db.String(50))  # Pushover user key
 
+    # Password reset
+    password_reset_token = db.Column(db.String(100), unique=True, index=True)
+    password_reset_expires = db.Column(db.DateTime)
+
     # API access
     api_key = db.Column(db.String(64), unique=True, index=True)
     api_key_created_at = db.Column(db.DateTime)
@@ -109,6 +113,27 @@ class User(UserMixin, db.Model):
                 seen.add(v.id)
                 unique.append(v)
         return sorted(unique, key=lambda v: (v.make or '', v.model or '', v.name or ''))
+
+    def generate_reset_token(self):
+        """Generate a password reset token valid for 1 hour"""
+        self.password_reset_token = secrets.token_urlsafe(48)
+        self.password_reset_expires = datetime.utcnow() + timedelta(hours=1)
+        return self.password_reset_token
+
+    def clear_reset_token(self):
+        """Clear the password reset token"""
+        self.password_reset_token = None
+        self.password_reset_expires = None
+
+    @staticmethod
+    def get_by_reset_token(token):
+        """Find user by valid (non-expired) reset token"""
+        if not token:
+            return None
+        user = User.query.filter_by(password_reset_token=token).first()
+        if user and user.password_reset_expires and user.password_reset_expires > datetime.utcnow():
+            return user
+        return None
 
     def generate_api_key(self):
         """Generate a new API key for this user"""

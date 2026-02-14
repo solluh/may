@@ -10,6 +10,7 @@ from app.security import (
     get_safe_redirect_url, validate_password_strength,
     validate_webhook_url, admin_required
 )
+from app.services.notifications import NotificationService
 from config import APP_VERSION, DISPLAY_VERSION, RELEASE_CHANNEL, GITHUB_REPO
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -37,7 +38,92 @@ def login():
         flash('Invalid username or password', 'error')
 
     registration_enabled = AppSettings.get('registration_enabled', 'true') == 'true'
-    return render_template('auth/login.html', registration_enabled=registration_enabled)
+    smtp_configured = bool(
+        AppSettings.get('smtp_enabled', 'true') == 'true' and
+        AppSettings.get('smtp_host') and
+        AppSettings.get('smtp_username')
+    )
+    return render_template('auth/login.html', registration_enabled=registration_enabled, smtp_configured=smtp_configured)
+
+
+@bp.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.dashboard'))
+
+    smtp_configured = bool(
+        AppSettings.get('smtp_enabled', 'true') == 'true' and
+        AppSettings.get('smtp_host') and
+        AppSettings.get('smtp_username')
+    )
+
+    if not smtp_configured:
+        flash('Password reset by email is not available. Please contact an administrator.', 'info')
+        return redirect(url_for('auth.login'))
+
+    if request.method == 'POST':
+        email = request.form.get('email', '').strip()
+        user = User.query.filter_by(email=email).first()
+
+        if user:
+            token = user.generate_reset_token()
+            db.session.commit()
+
+            reset_url = url_for('auth.reset_password', token=token, _external=True)
+            branding = AppSettings.get_all_branding()
+            app_name = branding.get('app_name', 'May')
+
+            body = f"You requested a password reset for your {app_name} account.\n\nClick the link below to reset your password:\n{reset_url}\n\nThis link expires in 1 hour.\n\nIf you did not request this, you can safely ignore this email."
+            html_body = f"""
+            <html>
+            <body style="font-family: Arial, sans-serif; padding: 20px;">
+                <h2 style="color: #0284c7;">Password Reset</h2>
+                <p>You requested a password reset for your {app_name} account.</p>
+                <p><a href="{reset_url}" style="display: inline-block; padding: 10px 20px; background-color: #0284c7; color: white; text-decoration: none; border-radius: 5px;">Reset Password</a></p>
+                <p style="color: #6b7280; font-size: 12px;">This link expires in 1 hour. If you did not request this, you can safely ignore this email.</p>
+            </body>
+            </html>
+            """
+            NotificationService.send_email(user.email, f'{app_name} - Password Reset', body, html_body)
+
+        # Always show the same message to prevent email enumeration
+        flash('If an account with that email exists, a password reset link has been sent.', 'success')
+        return redirect(url_for('auth.login'))
+
+    return render_template('auth/forgot_password.html')
+
+
+@bp.route('/reset-password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('main.dashboard'))
+
+    user = User.get_by_reset_token(token)
+    if not user:
+        flash('Invalid or expired reset link. Please request a new one.', 'error')
+        return redirect(url_for('auth.login'))
+
+    if request.method == 'POST':
+        password = request.form.get('password', '')
+        confirm_password = request.form.get('confirm_password', '')
+
+        if password != confirm_password:
+            flash('Passwords do not match', 'error')
+            return render_template('auth/reset_password.html', token=token)
+
+        is_valid, error_msg = validate_password_strength(password)
+        if not is_valid:
+            flash(error_msg, 'error')
+            return render_template('auth/reset_password.html', token=token)
+
+        user.set_password(password)
+        user.clear_reset_token()
+        db.session.commit()
+
+        flash('Your password has been reset. Please log in.', 'success')
+        return redirect(url_for('auth.login'))
+
+    return render_template('auth/reset_password.html', token=token)
 
 
 def get_start_page_url(user):

@@ -87,6 +87,8 @@ def _run_schema_migrations(app):
         ],
         'users': [
             ('date_format', "VARCHAR(20) DEFAULT 'DD/MM/YYYY'"),
+            ('password_reset_token', 'VARCHAR(100)'),
+            ('password_reset_expires', 'DATETIME'),
         ],
         'charging_sessions': [
             ('tessie_charge_id', 'VARCHAR(50)'),
@@ -97,6 +99,7 @@ def _run_schema_migrations(app):
     # SQLite doesn't support adding UNIQUE columns directly via ALTER TABLE
     unique_indexes = [
         ('charging_sessions', 'tessie_charge_id', 'ix_charging_sessions_tessie_charge_id'),
+        ('users', 'password_reset_token', 'ix_users_password_reset_token'),
     ]
 
     with db.engine.connect() as conn:
