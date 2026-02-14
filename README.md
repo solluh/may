@@ -325,6 +325,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Issues**: [GitHub Issues](https://github.com/dannymcc/may/issues)
 - **Documentation**: This README and in-app help
 
+## 🙏 Acknowledgments
+
+- App icon design by [@lancetm714](https://github.com/lancetm714)
+
 ---
 
 **Made with ❤️ by [Danny McClelland](https://github.com/dannymcc)**
