@@ -215,9 +215,8 @@ def test_smtp():
 # =============================================================================
 
 @bp.route('/uploads/<filename>')
-@login_required
 def uploaded_file(filename):
-    """Serve uploaded files"""
+    """Serve uploaded files (public for branding assets like logo)"""
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
 
 
