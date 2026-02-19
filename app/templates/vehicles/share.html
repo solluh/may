@@ -1,30 +1,30 @@
 {% extends "base.html" %}
-{% block title %}Share {{ vehicle.name }}{% endblock %}
+{% block title %}{{ _('Share') }} {{ vehicle.name }}{% endblock %}
 
 {% block content %}
 <div class="max-w-2xl mx-auto">
     <div class="mb-6">
         <a href="{{ url_for('vehicles.view', vehicle_id=vehicle.id) }}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300">&larr; Back to {{ vehicle.name }}</a>
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mt-2">Share Vehicle</h1>
-        <p class="text-gray-500 dark:text-gray-400">Allow other users to view and add logs to this vehicle</p>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{{ _('Share Vehicle') }}</h1>
+        <p class="text-gray-500 dark:text-gray-400">{{ _('Allow other users to view and add logs to this vehicle') }}</p>
     </div>
 
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-6">
-        <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Add User</h2>
+        <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ _('Add User') }}</h2>
         <form method="POST" class="flex gap-4">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <input type="text" name="username" placeholder="Enter username"
+            <input type="text" name="username" placeholder="{{ _('Enter username') }}"
                    class="flex-1 rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
             <button type="submit"
                     class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700">
-                Share
+                {{ _('Share') }}
             </button>
         </form>
     </div>
 
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg">
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <h2 class="text-lg font-medium text-gray-900 dark:text-white">Shared With</h2>
+            <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ _('Shared With') }}</h2>
         </div>
         {% if shared_users %}
         <ul class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -36,13 +36,13 @@
                 </div>
                 <form method="POST" action="{{ url_for('vehicles.unshare', vehicle_id=vehicle.id, user_id=user.id) }}">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <button type="submit" class="text-sm text-red-600 hover:text-red-500">Remove</button>
+                    <button type="submit" class="text-sm text-red-600 hover:text-red-500">{{ _('Remove') }}</button>
                 </form>
             </li>
             {% endfor %}
         </ul>
         {% else %}
-        <p class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">This vehicle is not shared with anyone yet.</p>
+        <p class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ _('This vehicle is not shared with anyone yet.') }}</p>
         {% endif %}
     </div>
 </div>

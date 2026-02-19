@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% block title %}Vehicles{% endblock %}
+{% block title %}{{ _('Vehicles') }}{% endblock %}
 
 {% block content %}
 <div class="sm:flex sm:items-center sm:justify-between mb-6">
     <div>
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{% if show_archived %}Archived Vehicles{% else %}Vehicles{% endif %}</h1>
-        <p class="text-gray-500 dark:text-gray-400">Manage your cars, vans, motorbikes, and scooters</p>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{% if show_archived %}{{ _('Archived Vehicles') }}{% else %}{{ _('Vehicles') }}{% endif %}</h1>
+        <p class="text-gray-500 dark:text-gray-400">{{ _('Manage your cars, vans, motorbikes, and scooters') }}</p>
     </div>
     <div class="mt-4 sm:mt-0 flex items-center gap-3">
         {% if archived_count > 0 %}
@@ -15,12 +15,12 @@
             <svg class="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
-            Active Vehicles
+            {{ _('Active Vehicles') }}
             {% else %}
             <svg class="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
             </svg>
-            Archived ({{ archived_count }})
+            {{ _('Archived') }} ({{ archived_count }})
             {% endif %}
         </a>
         {% endif %}
@@ -29,7 +29,7 @@
             <svg class="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
-            Add Vehicle
+            {{ _('Add Vehicle') }}
         </a>
     </div>
 </div>
@@ -80,7 +80,7 @@
             <div class="flex items-center justify-between">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ vehicle.name }}</h3>
                 {% if not vehicle.is_active %}
-                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-600 text-gray-800">Inactive</span>
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-600 text-gray-800">{{ _('Inactive') }}</span>
                 {% endif %}
             </div>
             <p class="text-sm text-gray-500 dark:text-gray-400">{{ vehicle.make or '' }} {{ vehicle.model or '' }} {% if vehicle.year %}({{ vehicle.year }}){% endif %}</p>
@@ -97,15 +97,15 @@
     <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/>
     </svg>
-    <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No vehicles</h3>
-    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by adding your first vehicle.</p>
+    <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">{{ _('No vehicles') }}</h3>
+    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ _('Get started by adding your first vehicle.') }}</p>
     <div class="mt-6">
         <a href="{{ url_for('vehicles.new') }}"
            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700">
             <svg class="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
-            Add Vehicle
+            {{ _('Add Vehicle') }}
         </a>
     </div>
 </div>

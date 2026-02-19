@@ -1,21 +1,21 @@
 {% extends "base.html" %}
-{% block title %}{% if vehicle %}Edit Vehicle{% else %}Add Vehicle{% endif %}{% endblock %}
+{% block title %}{% if vehicle %}{{ _('Edit Vehicle') }}{% else %}{{ _('Add Vehicle') }}{% endif %}{% endblock %}
 
 {% block content %}
 <div class="max-w-2xl mx-auto">
     <div class="mb-6">
-        <a href="{{ url_for('vehicles.index') }}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300">&larr; Back to vehicles</a>
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{% if vehicle %}Edit Vehicle{% else %}Add New Vehicle{% endif %}</h1>
+        <a href="{{ url_for('vehicles.index') }}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300">&larr; {{ _('Back to vehicles') }}</a>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{% if vehicle %}{{ _('Edit Vehicle') }}{% else %}{{ _('Add New Vehicle') }}{% endif %}</h1>
     </div>
 
     <form method="POST" enctype="multipart/form-data" class="space-y-6">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-            <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Basic Information</h2>
+            <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ _('Basic Information') }}</h2>
 
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div class="sm:col-span-2">
-                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name *</label>
+                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Name') }} *</label>
                     <input type="text" name="name" id="name" required
                            value="{{ vehicle.name if vehicle else '' }}"
                            placeholder="e.g., My Daily Driver"
@@ -23,7 +23,7 @@
                 </div>
 
                 <div>
-                    <label for="vehicle_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Type *</label>
+                    <label for="vehicle_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Type') }} *</label>
                     <select name="vehicle_type" id="vehicle_type" required
                             class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
                         {% for value, label in vehicle_types %}
@@ -33,30 +33,30 @@
                 </div>
 
                 <div>
-                    <label for="tracking_unit" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tracking Unit</label>
+                    <label for="tracking_unit" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Tracking Unit') }}</label>
                     <select name="tracking_unit" id="tracking_unit"
                             class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
                         {% for value, label in tracking_units %}
                         <option value="{{ value }}" {% if vehicle and vehicle.tracking_unit == value %}selected{% endif %}>{{ label }}</option>
                         {% endfor %}
                     </select>
-                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Use "Hours" for tractors, ATVs, boats, etc.</p>
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ _('Use "Hours" for tractors, ATVs, boats, etc.') }}</p>
                 </div>
 
                 <div>
-                    <label for="odometer_unit" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Odometer Unit</label>
+                    <label for="odometer_unit" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Odometer Unit') }}</label>
                     <select name="odometer_unit" id="odometer_unit"
                             class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
-                        <option value="" {% if not vehicle or not vehicle.odometer_unit %}selected{% endif %}>Use account default ({{ current_user.distance_unit }})</option>
+                        <option value="" {% if not vehicle or not vehicle.odometer_unit %}selected{% endif %}>{{ _('Use account default') }} ({{ current_user.distance_unit }})</option>
                         {% for value, label in odometer_units %}
                         <option value="{{ value }}" {% if vehicle and vehicle.odometer_unit == value %}selected{% endif %}>{{ label }}</option>
                         {% endfor %}
                     </select>
-                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Override the odometer unit for this vehicle. Useful when you have vehicles with different odometer units.</p>
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ _('Override the odometer unit for this vehicle. Useful when you have vehicles with different odometer units.') }}</p>
                 </div>
 
                 <div>
-                    <label for="fuel_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fuel Type</label>
+                    <label for="fuel_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Fuel Type') }}</label>
                     <select name="fuel_type" id="fuel_type"
                             class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
                         {% for value, label in fuel_types %}
@@ -66,7 +66,7 @@
                 </div>
 
                 <div>
-                    <label for="make" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Make</label>
+                    <label for="make" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Make') }}</label>
                     <input type="text" name="make" id="make"
                            value="{{ vehicle.make if vehicle else '' }}"
                            placeholder="e.g., Toyota"
@@ -74,7 +74,7 @@
                 </div>
 
                 <div>
-                    <label for="model" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Model</label>
+                    <label for="model" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Model') }}</label>
                     <input type="text" name="model" id="model"
                            value="{{ vehicle.model if vehicle else '' }}"
                            placeholder="e.g., Corolla"
@@ -82,7 +82,7 @@
                 </div>
 
                 <div>
-                    <label for="year" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Year</label>
+                    <label for="year" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Year') }}</label>
                     <input type="number" name="year" id="year"
                            value="{{ vehicle.year if vehicle else '' }}"
                            min="1900" max="2100"
@@ -91,7 +91,7 @@
                 </div>
 
                 <div>
-                    <label for="tank_capacity" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tank Capacity (L)</label>
+                    <label for="tank_capacity" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Tank Capacity (L)') }}</label>
                     <input type="number" name="tank_capacity" id="tank_capacity" step="0.1"
                            value="{{ vehicle.tank_capacity if vehicle else '' }}"
                            placeholder="e.g., 50"
@@ -101,11 +101,11 @@
         </div>
 
         <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-            <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Identification</h2>
+            <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ _('Identification') }}</h2>
 
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
-                    <label for="registration" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Registration / License Plate</label>
+                    <label for="registration" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Registration / License Plate') }}</label>
                     <input type="text" name="registration" id="registration"
                            value="{{ vehicle.registration if vehicle else '' }}"
                            placeholder="e.g., ABC 123"
@@ -113,7 +113,7 @@
                 </div>
 
                 <div>
-                    <label for="vin" class="block text-sm font-medium text-gray-700 dark:text-gray-300">VIN</label>
+                    <label for="vin" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('VIN') }}</label>
                     <input type="text" name="vin" id="vin"
                            value="{{ vehicle.vin if vehicle else '' }}"
                            placeholder="Vehicle Identification Number"
@@ -123,10 +123,10 @@
         </div>
 
         <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-            <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Photo</h2>
+            <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ _('Photo') }}</h2>
 
             <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Vehicle Image</label>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Vehicle Image') }}</label>
                 {% if vehicle and vehicle.image_filename %}
                 <div class="mt-2 mb-4">
                     <img src="{{ url_for('api.uploaded_file', filename=vehicle.image_filename) }}"
@@ -140,8 +140,8 @@
         </div>
 
         <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-            <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Specifications</h2>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Add technical details like tire sizes, oil type, wiper sizes, etc.</p>
+            <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ _('Specifications') }}</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ _('Add technical details like tire sizes, oil type, wiper sizes, etc.') }}</p>
 
             <div id="specs-container" class="space-y-3">
                 {% if specs %}
@@ -175,15 +175,15 @@
                 <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
-                Add Specification
+                {{ _('Add Specification') }}
             </button>
         </div>
 
         <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-            <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Notes</h2>
+            <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ _('Notes') }}</h2>
 
             <div>
-                <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">General Notes</label>
+                <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('General Notes') }}</label>
                 <textarea name="notes" id="notes" rows="4"
                           placeholder="Any additional notes about this vehicle..."
                           class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">{{ vehicle.notes if vehicle and vehicle.notes else '' }}</textarea>
@@ -192,12 +192,12 @@
 
         {% if vehicle %}
         <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-            <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Status</h2>
+            <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">{{ _('Status') }}</h2>
             <div class="flex items-center">
                 <input type="checkbox" name="is_active" id="is_active"
                        {% if vehicle.is_active %}checked{% endif %}
                        class="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500">
-                <label for="is_active" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Active (show in lists and calculations)</label>
+                <label for="is_active" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">{{ _('Active (show in lists and calculations)') }}</label>
             </div>
         </div>
         {% endif %}
@@ -209,15 +209,15 @@
                     <svg class="h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
-                    <h2 class="text-lg font-medium text-gray-900 dark:text-white">Tessie Integration</h2>
+                    <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ _('Tessie Integration') }}</h2>
                 </div>
                 <span class="text-xs px-2 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Tesla</span>
             </div>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Link this vehicle to Tessie for automatic odometer and battery tracking. When enabled, manual odometer entry will be disabled.</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ _('Link this vehicle to Tessie for automatic odometer and battery tracking. When enabled, manual odometer entry will be disabled.') }}</p>
 
             <div class="space-y-4">
                 <div>
-                    <label for="tessie_vin" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tessie VIN</label>
+                    <label for="tessie_vin" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Tessie VIN') }}</label>
                     <div class="mt-1 flex gap-2">
                         <input type="text" name="tessie_vin" id="tessie_vin"
                                value="{{ vehicle.tessie_vin if vehicle and vehicle.tessie_vin else '' }}"
@@ -229,7 +229,7 @@
                             <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                             </svg>
-                            Lookup
+                            {{ _('Lookup') }}
                         </button>
                     </div>
                     <div id="tessie-vehicles-list" class="hidden mt-2 border border-gray-200 dark:border-gray-700 rounded-md overflow-hidden"></div>
@@ -240,7 +240,7 @@
                            {% if vehicle and vehicle.tessie_enabled %}checked{% endif %}
                            class="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500">
                     <label for="tessie_enabled" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                        Enable Tessie tracking (disables manual odometer entry)
+                        {{ _('Enable Tessie tracking (disables manual odometer entry)') }}
                     </label>
                 </div>
 
@@ -250,7 +250,7 @@
                         <svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                         </svg>
-                        <span class="text-sm text-green-700 dark:text-green-300">Tessie tracking is active for this vehicle</span>
+                        <span class="text-sm text-green-700 dark:text-green-300">{{ _('Tessie tracking is active for this vehicle') }}</span>
                     </div>
                 </div>
                 {% endif %}
@@ -262,11 +262,11 @@
         <div class="flex justify-end space-x-3">
             <a href="{{ url_for('vehicles.index') }}"
                class="px-4 py-2 border border-gray-300 dark:border-gray-500 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                Cancel
+                {{ _('Cancel') }}
             </a>
             <button type="submit"
                     class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                {% if vehicle %}Save Changes{% else %}Add Vehicle{% endif %}
+                {% if vehicle %}{{ _('Save Changes') }}{% else %}{{ _('Add Vehicle') }}{% endif %}
             </button>
         </div>
     </form>
