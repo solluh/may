@@ -4,7 +4,7 @@ from pathlib import Path
 basedir = Path(__file__).parent.absolute()
 
 
-APP_VERSION = '0.12.1'
+APP_VERSION = '0.12.2'
 RELEASE_CHANNEL = os.environ.get('RELEASE_CHANNEL', 'stable')
 GIT_SHA = os.environ.get('GIT_SHA', '')[:7]  # Short SHA
 GITHUB_REPO = 'dannymcc/may'
