@@ -274,7 +274,7 @@ def vehicle_stats(vehicle_id):
     logs = vehicle.fuel_logs.filter_by(is_full_tank=True).order_by(FuelLog.date).all()
     consumption_data = []
     for log in logs:
-        consumption = log.get_consumption()
+        consumption = log.get_consumption(current_user.consumption_unit)
         if consumption:
             consumption_data.append({
                 'date': log.date.isoformat(),
@@ -296,7 +296,7 @@ def vehicle_stats(vehicle_id):
         'total_fuel_cost': vehicle.get_total_fuel_cost(),
         'total_expense_cost': vehicle.get_total_expense_cost(),
         'total_distance': vehicle.get_total_distance(vehicle.get_effective_odometer_unit()),
-        'avg_consumption': vehicle.get_average_consumption()
+        'avg_consumption': vehicle.get_average_consumption(current_user.consumption_unit)
     })
 
 

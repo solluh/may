@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-19 21:28+0000\n"
+"POT-Creation-Date: 2026-02-27 11:00+0000\n"
 "PO-Revision-Date: 2026-02-17 20:56+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh\n"
@@ -17,6 +17,473 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
+
+#: app/models.py:624
+msgid "Front Tire Size"
+msgstr ""
+
+#: app/models.py:625
+#, fuzzy
+msgid "Rear Tire Size"
+msgstr "创建用户"
+
+#: app/models.py:626
+msgid "Wheel Size"
+msgstr ""
+
+#: app/models.py:627
+#, fuzzy
+msgid "Engine Oil Type"
+msgstr "无效的文件类型"
+
+#: app/models.py:628
+msgid "Oil Capacity"
+msgstr ""
+
+#: app/models.py:629
+#, fuzzy
+msgid "Coolant Type"
+msgstr "充电器类型"
+
+#: app/models.py:630
+msgid "Front Wiper Size"
+msgstr ""
+
+#: app/models.py:631
+msgid "Rear Wiper Size"
+msgstr ""
+
+#: app/models.py:632
+#, fuzzy
+msgid "Battery Type"
+msgstr "电池电量"
+
+#: app/models.py:633
+#, fuzzy
+msgid "Spark Plug Type"
+msgstr "充电器类型"
+
+#: app/models.py:634
+#, fuzzy
+msgid "Air Filter Part #"
+msgstr "添加加油站"
+
+#: app/models.py:635
+#, fuzzy
+msgid "Cabin Filter Part #"
+msgstr "添加加油站"
+
+#: app/models.py:636
+msgid "Front Brake Pads"
+msgstr ""
+
+#: app/models.py:637
+msgid "Rear Brake Pads"
+msgstr ""
+
+#: app/models.py:638 app/models.py:1127
+msgid "Transmission Fluid"
+msgstr ""
+
+#: app/models.py:639 app/models.py:706 app/models.py:757
+#: app/templates/auth/settings.html:176
+msgid "Custom"
+msgstr "自定义"
+
+#: app/models.py:644 app/templates/auth/settings.html:408
+#: app/templates/auth/settings.html:459 app/templates/base.html:301
+#: app/templates/base.html:376
+msgid "Maintenance"
+msgstr "保养"
+
+#: app/models.py:645
+#, fuzzy
+msgid "Repairs"
+msgstr "配件"
+
+#: app/models.py:646
+#, fuzzy
+msgid "Insurance"
+msgstr "距离"
+
+#: app/models.py:647 app/models.py:701
+msgid "Road Tax"
+msgstr ""
+
+#: app/models.py:648 app/templates/vehicles/view.html:59
+#, fuzzy
+msgid "Registration"
+msgstr "允许注册"
+
+#: app/models.py:649
+#, fuzzy
+msgid "Parking"
+msgstr "充电"
+
+#: app/models.py:650
+#, fuzzy
+msgid "Tolls"
+msgstr "总计"
+
+#: app/models.py:651
+#, fuzzy
+msgid "Cleaning"
+msgstr "充电"
+
+#: app/models.py:652
+#, fuzzy
+msgid "Accessories"
+msgstr "访问被拒绝"
+
+#: app/models.py:653 app/models.py:667 app/models.py:693 app/models.py:725
+#: app/models.py:735 app/models.py:769 app/models.py:1133
+#, fuzzy
+msgid "Other"
+msgstr "里程表"
+
+#: app/models.py:658
+#, fuzzy
+msgid "Car"
+msgstr "清除"
+
+#: app/models.py:659
+#, fuzzy
+msgid "Van"
+msgstr "VIN"
+
+#: app/models.py:660
+#, fuzzy
+msgid "Motorbike"
+msgstr "更多"
+
+#: app/models.py:661
+#, fuzzy
+msgid "Scooter"
+msgstr "里程表"
+
+#: app/models.py:662
+msgid "Truck"
+msgstr ""
+
+#: app/models.py:663
+msgid "SUV"
+msgstr ""
+
+#: app/models.py:664
+#, fuzzy
+msgid "Tractor"
+msgstr "管理员"
+
+#: app/models.py:665
+msgid "ATV/UTV"
+msgstr ""
+
+#: app/models.py:666
+#, fuzzy
+msgid "Boat"
+msgstr "关于"
+
+#: app/models.py:672
+msgid "Mileage (km/mi)"
+msgstr ""
+
+#: app/models.py:673
+#, fuzzy
+msgid "Hours"
+msgstr "用户"
+
+#: app/models.py:678
+msgid "Kilometres (km)"
+msgstr ""
+
+#: app/models.py:679
+#, fuzzy
+msgid "Miles (mi)"
+msgstr "邮件 (SMTP)"
+
+#: app/models.py:684
+msgid "Petrol/Gasoline"
+msgstr ""
+
+#: app/models.py:685
+msgid "Diesel"
+msgstr ""
+
+#: app/models.py:686
+msgid "Electric"
+msgstr ""
+
+#: app/models.py:687
+msgid "Hybrid"
+msgstr ""
+
+#: app/models.py:688
+msgid "Plug-in Hybrid"
+msgstr ""
+
+#: app/models.py:689
+msgid "LPG"
+msgstr ""
+
+#: app/models.py:690
+msgid "CNG"
+msgstr ""
+
+#: app/models.py:691
+msgid "Hydrogen"
+msgstr ""
+
+#: app/models.py:692
+msgid "E85/Flex Fuel"
+msgstr ""
+
+#: app/models.py:698
+msgid "MOT/Inspection"
+msgstr ""
+
+#: app/models.py:699
+#, fuzzy
+msgid "Service Due"
+msgstr "服务时间线"
+
+#: app/models.py:700
+msgid "Insurance Renewal"
+msgstr ""
+
+#: app/models.py:702
+#, fuzzy
+msgid "Registration Renewal"
+msgstr "允许注册"
+
+#: app/models.py:703
+#, fuzzy
+msgid "Warranty Expiry"
+msgstr "MOT到期日"
+
+#: app/models.py:704
+#, fuzzy
+msgid "Tire Change"
+msgstr "保存更改"
+
+#: app/models.py:705 app/models.py:740
+#, fuzzy
+msgid "Oil Change"
+msgstr "例如：更换机油"
+
+#: app/models.py:711
+msgid "No Repeat"
+msgstr ""
+
+#: app/models.py:712 app/templates/recurring/form.html:57
+msgid "Monthly"
+msgstr "每月"
+
+#: app/models.py:713
+#, fuzzy
+msgid "Quarterly (3 months)"
+msgstr "每季度（每3个月）"
+
+#: app/models.py:714
+#, fuzzy
+msgid "Every 6 months"
+msgstr "每 (月)"
+
+#: app/models.py:715 app/templates/recurring/form.html:60
+msgid "Yearly"
+msgstr "每年"
+
+#: app/models.py:720
+#, fuzzy
+msgid "Business"
+msgstr "使用SSL"
+
+#: app/models.py:721
+#, fuzzy
+msgid "Personal"
+msgstr "版本"
+
+#: app/models.py:722
+#, fuzzy
+msgid "Commute"
+msgstr "完成"
+
+#: app/models.py:723
+msgid "Medical"
+msgstr ""
+
+#: app/models.py:724
+#, fuzzy
+msgid "Charity"
+msgstr "城市"
+
+#: app/models.py:730
+#, fuzzy
+msgid "Home Charging"
+msgstr "电动车充电"
+
+#: app/models.py:731
+msgid "Level 1"
+msgstr ""
+
+#: app/models.py:732
+msgid "Level 2"
+msgstr ""
+
+#: app/models.py:733
+#, fuzzy
+msgid "DC Fast Charge"
+msgstr "记录您的第一次充电"
+
+#: app/models.py:734
+msgid "Tesla Supercharger"
+msgstr ""
+
+#: app/models.py:741 app/models.py:1119
+#, fuzzy
+msgid "Oil Filter"
+msgstr "筛选"
+
+#: app/models.py:742 app/models.py:1120
+#, fuzzy
+msgid "Air Filter"
+msgstr "筛选"
+
+#: app/models.py:743
+msgid "Cabin/Pollen Filter"
+msgstr ""
+
+#: app/models.py:744 app/models.py:1121
+#, fuzzy
+msgid "Fuel Filter"
+msgstr "筛选"
+
+#: app/models.py:745
+msgid "Spark Plugs"
+msgstr ""
+
+#: app/models.py:746
+#, fuzzy
+msgid "Brake Pads"
+msgstr "返回行程列表"
+
+#: app/models.py:747 app/models.py:1125
+msgid "Brake Fluid"
+msgstr ""
+
+#: app/models.py:748
+msgid "Coolant Flush"
+msgstr ""
+
+#: app/models.py:749
+#, fuzzy
+msgid "Transmission Service"
+msgstr "通知服务"
+
+#: app/models.py:750
+msgid "Timing Belt"
+msgstr ""
+
+#: app/models.py:751
+msgid "Serpentine Belt"
+msgstr ""
+
+#: app/models.py:752
+#, fuzzy
+msgid "Tire Rotation"
+msgstr "Tessie集成"
+
+#: app/models.py:753
+msgid "Wheel Alignment"
+msgstr ""
+
+#: app/models.py:754
+msgid "Battery Check/Replace"
+msgstr ""
+
+#: app/models.py:755
+msgid "Wiper Blades"
+msgstr ""
+
+#: app/models.py:756
+msgid "Full Service"
+msgstr ""
+
+#: app/models.py:762
+#, fuzzy
+msgid "Insurance Policy"
+msgstr "例如：2024年保险单"
+
+#: app/models.py:763
+#, fuzzy
+msgid "Registration/V5C"
+msgstr "允许注册"
+
+#: app/models.py:764
+msgid "MOT Certificate"
+msgstr ""
+
+#: app/models.py:765
+#, fuzzy
+msgid "Service Record"
+msgstr "保养间隔"
+
+#: app/models.py:766
+msgid "Purchase Invoice"
+msgstr ""
+
+#: app/models.py:767
+#, fuzzy
+msgid "Warranty Document"
+msgstr "暂无文档"
+
+#: app/models.py:768
+msgid "Owner's Manual"
+msgstr ""
+
+#: app/models.py:1118
+msgid "Engine Oil"
+msgstr ""
+
+#: app/models.py:1122
+#, fuzzy
+msgid "Cabin Filter"
+msgstr "筛选"
+
+#: app/models.py:1123
+#, fuzzy
+msgid "Spark Plug"
+msgstr "起始页面"
+
+#: app/models.py:1124
+msgid "Brake Pad"
+msgstr ""
+
+#: app/models.py:1126
+msgid "Coolant"
+msgstr ""
+
+#: app/models.py:1128
+#, fuzzy
+msgid "Battery"
+msgstr "电池电量"
+
+#: app/models.py:1129
+#, fuzzy
+msgid "Tire"
+msgstr "标题"
+
+#: app/models.py:1130
+#, fuzzy
+msgid "Belt"
+msgstr "删除"
+
+#: app/models.py:1131
+msgid "Wiper Blade"
+msgstr ""
+
+#: app/models.py:1132
+msgid "Light Bulb"
+msgstr ""
 
 #: app/routes/api.py:2141 app/routes/api.py:2354 app/routes/api.py:2527
 msgid "No file uploaded"
@@ -239,7 +706,7 @@ msgstr "未找到电动车辆。请先添加电动或混合动力车辆。"
 #: app/routes/documents.py:146 app/routes/documents.py:165
 #: app/routes/documents.py:205 app/routes/expenses.py:49
 #: app/routes/expenses.py:107 app/routes/expenses.py:154 app/routes/fuel.py:52
-#: app/routes/fuel.py:160 app/routes/fuel.py:219 app/routes/fuel.py:259
+#: app/routes/fuel.py:160 app/routes/fuel.py:219 app/routes/fuel.py:267
 #: app/routes/maintenance.py:105 app/routes/maintenance.py:147
 #: app/routes/maintenance.py:190 app/routes/reminders.py:71
 #: app/routes/reminders.py:125 app/routes/reminders.py:162
@@ -288,7 +755,7 @@ msgstr "文档已更新"
 msgid "Document \"%(title)s\" deleted"
 msgstr "文档\"%(title)s\"已删除"
 
-#: app/routes/expenses.py:40 app/routes/fuel.py:43 app/routes/fuel.py:245
+#: app/routes/expenses.py:40 app/routes/fuel.py:43 app/routes/fuel.py:253
 #: app/routes/reminders.py:63 app/routes/trips.py:65
 msgid "Please add a vehicle first"
 msgstr "请先添加车辆"
@@ -313,11 +780,11 @@ msgstr "加油记录已成功添加"
 msgid "Fuel log updated successfully"
 msgstr "加油记录已成功更新"
 
-#: app/routes/fuel.py:232
+#: app/routes/fuel.py:240
 msgid "Fuel log deleted successfully"
 msgstr "加油记录已成功删除"
 
-#: app/routes/fuel.py:290
+#: app/routes/fuel.py:298
 msgid "Fuel log added!"
 msgstr "加油记录已添加！"
 
@@ -530,11 +997,6 @@ msgstr "行程"
 #: app/templates/base.html:293
 msgid "More"
 msgstr "更多"
-
-#: app/templates/auth/settings.html:408 app/templates/auth/settings.html:459
-#: app/templates/base.html:301 app/templates/base.html:376
-msgid "Maintenance"
-msgstr "保养"
 
 #: app/templates/base.html:304 app/templates/base.html:379
 msgid "Recurring"
@@ -757,10 +1219,6 @@ msgstr "油耗"
 #: app/templates/auth/settings.html:157
 msgid "Currency"
 msgstr "货币"
-
-#: app/templates/auth/settings.html:176
-msgid "Custom"
-msgstr "自定义"
 
 #: app/templates/auth/settings.html:179
 msgid "Custom Currency"
@@ -1632,23 +2090,23 @@ msgstr "所有版本"
 msgid "Documentation"
 msgstr "文档"
 
-#: app/templates/auth/settings.html:2106
+#: app/templates/auth/settings.html:2107
 msgid "Checking..."
 msgstr "检查中..."
 
-#: app/templates/auth/settings.html:2118
+#: app/templates/auth/settings.html:2119
 msgid "A newer version is available"
 msgstr "有新版本可用"
 
-#: app/templates/auth/settings.html:2123
+#: app/templates/auth/settings.html:2124
 msgid "Last checked just now"
 msgstr "刚刚检查过"
 
-#: app/templates/auth/settings.html:2127
+#: app/templates/auth/settings.html:2128
 msgid "Could not check for updates"
 msgstr "无法检查更新"
 
-#: app/templates/auth/settings.html:2132
+#: app/templates/auth/settings.html:2133
 msgid "Error checking for updates"
 msgstr "检查更新时出错"
 
@@ -2147,10 +2605,6 @@ msgstr "分类"
 msgid "Frequency"
 msgstr "频率"
 
-#: app/templates/recurring/form.html:57
-msgid "Monthly"
-msgstr "每月"
-
 #: app/templates/recurring/form.html:58
 msgid "Quarterly (every 3 months)"
 msgstr "每季度（每3个月）"
@@ -2158,10 +2612,6 @@ msgstr "每季度（每3个月）"
 #: app/templates/recurring/form.html:59
 msgid "Biannual (every 6 months)"
 msgstr "每半年（每6个月）"
-
-#: app/templates/recurring/form.html:60
-msgid "Yearly"
-msgstr "每年"
 
 #: app/templates/recurring/form.html:65
 msgid "Amount"
@@ -2847,11 +3297,6 @@ msgstr "下载ZIP"
 #, fuzzy
 msgid "Not set"
 msgstr "备注"
-
-#: app/templates/vehicles/view.html:59
-#, fuzzy
-msgid "Registration"
-msgstr "允许注册"
 
 #: app/templates/vehicles/view.html:63
 #, fuzzy

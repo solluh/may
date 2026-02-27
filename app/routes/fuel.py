@@ -227,6 +227,14 @@ def delete(log_id):
         if os.path.exists(file_path):
             os.remove(file_path)
 
+    # Clean up matching fuel price history entries
+    if log.price_per_unit and log.date:
+        FuelPriceHistory.query.filter(
+            FuelPriceHistory.user_id == current_user.id,
+            FuelPriceHistory.date == log.date,
+            FuelPriceHistory.price_per_unit == log.price_per_unit
+        ).delete()
+
     db.session.delete(log)
     db.session.commit()
     flash(_('Fuel log deleted successfully'), 'success')
@@ -249,7 +257,7 @@ def quick():
     stations = FuelStation.query.order_by(
         FuelStation.is_favorite.desc(),
         FuelStation.times_used.desc()
-    ).limit(10).all()
+    ).all()
 
     if request.method == 'POST':
         vehicle_id = int(request.form.get('vehicle_id'))

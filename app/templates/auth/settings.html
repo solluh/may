@@ -11,7 +11,7 @@
         <nav class="lg:w-48 flex-shrink-0">
             <ul class="flex lg:flex-col gap-1 overflow-x-auto pb-2 lg:pb-0">
                 <li>
-                    <a href="#units" class="settings-nav-item active flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('units')">
+                    <a href="#units" class="settings-nav-item active flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('units', event)">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
                         </svg>
@@ -19,7 +19,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#account" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('account')">
+                    <a href="#account" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('account', event)">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                         </svg>
@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#menu" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('menu')">
+                    <a href="#menu" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('menu', event)">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
@@ -35,7 +35,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#integrations" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('integrations')">
+                    <a href="#integrations" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('integrations', event)">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
                         </svg>
@@ -43,7 +43,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#api" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('api')">
+                    <a href="#api" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('api', event)">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
                         </svg>
@@ -51,7 +51,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#services" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('services')">
+                    <a href="#services" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('services', event)">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/>
                         </svg>
@@ -59,7 +59,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#notifications" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('notifications')">
+                    <a href="#notifications" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('notifications', event)">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                         </svg>
@@ -68,7 +68,7 @@
                 </li>
                 {% if current_user.is_admin %}
                 <li>
-                    <a href="#branding" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('branding')">
+                    <a href="#branding" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('branding', event)">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
                         </svg>
@@ -77,7 +77,7 @@
                 </li>
                 {% endif %}
                 <li>
-                    <a href="#about" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('about')">
+                    <a href="#about" class="settings-nav-item flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap" onclick="showSection('about', event)">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
@@ -311,15 +311,15 @@
                             <h3 class="text-sm font-medium text-blue-800 dark:text-blue-300 mb-2">{{ _('Admin Settings') }}</h3>
                             <p class="text-sm text-blue-700 dark:text-blue-400 mb-3">{{ _('Configure system-wide settings for all users:') }}</p>
                             <div class="flex flex-wrap gap-2">
-                                <a href="#notifications" onclick="showSection('notifications')"
+                                <a href="#notifications" onclick="showSection('notifications', event)"
                                    class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-blue-700 bg-white dark:bg-blue-900/40 dark:text-blue-300 border border-blue-300 dark:border-blue-700 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/60">
                                     {{ _('SMTP / Notifications') }}
                                 </a>
-                                <a href="#branding" onclick="showSection('branding')"
+                                <a href="#branding" onclick="showSection('branding', event)"
                                    class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-blue-700 bg-white dark:bg-blue-900/40 dark:text-blue-300 border border-blue-300 dark:border-blue-700 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/60">
                                     {{ _('Branding / Appearance') }}
                                 </a>
-                                <a href="#services" onclick="showSection('services')"
+                                <a href="#services" onclick="showSection('services', event)"
                                    class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-blue-700 bg-white dark:bg-blue-900/40 dark:text-blue-300 border border-blue-300 dark:border-blue-700 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/60">
                                     {{ _('Integrations') }}
                                 </a>
@@ -891,7 +891,7 @@
                                 </svg>
                                 <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">{{ _('API Key Required') }}</h3>
                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ _('Generate an API key in the API section to enable calendar integration.') }}</p>
-                                <button type="button" onclick="showSection('api')"
+                                <button type="button" onclick="showSection('api', event)"
                                         class="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700">
                                     {{ _('Go to API Settings') }}
                                 </button>
@@ -985,7 +985,7 @@
                                 </svg>
                                 <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">{{ _('API Key Required') }}</h3>
                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ _('Generate an API key in the API section to enable Home Assistant integration.') }}</p>
-                                <button type="button" onclick="showSection('api')"
+                                <button type="button" onclick="showSection('api', event)"
                                         class="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700">
                                     {{ _('Go to API Settings') }}
                                 </button>
@@ -1736,7 +1736,7 @@ docker compose up -d</code>
 </style>
 
 <script>
-function showSection(section) {
+function showSection(section, evt) {
     // Hide all sections
     document.querySelectorAll('.settings-section').forEach(el => {
         el.classList.add('hidden');
@@ -1749,7 +1749,8 @@ function showSection(section) {
     document.querySelectorAll('.settings-nav-item').forEach(el => {
         el.classList.remove('active');
     });
-    event.currentTarget.classList.add('active');
+    var target = (evt && evt.currentTarget) || document.querySelector('a[href="#' + section + '"]');
+    if (target) target.classList.add('active');
 
     // Reset integrations view to overview when clicking the nav link
     if (section === 'services') {

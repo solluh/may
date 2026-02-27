@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-19 21:28+0000\n"
+"POT-Creation-Date: 2026-02-27 11:00+0000\n"
 "PO-Revision-Date: 2026-02-17 20:56+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: no\n"
@@ -17,6 +17,473 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
+
+#: app/models.py:624
+msgid "Front Tire Size"
+msgstr ""
+
+#: app/models.py:625
+#, fuzzy
+msgid "Rear Tire Size"
+msgstr "Opprett bruker"
+
+#: app/models.py:626
+msgid "Wheel Size"
+msgstr ""
+
+#: app/models.py:627
+#, fuzzy
+msgid "Engine Oil Type"
+msgstr "Ugyldig filtype"
+
+#: app/models.py:628
+msgid "Oil Capacity"
+msgstr ""
+
+#: app/models.py:629
+#, fuzzy
+msgid "Coolant Type"
+msgstr "Ladertype"
+
+#: app/models.py:630
+msgid "Front Wiper Size"
+msgstr ""
+
+#: app/models.py:631
+msgid "Rear Wiper Size"
+msgstr ""
+
+#: app/models.py:632
+#, fuzzy
+msgid "Battery Type"
+msgstr "Batterinivå"
+
+#: app/models.py:633
+#, fuzzy
+msgid "Spark Plug Type"
+msgstr "Ladertype"
+
+#: app/models.py:634
+#, fuzzy
+msgid "Air Filter Part #"
+msgstr "Legg til stasjon"
+
+#: app/models.py:635
+#, fuzzy
+msgid "Cabin Filter Part #"
+msgstr "Legg til stasjon"
+
+#: app/models.py:636
+msgid "Front Brake Pads"
+msgstr ""
+
+#: app/models.py:637
+msgid "Rear Brake Pads"
+msgstr ""
+
+#: app/models.py:638 app/models.py:1127
+msgid "Transmission Fluid"
+msgstr ""
+
+#: app/models.py:639 app/models.py:706 app/models.py:757
+#: app/templates/auth/settings.html:176
+msgid "Custom"
+msgstr "Egendefinert"
+
+#: app/models.py:644 app/templates/auth/settings.html:408
+#: app/templates/auth/settings.html:459 app/templates/base.html:301
+#: app/templates/base.html:376
+msgid "Maintenance"
+msgstr "Vedlikehold"
+
+#: app/models.py:645
+#, fuzzy
+msgid "Repairs"
+msgstr "Deler"
+
+#: app/models.py:646
+#, fuzzy
+msgid "Insurance"
+msgstr "Distanse"
+
+#: app/models.py:647 app/models.py:701
+msgid "Road Tax"
+msgstr ""
+
+#: app/models.py:648 app/templates/vehicles/view.html:59
+#, fuzzy
+msgid "Registration"
+msgstr "Tillat registrering"
+
+#: app/models.py:649
+#, fuzzy
+msgid "Parking"
+msgstr "Lading"
+
+#: app/models.py:650
+#, fuzzy
+msgid "Tolls"
+msgstr "Totalt"
+
+#: app/models.py:651
+#, fuzzy
+msgid "Cleaning"
+msgstr "Lading"
+
+#: app/models.py:652
+#, fuzzy
+msgid "Accessories"
+msgstr "Tilgang nektet"
+
+#: app/models.py:653 app/models.py:667 app/models.py:693 app/models.py:725
+#: app/models.py:735 app/models.py:769 app/models.py:1133
+#, fuzzy
+msgid "Other"
+msgstr "Kilometerstand"
+
+#: app/models.py:658
+#, fuzzy
+msgid "Car"
+msgstr "Tøm"
+
+#: app/models.py:659
+#, fuzzy
+msgid "Van"
+msgstr "VIN"
+
+#: app/models.py:660
+#, fuzzy
+msgid "Motorbike"
+msgstr "Mer"
+
+#: app/models.py:661
+#, fuzzy
+msgid "Scooter"
+msgstr "Kilometerstand"
+
+#: app/models.py:662
+msgid "Truck"
+msgstr ""
+
+#: app/models.py:663
+msgid "SUV"
+msgstr ""
+
+#: app/models.py:664
+#, fuzzy
+msgid "Tractor"
+msgstr "Administrator"
+
+#: app/models.py:665
+msgid "ATV/UTV"
+msgstr ""
+
+#: app/models.py:666
+#, fuzzy
+msgid "Boat"
+msgstr "Om"
+
+#: app/models.py:672
+msgid "Mileage (km/mi)"
+msgstr ""
+
+#: app/models.py:673
+#, fuzzy
+msgid "Hours"
+msgstr "Brukere"
+
+#: app/models.py:678
+msgid "Kilometres (km)"
+msgstr ""
+
+#: app/models.py:679
+#, fuzzy
+msgid "Miles (mi)"
+msgstr "E-post (SMTP)"
+
+#: app/models.py:684
+msgid "Petrol/Gasoline"
+msgstr ""
+
+#: app/models.py:685
+msgid "Diesel"
+msgstr ""
+
+#: app/models.py:686
+msgid "Electric"
+msgstr ""
+
+#: app/models.py:687
+msgid "Hybrid"
+msgstr ""
+
+#: app/models.py:688
+msgid "Plug-in Hybrid"
+msgstr ""
+
+#: app/models.py:689
+msgid "LPG"
+msgstr ""
+
+#: app/models.py:690
+msgid "CNG"
+msgstr ""
+
+#: app/models.py:691
+msgid "Hydrogen"
+msgstr ""
+
+#: app/models.py:692
+msgid "E85/Flex Fuel"
+msgstr ""
+
+#: app/models.py:698
+msgid "MOT/Inspection"
+msgstr ""
+
+#: app/models.py:699
+#, fuzzy
+msgid "Service Due"
+msgstr "Servicetidslinje"
+
+#: app/models.py:700
+msgid "Insurance Renewal"
+msgstr ""
+
+#: app/models.py:702
+#, fuzzy
+msgid "Registration Renewal"
+msgstr "Tillat registrering"
+
+#: app/models.py:703
+#, fuzzy
+msgid "Warranty Expiry"
+msgstr "MOT-utløp"
+
+#: app/models.py:704
+#, fuzzy
+msgid "Tire Change"
+msgstr "Lagre endringer"
+
+#: app/models.py:705 app/models.py:740
+#, fuzzy
+msgid "Oil Change"
+msgstr "f.eks. Oljeskift"
+
+#: app/models.py:711
+msgid "No Repeat"
+msgstr ""
+
+#: app/models.py:712 app/templates/recurring/form.html:57
+msgid "Monthly"
+msgstr "Månedlig"
+
+#: app/models.py:713
+#, fuzzy
+msgid "Quarterly (3 months)"
+msgstr "Kvartalsvis (hver 3. måned)"
+
+#: app/models.py:714
+#, fuzzy
+msgid "Every 6 months"
+msgstr "Hver (måneder)"
+
+#: app/models.py:715 app/templates/recurring/form.html:60
+msgid "Yearly"
+msgstr "Årlig"
+
+#: app/models.py:720
+#, fuzzy
+msgid "Business"
+msgstr "Bruk SSL"
+
+#: app/models.py:721
+#, fuzzy
+msgid "Personal"
+msgstr "Versjon"
+
+#: app/models.py:722
+#, fuzzy
+msgid "Commute"
+msgstr "Fullført"
+
+#: app/models.py:723
+msgid "Medical"
+msgstr ""
+
+#: app/models.py:724
+#, fuzzy
+msgid "Charity"
+msgstr "By"
+
+#: app/models.py:730
+#, fuzzy
+msgid "Home Charging"
+msgstr "Elbillading"
+
+#: app/models.py:731
+msgid "Level 1"
+msgstr ""
+
+#: app/models.py:732
+msgid "Level 2"
+msgstr ""
+
+#: app/models.py:733
+#, fuzzy
+msgid "DC Fast Charge"
+msgstr "Registrer din første lading"
+
+#: app/models.py:734
+msgid "Tesla Supercharger"
+msgstr ""
+
+#: app/models.py:741 app/models.py:1119
+#, fuzzy
+msgid "Oil Filter"
+msgstr "Filtrer"
+
+#: app/models.py:742 app/models.py:1120
+#, fuzzy
+msgid "Air Filter"
+msgstr "Filtrer"
+
+#: app/models.py:743
+msgid "Cabin/Pollen Filter"
+msgstr ""
+
+#: app/models.py:744 app/models.py:1121
+#, fuzzy
+msgid "Fuel Filter"
+msgstr "Filtrer"
+
+#: app/models.py:745
+msgid "Spark Plugs"
+msgstr ""
+
+#: app/models.py:746
+#, fuzzy
+msgid "Brake Pads"
+msgstr "Tilbake til turer"
+
+#: app/models.py:747 app/models.py:1125
+msgid "Brake Fluid"
+msgstr ""
+
+#: app/models.py:748
+msgid "Coolant Flush"
+msgstr ""
+
+#: app/models.py:749
+#, fuzzy
+msgid "Transmission Service"
+msgstr "Varslingstjenester"
+
+#: app/models.py:750
+msgid "Timing Belt"
+msgstr ""
+
+#: app/models.py:751
+msgid "Serpentine Belt"
+msgstr ""
+
+#: app/models.py:752
+#, fuzzy
+msgid "Tire Rotation"
+msgstr "Tessie-integrasjon"
+
+#: app/models.py:753
+msgid "Wheel Alignment"
+msgstr ""
+
+#: app/models.py:754
+msgid "Battery Check/Replace"
+msgstr ""
+
+#: app/models.py:755
+msgid "Wiper Blades"
+msgstr ""
+
+#: app/models.py:756
+msgid "Full Service"
+msgstr ""
+
+#: app/models.py:762
+#, fuzzy
+msgid "Insurance Policy"
+msgstr "f.eks. Forsikringsavtale 2024"
+
+#: app/models.py:763
+#, fuzzy
+msgid "Registration/V5C"
+msgstr "Tillat registrering"
+
+#: app/models.py:764
+msgid "MOT Certificate"
+msgstr ""
+
+#: app/models.py:765
+#, fuzzy
+msgid "Service Record"
+msgstr "Serviceintervall"
+
+#: app/models.py:766
+msgid "Purchase Invoice"
+msgstr ""
+
+#: app/models.py:767
+#, fuzzy
+msgid "Warranty Document"
+msgstr "Ingen dokumenter"
+
+#: app/models.py:768
+msgid "Owner's Manual"
+msgstr ""
+
+#: app/models.py:1118
+msgid "Engine Oil"
+msgstr ""
+
+#: app/models.py:1122
+#, fuzzy
+msgid "Cabin Filter"
+msgstr "Filtrer"
+
+#: app/models.py:1123
+#, fuzzy
+msgid "Spark Plug"
+msgstr "Startside"
+
+#: app/models.py:1124
+msgid "Brake Pad"
+msgstr ""
+
+#: app/models.py:1126
+msgid "Coolant"
+msgstr ""
+
+#: app/models.py:1128
+#, fuzzy
+msgid "Battery"
+msgstr "Batterinivå"
+
+#: app/models.py:1129
+#, fuzzy
+msgid "Tire"
+msgstr "Tittel"
+
+#: app/models.py:1130
+#, fuzzy
+msgid "Belt"
+msgstr "Slett"
+
+#: app/models.py:1131
+msgid "Wiper Blade"
+msgstr ""
+
+#: app/models.py:1132
+msgid "Light Bulb"
+msgstr ""
 
 #: app/routes/api.py:2141 app/routes/api.py:2354 app/routes/api.py:2527
 msgid "No file uploaded"
@@ -257,7 +724,7 @@ msgstr ""
 #: app/routes/documents.py:146 app/routes/documents.py:165
 #: app/routes/documents.py:205 app/routes/expenses.py:49
 #: app/routes/expenses.py:107 app/routes/expenses.py:154 app/routes/fuel.py:52
-#: app/routes/fuel.py:160 app/routes/fuel.py:219 app/routes/fuel.py:259
+#: app/routes/fuel.py:160 app/routes/fuel.py:219 app/routes/fuel.py:267
 #: app/routes/maintenance.py:105 app/routes/maintenance.py:147
 #: app/routes/maintenance.py:190 app/routes/reminders.py:71
 #: app/routes/reminders.py:125 app/routes/reminders.py:162
@@ -306,7 +773,7 @@ msgstr "Dokument oppdatert"
 msgid "Document \"%(title)s\" deleted"
 msgstr "Dokument \"%(title)s\" slettet"
 
-#: app/routes/expenses.py:40 app/routes/fuel.py:43 app/routes/fuel.py:245
+#: app/routes/expenses.py:40 app/routes/fuel.py:43 app/routes/fuel.py:253
 #: app/routes/reminders.py:63 app/routes/trips.py:65
 msgid "Please add a vehicle first"
 msgstr "Vennligst legg til et kjøretøy først"
@@ -331,11 +798,11 @@ msgstr "Drivstofflogg lagt til"
 msgid "Fuel log updated successfully"
 msgstr "Drivstofflogg oppdatert"
 
-#: app/routes/fuel.py:232
+#: app/routes/fuel.py:240
 msgid "Fuel log deleted successfully"
 msgstr "Drivstofflogg slettet"
 
-#: app/routes/fuel.py:290
+#: app/routes/fuel.py:298
 msgid "Fuel log added!"
 msgstr "Drivstofflogg lagt til!"
 
@@ -548,11 +1015,6 @@ msgstr "Turer"
 #: app/templates/base.html:293
 msgid "More"
 msgstr "Mer"
-
-#: app/templates/auth/settings.html:408 app/templates/auth/settings.html:459
-#: app/templates/base.html:301 app/templates/base.html:376
-msgid "Maintenance"
-msgstr "Vedlikehold"
 
 #: app/templates/base.html:304 app/templates/base.html:379
 msgid "Recurring"
@@ -777,10 +1239,6 @@ msgstr "Drivstofforbruk"
 #: app/templates/auth/settings.html:157
 msgid "Currency"
 msgstr "Valuta"
-
-#: app/templates/auth/settings.html:176
-msgid "Custom"
-msgstr "Egendefinert"
 
 #: app/templates/auth/settings.html:179
 msgid "Custom Currency"
@@ -1683,23 +2141,23 @@ msgstr "Alle utgivelser"
 msgid "Documentation"
 msgstr "Dokumentasjon"
 
-#: app/templates/auth/settings.html:2106
+#: app/templates/auth/settings.html:2107
 msgid "Checking..."
 msgstr "Sjekker..."
 
-#: app/templates/auth/settings.html:2118
+#: app/templates/auth/settings.html:2119
 msgid "A newer version is available"
 msgstr "En nyere versjon er tilgjengelig"
 
-#: app/templates/auth/settings.html:2123
+#: app/templates/auth/settings.html:2124
 msgid "Last checked just now"
 msgstr "Sist sjekket akkurat nå"
 
-#: app/templates/auth/settings.html:2127
+#: app/templates/auth/settings.html:2128
 msgid "Could not check for updates"
 msgstr "Kunne ikke se etter oppdateringer"
 
-#: app/templates/auth/settings.html:2132
+#: app/templates/auth/settings.html:2133
 msgid "Error checking for updates"
 msgstr "Feil ved sjekk av oppdateringer"
 
@@ -2202,10 +2660,6 @@ msgstr "Kategori"
 msgid "Frequency"
 msgstr "Frekvens"
 
-#: app/templates/recurring/form.html:57
-msgid "Monthly"
-msgstr "Månedlig"
-
 #: app/templates/recurring/form.html:58
 msgid "Quarterly (every 3 months)"
 msgstr "Kvartalsvis (hver 3. måned)"
@@ -2213,10 +2667,6 @@ msgstr "Kvartalsvis (hver 3. måned)"
 #: app/templates/recurring/form.html:59
 msgid "Biannual (every 6 months)"
 msgstr "Halvårlig (hver 6. måned)"
-
-#: app/templates/recurring/form.html:60
-msgid "Yearly"
-msgstr "Årlig"
 
 #: app/templates/recurring/form.html:65
 msgid "Amount"
@@ -2906,11 +3356,6 @@ msgstr "Last ned ZIP"
 #, fuzzy
 msgid "Not set"
 msgstr "Notater"
-
-#: app/templates/vehicles/view.html:59
-#, fuzzy
-msgid "Registration"
-msgstr "Tillat registrering"
 
 #: app/templates/vehicles/view.html:63
 #, fuzzy

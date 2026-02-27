@@ -2,6 +2,7 @@ import secrets
 from datetime import date, datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from flask_babel import lazy_gettext as _l
 from app import db
 
 # Currency symbols for display in UI
@@ -269,8 +270,12 @@ class Vehicle(db.Model):
             return 0
         return logs[-1].odometer - logs[0].odometer
 
-    def get_average_consumption(self):
-        """Calculate average fuel consumption"""
+    def get_average_consumption(self, consumption_unit=None):
+        """Calculate average fuel consumption.
+
+        Args:
+            consumption_unit: 'L/100km', 'mpg', or 'mpg_us'. If None, returns L/100km.
+        """
         logs = self.fuel_logs.filter_by(is_full_tank=True).order_by(FuelLog.odometer).all()
         if len(logs) < 2:
             return None
@@ -278,7 +283,9 @@ class Vehicle(db.Model):
         total_fuel = sum(log.volume for log in logs[1:] if log.volume)
         total_distance = logs[-1].odometer - logs[0].odometer
 
-        if total_distance > 0:
+        if total_distance > 0 and total_fuel > 0:
+            if consumption_unit in ('mpg', 'mpg_us'):
+                return total_distance / total_fuel
             return (total_fuel / total_distance) * 100  # L/100km
         return None
 
@@ -358,7 +365,7 @@ class Vehicle(db.Model):
                 'total_fuel_cost': round(self.get_total_fuel_cost(), 2),
                 'total_expense_cost': round(self.get_total_expense_cost(), 2),
                 'total_distance': round(self.get_total_distance(), 2),
-                'average_consumption': round(self.get_average_consumption(), 2) if self.get_average_consumption() else None,
+                'average_consumption': round(avg, 2) if (avg := self.get_average_consumption()) else None,
                 'last_odometer': self.get_last_odometer()
             }
         }
@@ -389,8 +396,12 @@ class FuelLog(db.Model):
     attachments = db.relationship('Attachment', backref='fuel_log', lazy='dynamic',
                                   cascade='all, delete-orphan')
 
-    def get_consumption(self):
-        """Calculate consumption for this fill-up"""
+    def get_consumption(self, consumption_unit=None):
+        """Calculate consumption for this fill-up.
+
+        Args:
+            consumption_unit: 'L/100km', 'mpg', or 'mpg_us'. If None, returns L/100km.
+        """
         if not self.is_full_tank or not self.volume:
             return None
 
@@ -402,12 +413,15 @@ class FuelLog(db.Model):
 
         if prev_log:
             distance = self.odometer - prev_log.odometer
-            if distance > 0:
+            if distance > 0 and self.volume > 0:
+                if consumption_unit in ('mpg', 'mpg_us'):
+                    return distance / self.volume
                 return (self.volume / distance) * 100  # L/100km
         return None
 
-    def to_dict(self):
+    def to_dict(self, consumption_unit=None):
         """Serialize fuel log to dictionary for API"""
+        consumption = self.get_consumption(consumption_unit)
         return {
             'id': self.id,
             'vehicle_id': self.vehicle_id,
@@ -420,7 +434,7 @@ class FuelLog(db.Model):
             'is_missed': self.is_missed,
             'station': self.station,
             'notes': self.notes,
-            'consumption': round(self.get_consumption(), 2) if self.get_consumption() else None,
+            'consumption': round(consumption, 2) if consumption else None,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
 
@@ -607,152 +621,152 @@ class AppSettings(db.Model):
 
 # Predefined vehicle specification types
 VEHICLE_SPEC_TYPES = [
-    ('tire_size_front', 'Front Tire Size'),
-    ('tire_size_rear', 'Rear Tire Size'),
-    ('wheel_size', 'Wheel Size'),
-    ('oil_type', 'Engine Oil Type'),
-    ('oil_capacity', 'Oil Capacity'),
-    ('coolant_type', 'Coolant Type'),
-    ('wiper_front', 'Front Wiper Size'),
-    ('wiper_rear', 'Rear Wiper Size'),
-    ('battery_type', 'Battery Type'),
-    ('spark_plug', 'Spark Plug Type'),
-    ('air_filter', 'Air Filter Part #'),
-    ('cabin_filter', 'Cabin Filter Part #'),
-    ('brake_pads_front', 'Front Brake Pads'),
-    ('brake_pads_rear', 'Rear Brake Pads'),
-    ('transmission_fluid', 'Transmission Fluid'),
-    ('custom', 'Custom'),
+    ('tire_size_front', _l('Front Tire Size')),
+    ('tire_size_rear', _l('Rear Tire Size')),
+    ('wheel_size', _l('Wheel Size')),
+    ('oil_type', _l('Engine Oil Type')),
+    ('oil_capacity', _l('Oil Capacity')),
+    ('coolant_type', _l('Coolant Type')),
+    ('wiper_front', _l('Front Wiper Size')),
+    ('wiper_rear', _l('Rear Wiper Size')),
+    ('battery_type', _l('Battery Type')),
+    ('spark_plug', _l('Spark Plug Type')),
+    ('air_filter', _l('Air Filter Part #')),
+    ('cabin_filter', _l('Cabin Filter Part #')),
+    ('brake_pads_front', _l('Front Brake Pads')),
+    ('brake_pads_rear', _l('Rear Brake Pads')),
+    ('transmission_fluid', _l('Transmission Fluid')),
+    ('custom', _l('Custom')),
 ]
 
 # Expense categories
 EXPENSE_CATEGORIES = [
-    ('maintenance', 'Maintenance'),
-    ('repairs', 'Repairs'),
-    ('insurance', 'Insurance'),
-    ('tax', 'Road Tax'),
-    ('registration', 'Registration'),
-    ('parking', 'Parking'),
-    ('tolls', 'Tolls'),
-    ('cleaning', 'Cleaning'),
-    ('accessories', 'Accessories'),
-    ('other', 'Other')
+    ('maintenance', _l('Maintenance')),
+    ('repairs', _l('Repairs')),
+    ('insurance', _l('Insurance')),
+    ('tax', _l('Road Tax')),
+    ('registration', _l('Registration')),
+    ('parking', _l('Parking')),
+    ('tolls', _l('Tolls')),
+    ('cleaning', _l('Cleaning')),
+    ('accessories', _l('Accessories')),
+    ('other', _l('Other'))
 ]
 
 # Vehicle types
 VEHICLE_TYPES = [
-    ('car', 'Car'),
-    ('van', 'Van'),
-    ('motorbike', 'Motorbike'),
-    ('scooter', 'Scooter'),
-    ('truck', 'Truck'),
-    ('suv', 'SUV'),
-    ('tractor', 'Tractor'),
-    ('atv_utv', 'ATV/UTV'),
-    ('boat', 'Boat'),
-    ('other', 'Other')
+    ('car', _l('Car')),
+    ('van', _l('Van')),
+    ('motorbike', _l('Motorbike')),
+    ('scooter', _l('Scooter')),
+    ('truck', _l('Truck')),
+    ('suv', _l('SUV')),
+    ('tractor', _l('Tractor')),
+    ('atv_utv', _l('ATV/UTV')),
+    ('boat', _l('Boat')),
+    ('other', _l('Other'))
 ]
 
 # Tracking unit options
 TRACKING_UNITS = [
-    ('mileage', 'Mileage (km/mi)'),
-    ('hours', 'Hours'),
+    ('mileage', _l('Mileage (km/mi)')),
+    ('hours', _l('Hours')),
 ]
 
 # Odometer unit options (for per-vehicle override)
 ODOMETER_UNITS = [
-    ('km', 'Kilometres (km)'),
-    ('mi', 'Miles (mi)'),
+    ('km', _l('Kilometres (km)')),
+    ('mi', _l('Miles (mi)')),
 ]
 
 # Fuel types
 FUEL_TYPES = [
-    ('petrol', 'Petrol/Gasoline'),
-    ('diesel', 'Diesel'),
-    ('electric', 'Electric'),
-    ('hybrid', 'Hybrid'),
-    ('plugin_hybrid', 'Plug-in Hybrid'),
-    ('lpg', 'LPG'),
-    ('cng', 'CNG'),
-    ('hydrogen', 'Hydrogen'),
-    ('e85', 'E85/Flex Fuel'),
-    ('other', 'Other')
+    ('petrol', _l('Petrol/Gasoline')),
+    ('diesel', _l('Diesel')),
+    ('electric', _l('Electric')),
+    ('hybrid', _l('Hybrid')),
+    ('plugin_hybrid', _l('Plug-in Hybrid')),
+    ('lpg', _l('LPG')),
+    ('cng', _l('CNG')),
+    ('hydrogen', _l('Hydrogen')),
+    ('e85', _l('E85/Flex Fuel')),
+    ('other', _l('Other'))
 ]
 
 # Reminder types
 REMINDER_TYPES = [
-    ('mot', 'MOT/Inspection'),
-    ('service', 'Service Due'),
-    ('insurance', 'Insurance Renewal'),
-    ('tax', 'Road Tax'),
-    ('registration', 'Registration Renewal'),
-    ('warranty', 'Warranty Expiry'),
-    ('tire_change', 'Tire Change'),
-    ('oil_change', 'Oil Change'),
-    ('custom', 'Custom')
+    ('mot', _l('MOT/Inspection')),
+    ('service', _l('Service Due')),
+    ('insurance', _l('Insurance Renewal')),
+    ('tax', _l('Road Tax')),
+    ('registration', _l('Registration Renewal')),
+    ('warranty', _l('Warranty Expiry')),
+    ('tire_change', _l('Tire Change')),
+    ('oil_change', _l('Oil Change')),
+    ('custom', _l('Custom'))
 ]
 
 # Recurrence options
 RECURRENCE_OPTIONS = [
-    ('none', 'No Repeat'),
-    ('monthly', 'Monthly'),
-    ('quarterly', 'Quarterly (3 months)'),
-    ('biannual', 'Every 6 months'),
-    ('yearly', 'Yearly'),
+    ('none', _l('No Repeat')),
+    ('monthly', _l('Monthly')),
+    ('quarterly', _l('Quarterly (3 months)')),
+    ('biannual', _l('Every 6 months')),
+    ('yearly', _l('Yearly')),
 ]
 
 # Trip purposes for tax deductions
 TRIP_PURPOSES = [
-    ('business', 'Business'),
-    ('personal', 'Personal'),
-    ('commute', 'Commute'),
-    ('medical', 'Medical'),
-    ('charity', 'Charity'),
-    ('other', 'Other'),
+    ('business', _l('Business')),
+    ('personal', _l('Personal')),
+    ('commute', _l('Commute')),
+    ('medical', _l('Medical')),
+    ('charity', _l('Charity')),
+    ('other', _l('Other')),
 ]
 
 # EV charger types
 CHARGER_TYPES = [
-    ('home', 'Home Charging'),
-    ('level1', 'Level 1'),
-    ('level2', 'Level 2'),
-    ('dcfc', 'DC Fast Charge'),
-    ('tesla', 'Tesla Supercharger'),
-    ('other', 'Other'),
+    ('home', _l('Home Charging')),
+    ('level1', _l('Level 1')),
+    ('level2', _l('Level 2')),
+    ('dcfc', _l('DC Fast Charge')),
+    ('tesla', _l('Tesla Supercharger')),
+    ('other', _l('Other')),
 ]
 
 # Maintenance schedule types
 MAINTENANCE_TYPES = [
-    ('oil_change', 'Oil Change'),
-    ('oil_filter', 'Oil Filter'),
-    ('air_filter', 'Air Filter'),
-    ('cabin_filter', 'Cabin/Pollen Filter'),
-    ('fuel_filter', 'Fuel Filter'),
-    ('spark_plugs', 'Spark Plugs'),
-    ('brake_pads', 'Brake Pads'),
-    ('brake_fluid', 'Brake Fluid'),
-    ('coolant', 'Coolant Flush'),
-    ('transmission', 'Transmission Service'),
-    ('timing_belt', 'Timing Belt'),
-    ('serpentine_belt', 'Serpentine Belt'),
-    ('tire_rotation', 'Tire Rotation'),
-    ('wheel_alignment', 'Wheel Alignment'),
-    ('battery', 'Battery Check/Replace'),
-    ('wiper_blades', 'Wiper Blades'),
-    ('full_service', 'Full Service'),
-    ('custom', 'Custom'),
+    ('oil_change', _l('Oil Change')),
+    ('oil_filter', _l('Oil Filter')),
+    ('air_filter', _l('Air Filter')),
+    ('cabin_filter', _l('Cabin/Pollen Filter')),
+    ('fuel_filter', _l('Fuel Filter')),
+    ('spark_plugs', _l('Spark Plugs')),
+    ('brake_pads', _l('Brake Pads')),
+    ('brake_fluid', _l('Brake Fluid')),
+    ('coolant', _l('Coolant Flush')),
+    ('transmission', _l('Transmission Service')),
+    ('timing_belt', _l('Timing Belt')),
+    ('serpentine_belt', _l('Serpentine Belt')),
+    ('tire_rotation', _l('Tire Rotation')),
+    ('wheel_alignment', _l('Wheel Alignment')),
+    ('battery', _l('Battery Check/Replace')),
+    ('wiper_blades', _l('Wiper Blades')),
+    ('full_service', _l('Full Service')),
+    ('custom', _l('Custom')),
 ]
 
 # Document types
 DOCUMENT_TYPES = [
-    ('insurance', 'Insurance Policy'),
-    ('registration', 'Registration/V5C'),
-    ('mot', 'MOT Certificate'),
-    ('service_record', 'Service Record'),
-    ('purchase', 'Purchase Invoice'),
-    ('warranty', 'Warranty Document'),
-    ('manual', 'Owner\'s Manual'),
-    ('other', 'Other'),
+    ('insurance', _l('Insurance Policy')),
+    ('registration', _l('Registration/V5C')),
+    ('mot', _l('MOT Certificate')),
+    ('service_record', _l('Service Record')),
+    ('purchase', _l('Purchase Invoice')),
+    ('warranty', _l('Warranty Document')),
+    ('manual', _l("Owner's Manual")),
+    ('other', _l('Other')),
 ]
 
 
@@ -854,7 +868,7 @@ class RecurringExpense(db.Model):
     name = db.Column(db.String(100), nullable=False)
     category = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(200))
-    amount = db.Column(db.Float, nullable=False)
+    amount = db.Column(db.Float, nullable=True)
     vendor = db.Column(db.String(100))
 
     # Recurrence settings
@@ -1101,22 +1115,22 @@ class ChargingSession(db.Model):
 
 # Part types for vehicle parts catalog
 PART_TYPES = [
-    ('oil', 'Engine Oil'),
-    ('oil_filter', 'Oil Filter'),
-    ('air_filter', 'Air Filter'),
-    ('fuel_filter', 'Fuel Filter'),
-    ('cabin_filter', 'Cabin Filter'),
-    ('spark_plug', 'Spark Plug'),
-    ('brake_pad', 'Brake Pad'),
-    ('brake_fluid', 'Brake Fluid'),
-    ('coolant', 'Coolant'),
-    ('transmission_fluid', 'Transmission Fluid'),
-    ('battery', 'Battery'),
-    ('tire', 'Tire'),
-    ('belt', 'Belt'),
-    ('wiper', 'Wiper Blade'),
-    ('bulb', 'Light Bulb'),
-    ('other', 'Other'),
+    ('oil', _l('Engine Oil')),
+    ('oil_filter', _l('Oil Filter')),
+    ('air_filter', _l('Air Filter')),
+    ('fuel_filter', _l('Fuel Filter')),
+    ('cabin_filter', _l('Cabin Filter')),
+    ('spark_plug', _l('Spark Plug')),
+    ('brake_pad', _l('Brake Pad')),
+    ('brake_fluid', _l('Brake Fluid')),
+    ('coolant', _l('Coolant')),
+    ('transmission_fluid', _l('Transmission Fluid')),
+    ('battery', _l('Battery')),
+    ('tire', _l('Tire')),
+    ('belt', _l('Belt')),
+    ('wiper', _l('Wiper Blade')),
+    ('bulb', _l('Light Bulb')),
+    ('other', _l('Other')),
 ]
 
 
