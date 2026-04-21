@@ -8,6 +8,22 @@
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white mt-2">{% if trip %}{{ _('Edit Trip') }}{% else %}{{ _('Log Trip') }}{% endif %}</h1>
     </div>
 
+    {% if not trip and templates %}
+    <div class="mb-4 bg-white dark:bg-gray-800 shadow rounded-lg p-4">
+        <div class="flex items-center gap-3">
+            <label for="template_select" class="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">{{ _('Load template') }}</label>
+            <select id="template_select" onchange="loadTemplate(this.value)"
+                    class="block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                <option value="">{{ _('— choose a template —') }}</option>
+                {% for tmpl in templates %}
+                <option value="{{ tmpl.id }}">{{ tmpl.name }}</option>
+                {% endfor %}
+            </select>
+            <a href="{{ url_for('trips.templates_index') }}" class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap">{{ _('Manage') }}</a>
+        </div>
+    </div>
+    {% endif %}
+
     <form method="POST" class="space-y-6">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
@@ -118,6 +134,25 @@
 </div>
 
 <script>
+function loadTemplate(templateId) {
+    if (!templateId) return;
+    fetch('{{ url_for("trips.templates_data", template_id=0) }}'.replace('/0/', '/' + templateId + '/'))
+        .then(r => r.json())
+        .then(data => {
+            if (data.vehicle_id) {
+                const vehicleSelect = document.getElementById('vehicle_id');
+                vehicleSelect.value = data.vehicle_id;
+                updateVehicleOdometer(data.vehicle_id);
+            }
+            const purpose = document.getElementById('purpose');
+            if (data.purpose) purpose.value = data.purpose;
+            if (data.start_location !== null) document.getElementById('start_location').value = data.start_location || '';
+            if (data.end_location !== null) document.getElementById('end_location').value = data.end_location || '';
+            if (data.description !== null) document.getElementById('description').value = data.description || '';
+            if (data.notes !== null) document.getElementById('notes').value = data.notes || '';
+        });
+}
+
 function updateVehicleOdometer(vehicleId) {
     const select = document.getElementById('vehicle_id');
     const selectedOption = select.options[select.selectedIndex];
@@ -152,12 +187,18 @@ function calculateDistance() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize distance calculation
     calculateDistance();
-
-    // Initialize vehicle odometer
     const vehicleSelect = document.getElementById('vehicle_id');
     updateVehicleOdometer(vehicleSelect.value);
+
+    // Auto-load template if specified in URL
+    {% if preload_template_id %}
+    const templateSelect = document.getElementById('template_select');
+    if (templateSelect) {
+        templateSelect.value = '{{ preload_template_id }}';
+        loadTemplate('{{ preload_template_id }}');
+    }
+    {% endif %}
 });
 </script>
 {% endblock %}

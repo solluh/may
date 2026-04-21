@@ -1095,6 +1095,38 @@ class Trip(db.Model):
         }
 
 
+class TripTemplate(db.Model):
+    """Reusable trip templates for common routes"""
+    __tablename__ = 'trip_templates'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.id'), nullable=True)
+
+    name = db.Column(db.String(100), nullable=False)
+    purpose = db.Column(db.String(20), nullable=False)
+    start_location = db.Column(db.String(200))
+    end_location = db.Column(db.String(200))
+    description = db.Column(db.String(200))
+    notes = db.Column(db.Text)
+
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user = db.relationship('User', backref=db.backref('trip_templates', lazy='dynamic'))
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'vehicle_id': self.vehicle_id,
+            'name': self.name,
+            'purpose': self.purpose,
+            'start_location': self.start_location,
+            'end_location': self.end_location,
+            'description': self.description,
+            'notes': self.notes,
+        }
+
+
 class ChargingSession(db.Model):
     """EV charging session logging"""
     __tablename__ = 'charging_sessions'

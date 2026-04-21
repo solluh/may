@@ -3,7 +3,8 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 from flask_babel import gettext as _
 from app import db
-from app.models import Vehicle, Trip, TRIP_PURPOSES
+from flask import jsonify
+from app.models import Vehicle, Trip, TripTemplate, TRIP_PURPOSES
 
 bp = Blueprint('trips', __name__, url_prefix='/trips')
 
@@ -98,6 +99,13 @@ def new():
     # Pre-select vehicle if provided
     selected_vehicle_id = request.args.get('vehicle_id', type=int) or current_user.default_vehicle_id
 
+    # Pre-fill from template if requested
+    preload_template_id = request.args.get('template_id', type=int)
+    if preload_template_id:
+        tmpl = TripTemplate.query.get(preload_template_id)
+        if tmpl and tmpl.user_id == current_user.id and tmpl.vehicle_id:
+            selected_vehicle_id = tmpl.vehicle_id
+
     # Get last odometer for selected vehicle
     last_odometer = 0
     if selected_vehicle_id:
@@ -107,12 +115,16 @@ def new():
     elif len(vehicles) == 1:
         last_odometer = vehicles[0].get_last_odometer()
 
+    templates = TripTemplate.query.filter_by(user_id=current_user.id).order_by(TripTemplate.name).all()
+
     return render_template('trips/form.html',
                            trip=None,
                            vehicles=vehicles,
                            purposes=TRIP_PURPOSES,
                            selected_vehicle_id=selected_vehicle_id,
-                           last_odometer=last_odometer)
+                           last_odometer=last_odometer,
+                           templates=templates,
+                           preload_template_id=preload_template_id)
 
 
 @bp.route('/<int:trip_id>/edit', methods=['GET', 'POST'])
@@ -146,7 +158,8 @@ def edit(trip_id):
                            vehicles=vehicles,
                            purposes=TRIP_PURPOSES,
                            selected_vehicle_id=trip.vehicle_id,
-                           last_odometer=trip.vehicle.get_last_odometer())
+                           last_odometer=trip.vehicle.get_last_odometer(),
+                           templates=[])
 
 
 @bp.route('/<int:trip_id>/delete', methods=['POST'])
@@ -164,6 +177,121 @@ def delete(trip_id):
     db.session.commit()
     flash(_('Trip deleted successfully'), 'success')
     return redirect(url_for('trips.index'))
+
+
+@bp.route('/templates')
+@login_required
+def templates_index():
+    """List trip templates"""
+    templates = TripTemplate.query.filter_by(user_id=current_user.id).order_by(TripTemplate.name).all()
+    vehicles = current_user.get_all_vehicles()
+    return render_template('trips/templates_index.html',
+                           templates=templates,
+                           vehicles=vehicles,
+                           purposes=TRIP_PURPOSES)
+
+
+@bp.route('/templates/new', methods=['GET', 'POST'])
+@login_required
+def templates_new():
+    """Create a trip template"""
+    vehicles = current_user.get_all_vehicles()
+
+    if request.method == 'POST':
+        vehicle_id = request.form.get('vehicle_id')
+        if vehicle_id:
+            vehicle_id = int(vehicle_id)
+            vehicle = Vehicle.query.get_or_404(vehicle_id)
+            if vehicle not in vehicles:
+                flash(_('Access denied'), 'error')
+                return redirect(url_for('trips.templates_index'))
+        else:
+            vehicle_id = None
+
+        template = TripTemplate(
+            user_id=current_user.id,
+            vehicle_id=vehicle_id,
+            name=request.form.get('name'),
+            purpose=request.form.get('purpose'),
+            start_location=request.form.get('start_location'),
+            end_location=request.form.get('end_location'),
+            description=request.form.get('description'),
+            notes=request.form.get('notes'),
+        )
+        db.session.add(template)
+        db.session.commit()
+        flash(_('Template saved'), 'success')
+        return redirect(url_for('trips.templates_index'))
+
+    return render_template('trips/template_form.html',
+                           template=None,
+                           vehicles=vehicles,
+                           purposes=TRIP_PURPOSES)
+
+
+@bp.route('/templates/<int:template_id>/edit', methods=['GET', 'POST'])
+@login_required
+def templates_edit(template_id):
+    """Edit a trip template"""
+    template = TripTemplate.query.get_or_404(template_id)
+    if template.user_id != current_user.id:
+        flash(_('Access denied'), 'error')
+        return redirect(url_for('trips.templates_index'))
+
+    vehicles = current_user.get_all_vehicles()
+
+    if request.method == 'POST':
+        vehicle_id = request.form.get('vehicle_id')
+        if vehicle_id:
+            vehicle_id = int(vehicle_id)
+            vehicle = Vehicle.query.get_or_404(vehicle_id)
+            if vehicle not in vehicles:
+                flash(_('Access denied'), 'error')
+                return redirect(url_for('trips.templates_index'))
+        else:
+            vehicle_id = None
+
+        template.vehicle_id = vehicle_id
+        template.name = request.form.get('name')
+        template.purpose = request.form.get('purpose')
+        template.start_location = request.form.get('start_location')
+        template.end_location = request.form.get('end_location')
+        template.description = request.form.get('description')
+        template.notes = request.form.get('notes')
+
+        db.session.commit()
+        flash(_('Template updated'), 'success')
+        return redirect(url_for('trips.templates_index'))
+
+    return render_template('trips/template_form.html',
+                           template=template,
+                           vehicles=vehicles,
+                           purposes=TRIP_PURPOSES)
+
+
+@bp.route('/templates/<int:template_id>/delete', methods=['POST'])
+@login_required
+def templates_delete(template_id):
+    """Delete a trip template"""
+    template = TripTemplate.query.get_or_404(template_id)
+    if template.user_id != current_user.id:
+        flash(_('Access denied'), 'error')
+        return redirect(url_for('trips.templates_index'))
+
+    db.session.delete(template)
+    db.session.commit()
+    flash(_('Template deleted'), 'success')
+    return redirect(url_for('trips.templates_index'))
+
+
+@bp.route('/templates/<int:template_id>/data')
+@login_required
+def templates_data(template_id):
+    """Return template data as JSON for pre-filling the trip form"""
+    template = TripTemplate.query.get_or_404(template_id)
+    if template.user_id != current_user.id:
+        return jsonify({'error': 'Access denied'}), 403
+    return jsonify(template.to_dict())
 
 
 @bp.route('/report')
