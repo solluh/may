@@ -69,7 +69,7 @@
 </div>
 
 <!-- Stats Cards -->
-<div class="grid grid-cols-2 gap-4 sm:grid-cols-4 mb-8">
+<div class="grid grid-cols-2 gap-4 sm:grid-cols-5 mb-8">
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ _('Total Fuel Cost') }}</dt>
         <dd class="mt-1 text-xl font-semibold text-gray-900 dark:text-white">{{ "%.2f"|format(stats.total_fuel_cost) }}</dd>
@@ -89,6 +89,11 @@
         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ _('Avg. Consumption') }}</dt>
         <dd class="mt-1 text-xl font-semibold text-gray-900 dark:text-white">{% if stats.avg_consumption %}{{ "%.1f"|format(stats.avg_consumption) }}{% else %}-{% endif %}</dd>
         <dd class="text-sm text-gray-500 dark:text-gray-400">{{ current_user.consumption_unit }}</dd>
+    </div>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ _('Cost per') }} {{ vehicle.get_effective_odometer_unit() }}</dt>
+        <dd class="mt-1 text-xl font-semibold text-gray-900 dark:text-white">{% if stats.cost_per_distance %}{{ "%.2f"|format(stats.cost_per_distance) }}{% else %}-{% endif %}</dd>
+        <dd class="text-sm text-gray-500 dark:text-gray-400">{{ current_user.currency }}</dd>
     </div>
 </div>
 

@@ -297,20 +297,27 @@ def quick():
             flash(_('Access denied'), 'error')
             return redirect(url_for('fuel.quick'))
 
+        volume = float(request.form.get('volume')) if request.form.get('volume') else None
+        total_cost = float(request.form.get('total_cost')) if request.form.get('total_cost') else None
+        price_per_unit = float(request.form.get('price_per_unit')) if request.form.get('price_per_unit') else None
+
+        # Derive missing value if two of the three are provided
+        if volume and price_per_unit and not total_cost:
+            total_cost = round(volume * price_per_unit, 2)
+        elif volume and total_cost and not price_per_unit:
+            price_per_unit = round(total_cost / volume, 3)
+
         log = FuelLog(
             vehicle_id=vehicle_id,
             user_id=current_user.id,
             date=datetime.now().date(),
             odometer=float(request.form.get('odometer')),
-            volume=float(request.form.get('volume')) if request.form.get('volume') else None,
-            total_cost=float(request.form.get('total_cost')) if request.form.get('total_cost') else None,
+            volume=volume,
+            total_cost=total_cost,
+            price_per_unit=price_per_unit,
             is_full_tank=request.form.get('is_full_tank') == 'on',
             station=request.form.get('station'),
         )
-
-        # Calculate price per unit
-        if log.volume and log.total_cost:
-            log.price_per_unit = round(log.total_cost / log.volume, 3)
 
         # Update station usage
         station_name = request.form.get('station')

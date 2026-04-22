@@ -13,6 +13,8 @@ services:
       - SECRET_KEY=${SECRET_KEY:-change-me-in-production}
       - DATABASE_URL=sqlite:////app/data/may.db
       - UPLOAD_FOLDER=/app/data/uploads
+      # Optional: set a fixed admin password (default is auto-generated and shown in logs)
+      # - ADMIN_PASSWORD=your-secure-password
 
 volumes:
   may_data:

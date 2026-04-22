@@ -50,23 +50,34 @@
             </p>
         </div>
 
-        <!-- Volume and Cost in a row -->
+        <!-- Volume, Price per unit, Total Cost -->
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label for="volume" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Volume') }}</label>
                 <div class="mt-1 relative">
                     <input type="number" name="volume" id="volume" step="0.001"
+                           oninput="calcQuickFuel('volume')"
                            class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-lg py-3 pr-8 focus:border-primary-500 focus:ring-primary-500">
                     <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">{{ current_user.volume_unit }}</span>
                 </div>
             </div>
             <div>
-                <label for="total_cost" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Total Cost') }}</label>
+                <label for="price_per_unit" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Price per') }} {{ current_user.volume_unit }}</label>
                 <div class="mt-1 relative">
-                    <input type="number" name="total_cost" id="total_cost" step="0.01"
+                    <input type="number" name="price_per_unit" id="price_per_unit" step="0.001"
+                           oninput="calcQuickFuel('price')"
                            class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-lg py-3 pr-12 focus:border-primary-500 focus:ring-primary-500">
                     <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">{{ current_user.currency }}</span>
                 </div>
+            </div>
+        </div>
+        <div>
+            <label for="total_cost" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Total Cost') }}</label>
+            <div class="mt-1 relative">
+                <input type="number" name="total_cost" id="total_cost" step="0.01"
+                       oninput="calcQuickFuel('total')"
+                       class="block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-lg py-3 pr-12 focus:border-primary-500 focus:ring-primary-500">
+                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">{{ current_user.currency }}</span>
             </div>
         </div>
 
@@ -151,6 +162,24 @@ function updateVehicleOdometer() {
         } else {
             hint.textContent = '';
             input.placeholder = '0';
+        }
+    }
+}
+
+function calcQuickFuel(changed) {
+    const volume = parseFloat(document.getElementById('volume').value);
+    const price = parseFloat(document.getElementById('price_per_unit').value);
+    const total = parseFloat(document.getElementById('total_cost').value);
+
+    if (changed === 'volume' || changed === 'price') {
+        if (volume > 0 && price > 0) {
+            document.getElementById('total_cost').value = (volume * price).toFixed(2);
+        }
+    } else if (changed === 'total') {
+        if (volume > 0 && total > 0) {
+            document.getElementById('price_per_unit').value = (total / volume).toFixed(3);
+        } else if (price > 0 && total > 0) {
+            document.getElementById('volume').value = (total / price).toFixed(3);
         }
     }
 }
