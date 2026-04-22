@@ -161,6 +161,10 @@ def edit(log_id):
         return redirect(url_for('fuel.index'))
 
     if request.method == 'POST':
+        # Capture old values before updating for price history sync
+        old_price = log.price_per_unit
+        old_date = log.date
+
         new_vehicle_id = request.form.get('vehicle_id', type=int)
         if new_vehicle_id:
             new_vehicle = Vehicle.query.get_or_404(new_vehicle_id)
@@ -180,6 +184,33 @@ def edit(log_id):
         # Calculate total cost if not provided
         if log.volume and log.price_per_unit and not log.total_cost:
             log.total_cost = round(log.volume * log.price_per_unit, 2)
+
+        # Keep fuel price history in sync with the edited log
+        if old_price and old_date:
+            history_entry = FuelPriceHistory.query.filter_by(
+                user_id=current_user.id,
+                date=old_date,
+                price_per_unit=old_price
+            ).first()
+            if history_entry:
+                if log.price_per_unit:
+                    history_entry.price_per_unit = log.price_per_unit
+                    history_entry.date = log.date
+                else:
+                    db.session.delete(history_entry)
+            else:
+                # No existing history entry — create one if a station is now selected
+                station_id = request.form.get('station_id', type=int)
+                if station_id and log.price_per_unit:
+                    station = FuelStation.query.get(station_id)
+                    if station:
+                        db.session.add(FuelPriceHistory(
+                            station_id=station_id,
+                            user_id=current_user.id,
+                            date=log.date,
+                            fuel_type=log.vehicle.fuel_type or 'petrol',
+                            price_per_unit=log.price_per_unit
+                        ))
 
         # Handle attachment upload
         if 'attachment' in request.files:

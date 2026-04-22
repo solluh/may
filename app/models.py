@@ -430,18 +430,29 @@ class FuelLog(db.Model):
     def get_consumption(self, consumption_unit=None, volume_unit='L'):
         """Calculate consumption for this fill-up.
 
+        For full-tank fill-ups, uses the previous full-tank as the baseline so
+        the figure accounts for a full tank-to-tank cycle.  For partial fills,
+        uses the immediately preceding log (any type) as the baseline to give
+        an instantaneous estimate for that segment.
+
         Args:
             consumption_unit: 'L/100km', 'mpg', or 'mpg_us'. If None, returns L/100km.
             volume_unit: 'L', 'gal' (UK), or 'us_gal'. Used to convert volume for MPG.
         """
-        if not self.is_full_tank or not self.volume:
+        if not self.volume:
             return None
 
-        prev_log = FuelLog.query.filter(
-            FuelLog.vehicle_id == self.vehicle_id,
-            FuelLog.odometer < self.odometer,
-            FuelLog.is_full_tank == True
-        ).order_by(FuelLog.odometer.desc()).first()
+        if self.is_full_tank:
+            prev_log = FuelLog.query.filter(
+                FuelLog.vehicle_id == self.vehicle_id,
+                FuelLog.odometer < self.odometer,
+                FuelLog.is_full_tank == True
+            ).order_by(FuelLog.odometer.desc()).first()
+        else:
+            prev_log = FuelLog.query.filter(
+                FuelLog.vehicle_id == self.vehicle_id,
+                FuelLog.odometer < self.odometer,
+            ).order_by(FuelLog.odometer.desc()).first()
 
         if prev_log:
             distance = self.odometer - prev_log.odometer
