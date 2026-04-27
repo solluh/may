@@ -17,11 +17,18 @@ depends_on = None
 
 
 def upgrade():
-    with op.batch_alter_table('fuel_logs', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('fuel_type', sa.String(length=20), nullable=True))
+    bind = op.get_bind()
+    inspector = sa.inspect(bind)
 
-    with op.batch_alter_table('vehicles', schema=None) as batch_op:
-        batch_op.add_column(sa.Column('secondary_fuel_type', sa.String(length=20), nullable=True))
+    fuel_log_cols = [c['name'] for c in inspector.get_columns('fuel_logs')]
+    if 'fuel_type' not in fuel_log_cols:
+        with op.batch_alter_table('fuel_logs', schema=None) as batch_op:
+            batch_op.add_column(sa.Column('fuel_type', sa.String(length=20), nullable=True))
+
+    vehicle_cols = [c['name'] for c in inspector.get_columns('vehicles')]
+    if 'secondary_fuel_type' not in vehicle_cols:
+        with op.batch_alter_table('vehicles', schema=None) as batch_op:
+            batch_op.add_column(sa.Column('secondary_fuel_type', sa.String(length=20), nullable=True))
 
 
 def downgrade():

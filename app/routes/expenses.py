@@ -108,14 +108,22 @@ def edit(expense_id):
         return redirect(url_for('expenses.index'))
 
     if request.method == 'POST':
-        date_str = request.form.get('date')
-        expense.date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else expense.date
-        expense.category = request.form.get('category')
-        expense.description = request.form.get('description')
-        expense.cost = float(request.form.get('cost'))
-        expense.odometer = float(request.form.get('odometer')) if request.form.get('odometer') else None
-        expense.vendor = request.form.get('vendor')
-        expense.notes = request.form.get('notes')
+        try:
+            date_str = request.form.get('date')
+            expense.date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else expense.date
+            expense.category = request.form.get('category')
+            expense.description = request.form.get('description')
+            expense.cost = float(request.form.get('cost'))
+            expense.odometer = float(request.form.get('odometer')) if request.form.get('odometer') else None
+            expense.vendor = request.form.get('vendor')
+            expense.notes = request.form.get('notes')
+        except (ValueError, TypeError):
+            flash(_('Invalid data submitted. Please check the date and cost fields.'), 'error')
+            return render_template('expenses/form.html',
+                                   expense=expense,
+                                   vehicles=vehicles,
+                                   categories=EXPENSE_CATEGORIES,
+                                   selected_vehicle_id=expense.vehicle_id)
 
         # Handle attachment upload
         if 'attachment' in request.files:
