@@ -10,7 +10,7 @@ from app.models import Vehicle, Document, DOCUMENT_TYPES
 
 bp = Blueprint('documents', __name__, url_prefix='/documents')
 
-ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'doc', 'docx'}
+ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'doc', 'docx', 'xlsx', 'xls', 'txt', 'csv', 'epub'}
 
 
 def allowed_file(filename):
