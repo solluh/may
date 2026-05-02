@@ -552,17 +552,77 @@
 </div>
 {% endif %}
 
-<!-- Parts & Consumables -->
+<!-- Upcoming Maintenance -->
+{% if maintenance_schedules %}
 <div class="bg-white dark:bg-gray-800 shadow rounded-lg mb-8">
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
         <div class="flex items-center">
             <svg class="h-5 w-5 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ _('Parts & Consumables') }}</h2>
+            <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ _('Upcoming Maintenance') }}</h2>
+        </div>
+        <a href="{{ url_for('maintenance.index') }}?vehicle_id={{ vehicle.id }}" class="text-sm text-primary-600 hover:text-primary-500">{{ _('View all') }}</a>
+    </div>
+    <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+        {% for schedule in maintenance_schedules[:5] %}
+        {% set is_overdue = schedule.next_due_date and schedule.next_due_date < today %}
+        {% set is_due_soon = schedule.next_due_date and not is_overdue and (schedule.next_due_date - today).days <= 30 %}
+        <li class="px-6 py-3">
+            <div class="flex items-center justify-between gap-4">
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ schedule.name }}</span>
+                        {% if is_overdue %}
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400">{{ _('Overdue') }}</span>
+                        {% elif is_due_soon %}
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400">{{ _('Due soon') }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="flex items-center gap-3 mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                        {% if schedule.next_due_date %}
+                        <span>{{ schedule.next_due_date|format_date }}</span>
+                        {% endif %}
+                        {% if schedule.next_due_odometer %}
+                        <span>{{ schedule.next_due_odometer|int }} {{ vehicle.get_effective_odometer_unit() }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if schedule.next_due_date and schedule.last_performed_date %}
+                {% set total_days = (schedule.next_due_date - schedule.last_performed_date).days %}
+                {% set elapsed_days = (today - schedule.last_performed_date).days %}
+                {% set pct = [[(elapsed_days / total_days * 100) if total_days > 0 else 100, 0]|max, 100]|min %}
+                <div class="w-24 flex-shrink-0">
+                    <div class="h-1.5 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full {% if is_overdue %}bg-red-500{% elif is_due_soon %}bg-yellow-400{% else %}bg-green-500{% endif %}"
+                             style="width: {{ pct }}%"></div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<!-- Parts & Consumables -->
+<div class="bg-white dark:bg-gray-800 shadow rounded-lg mb-8" id="parts-section">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <button onclick="toggleParts()" class="flex items-center gap-2 text-left" title="{{ _('Toggle section') }}">
+                <svg id="parts-chevron" class="h-4 w-4 text-gray-400 transition-transform duration-150" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+                <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                </svg>
+                <h2 class="text-lg font-medium text-gray-900 dark:text-white">{{ _('Parts & Consumables') }}</h2>
+            </button>
         </div>
         <a href="{{ url_for('vehicles.parts', vehicle_id=vehicle.id) }}" class="text-sm text-primary-600 hover:text-primary-500">{{ _('View all') }}</a>
     </div>
+    <div id="parts-body">
     {% if parts %}
     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
         {% for part in parts[:6] %}
@@ -613,7 +673,26 @@
         </a>
     </div>
     {% endif %}
+    </div><!-- end parts-body -->
 </div>
+
+<script>
+(function() {
+    const key = 'parts-collapsed-{{ vehicle.id }}';
+    const body = document.getElementById('parts-body');
+    const chevron = document.getElementById('parts-chevron');
+    if (localStorage.getItem(key) === '1') {
+        body.classList.add('hidden');
+        chevron.style.transform = 'rotate(-90deg)';
+    }
+    window.toggleParts = function() {
+        const collapsed = !body.classList.contains('hidden');
+        body.classList.toggle('hidden', collapsed);
+        chevron.style.transform = collapsed ? 'rotate(-90deg)' : '';
+        localStorage.setItem(key, collapsed ? '1' : '0');
+    };
+})();
+</script>
 
 <!-- Consumption Chart -->
 <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-8">

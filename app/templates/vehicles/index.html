@@ -79,9 +79,14 @@
         <div class="p-4">
             <div class="flex items-center justify-between">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{ vehicle.name }}</h3>
-                {% if not vehicle.is_active %}
-                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-600 text-gray-800">{{ _('Inactive') }}</span>
-                {% endif %}
+                <div class="flex gap-1">
+                    {% if not vehicle.is_active %}
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-300">{{ _('Inactive') }}</span>
+                    {% endif %}
+                    {% if vehicle.is_shared %}
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">{{ _('Shared') }}</span>
+                    {% endif %}
+                </div>
             </div>
             <p class="text-sm text-gray-500 dark:text-gray-400">{{ vehicle.make or '' }} {{ vehicle.model or '' }} {% if vehicle.year %}({{ vehicle.year }}){% endif %}</p>
             <div class="mt-4 flex items-center justify-between text-sm">

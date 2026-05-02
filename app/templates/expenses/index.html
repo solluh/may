@@ -22,27 +22,41 @@
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead class="bg-gray-50 dark:bg-gray-700">
                 <tr>
+                    <th class="w-8 px-3 py-3"></th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Vehicle</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Category</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Description</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Odometer</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Cost</th>
                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 {% for expense in expenses %}
-                <tr class="hover:bg-gray-50 dark:bg-gray-700">
+                {% set has_details = expense.vendor or expense.notes %}
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 {% if has_details %}cursor-pointer{% endif %}"
+                    {% if has_details %}onclick="toggleExpenseDetail({{ expense.id }})"{% endif %}>
+                    <td class="px-3 py-4 text-center">
+                        {% if has_details %}
+                        <svg id="chevron-{{ expense.id }}" class="h-4 w-4 text-gray-400 transition-transform duration-150 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                        {% endif %}
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ expense.date|format_date }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                        <a href="{{ url_for('vehicles.view', vehicle_id=expense.vehicle_id) }}" class="text-primary-600 hover:text-primary-500">
+                        <a href="{{ url_for('vehicles.view', vehicle_id=expense.vehicle_id) }}" class="text-primary-600 hover:text-primary-500" onclick="event.stopPropagation()">
                             {{ expense.vehicle.name }}
                         </a>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 capitalize">{{ expense.category }}</td>
                     <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">{{ expense.description }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        {% if expense.odometer %}{{ expense.odometer|int }} {{ expense.vehicle.get_effective_odometer_unit() }}{% else %}-{% endif %}
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ "%.2f"|format(expense.cost) }} {{ current_user.currency }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium" onclick="event.stopPropagation()">
                         <a href="{{ url_for('expenses.edit', expense_id=expense.id) }}" class="text-primary-600 hover:text-primary-900 mr-3">Edit</a>
                         <form method="POST" action="{{ url_for('expenses.delete', expense_id=expense.id) }}" class="inline"
                               onsubmit="return confirm('Delete this expense?');">
@@ -51,6 +65,27 @@
                         </form>
                     </td>
                 </tr>
+                {% if has_details %}
+                <tr id="detail-{{ expense.id }}" class="hidden bg-gray-50 dark:bg-gray-700/50">
+                    <td></td>
+                    <td colspan="7" class="px-6 py-3">
+                        <div class="flex flex-wrap gap-6 text-sm">
+                            {% if expense.vendor %}
+                            <div>
+                                <span class="font-medium text-gray-500 dark:text-gray-400">Vendor / Provider: </span>
+                                <span class="text-gray-900 dark:text-white">{{ expense.vendor }}</span>
+                            </div>
+                            {% endif %}
+                            {% if expense.notes %}
+                            <div>
+                                <span class="font-medium text-gray-500 dark:text-gray-400">Notes: </span>
+                                <span class="text-gray-900 dark:text-white">{{ expense.notes }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endif %}
                 {% endfor %}
             </tbody>
         </table>
@@ -74,4 +109,18 @@
     </div>
 </div>
 {% endif %}
+
+<script>
+function toggleExpenseDetail(id) {
+    const row = document.getElementById('detail-' + id);
+    const chevron = document.getElementById('chevron-' + id);
+    if (row.classList.contains('hidden')) {
+        row.classList.remove('hidden');
+        chevron.style.transform = 'rotate(90deg)';
+    } else {
+        row.classList.add('hidden');
+        chevron.style.transform = '';
+    }
+}
+</script>
 {% endblock %}

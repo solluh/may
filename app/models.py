@@ -105,12 +105,13 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def get_all_vehicles(self):
-        """Get all vehicles user has access to (owned + shared), sorted by make/model"""
+        """Get all vehicles user has access to (owned + explicitly shared + instance-shared), sorted by make/model"""
         owned = list(self.owned_vehicles.all())
         shared = list(self.shared_vehicles)
+        instance_shared = Vehicle.query.filter_by(is_shared=True).all()
         seen = set()
         unique = []
-        for v in owned + shared:
+        for v in owned + shared + instance_shared:
             if v.id not in seen:
                 seen.add(v.id)
                 unique.append(v)
@@ -214,6 +215,9 @@ class Vehicle(db.Model):
     # Annual mileage tracking
     annual_mileage_limit = db.Column(db.Float, nullable=True)
     annual_mileage_start_date = db.Column(db.Date, nullable=True)
+
+    # Sharing — if True, all users on this instance can view and log against this vehicle
+    is_shared = db.Column(db.Boolean, default=False, nullable=False)
 
     # Relationships
     fuel_logs = db.relationship('FuelLog', backref='vehicle', lazy='dynamic',
@@ -790,6 +794,7 @@ VEHICLE_SPEC_TYPES = [
 EXPENSE_CATEGORIES = [
     ('maintenance', _l('Maintenance')),
     ('repairs', _l('Repairs')),
+    ('inspection', _l('Inspection')),
     ('insurance', _l('Insurance')),
     ('tax', _l('Road Tax')),
     ('registration', _l('Registration')),

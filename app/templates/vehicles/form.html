@@ -238,6 +238,12 @@
                        class="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500">
                 <label for="is_active" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">{{ _('Active (show in lists and calculations)') }}</label>
             </div>
+            <div class="flex items-center mt-3">
+                <input type="checkbox" name="is_shared" id="is_shared"
+                       {% if vehicle.is_shared %}checked{% endif %}
+                       class="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500">
+                <label for="is_shared" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">{{ _('Shared — all users on this instance can view and log against this vehicle') }}</label>
+            </div>
         </div>
         {% endif %}
 

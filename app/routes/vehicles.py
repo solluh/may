@@ -7,7 +7,7 @@ from flask_login import login_required, current_user
 from flask_babel import gettext as _
 from werkzeug.utils import secure_filename
 from app import db
-from app.models import Vehicle, VehicleSpec, VehiclePart, FuelLog, Expense, User, Reminder, VEHICLE_TYPES, FUEL_TYPES, VEHICLE_SPEC_TYPES, REMINDER_TYPES, PART_TYPES, TRACKING_UNITS, ODOMETER_UNITS, AppSettings
+from app.models import Vehicle, VehicleSpec, VehiclePart, FuelLog, Expense, User, Reminder, MaintenanceSchedule, VEHICLE_TYPES, FUEL_TYPES, VEHICLE_SPEC_TYPES, REMINDER_TYPES, PART_TYPES, TRACKING_UNITS, ODOMETER_UNITS, AppSettings
 from app.services.tessie import TessieService
 
 bp = Blueprint('vehicles', __name__, url_prefix='/vehicles')
@@ -139,6 +139,15 @@ def view(vehicle_id):
     # Get parts for this vehicle
     parts = vehicle.parts.order_by(VehiclePart.part_type, VehiclePart.name).all()
 
+    # Get active maintenance schedules, sorted soonest-due first
+    from datetime import date as date_type
+    today = date_type.today()
+    maintenance_schedules = vehicle.maintenance_schedules.filter_by(is_active=True).all()
+    maintenance_schedules.sort(key=lambda s: (
+        s.next_due_date or date_type(9999, 12, 31),
+        s.next_due_odometer or float('inf')
+    ))
+
     # Check if DVLA integration is configured
     from app.services.dvla import DVLAService
     dvla_configured = DVLAService.is_configured()
@@ -156,6 +165,8 @@ def view(vehicle_id):
                            reminder_types=REMINDER_TYPES,
                            parts=parts,
                            part_types=PART_TYPES,
+                           maintenance_schedules=maintenance_schedules,
+                           today=today,
                            dvla_configured=dvla_configured,
                            tessie_configured=tessie_configured,
                            annual_mileage_stats=vehicle.get_annual_mileage_stats())
@@ -187,6 +198,9 @@ def edit(vehicle_id):
         vehicle.notes = request.form.get('notes')
         vehicle.annual_mileage_limit = float(request.form.get('annual_mileage_limit')) if request.form.get('annual_mileage_limit') else None
         vehicle.annual_mileage_start_date = datetime.strptime(request.form.get('annual_mileage_start_date'), '%Y-%m-%d').date() if request.form.get('annual_mileage_start_date') else None
+
+        vehicle.is_active = request.form.get('is_active') == 'on'
+        vehicle.is_shared = request.form.get('is_shared') == 'on'
 
         # Handle Tessie integration fields
         vehicle.tessie_vin = request.form.get('tessie_vin') or None
