@@ -120,79 +120,139 @@ def _bootstrap_alembic_version(app):
         app.logger.warning(f'Could not stamp alembic_version: {e}')
 
 
-def _run_schema_migrations(app):
-    """Add missing columns to existing tables.
+def _log_startup_banner(app):
+    """Log version + alembic state once on boot.
 
-    SQLite doesn't support adding columns via db.create_all() for existing tables,
-    so we manually add any missing columns here.
+    A short banner means a copy-paste of the container logs is enough to
+    triage version-related upgrade bugs without having to ask the reporter
+    for ``docker exec ... cat config.py``.
+    """
+    from sqlalchemy import inspect, text
+    try:
+        from config import Config
+        version = getattr(Config, 'DISPLAY_VERSION', None) or getattr(Config, 'APP_VERSION', 'unknown')
+    except Exception:
+        version = 'unknown'
+
+    alembic_rev = 'unset'
+    try:
+        inspector = inspect(db.engine)
+        if 'alembic_version' in inspector.get_table_names():
+            with db.engine.begin() as conn:
+                alembic_rev = conn.execute(
+                    text('SELECT version_num FROM alembic_version')
+                ).scalar() or 'empty'
+    except Exception as e:
+        alembic_rev = f'error: {e}'
+
+    app.logger.warning(f'May {version} starting (alembic_version={alembic_rev})')
+
+
+def _scalar_default_sql(column):
+    """Render a SQLAlchemy column's Python-side default as a SQL literal.
+
+    Returns None when no scalar default is set, when the default is callable
+    (e.g. ``datetime.utcnow``), or when the value is a type we cannot safely
+    embed in DDL. Callable defaults are intentionally skipped: ``ALTER TABLE``
+    fills existing rows once at column-creation time, so the captured value
+    would be misleading anyway.
+    """
+    default = column.default
+    if default is None or not getattr(default, 'is_scalar', False):
+        return None
+    arg = default.arg
+    if isinstance(arg, bool):
+        return '1' if arg else '0'
+    if isinstance(arg, (int, float)):
+        return str(arg)
+    if isinstance(arg, str):
+        return "'" + arg.replace("'", "''") + "'"
+    return None
+
+
+def _add_column_clause(column, dialect):
+    """Build the body of an ``ALTER TABLE ... ADD COLUMN`` from a SQLAlchemy column.
+
+    Drops any UNIQUE flag — SQLite refuses inline UNIQUE on ``ADD COLUMN`` and
+    we recreate uniqueness as a separate index. ``NOT NULL`` is only emitted
+    when there is also a scalar default; otherwise existing rows would
+    instantly violate the constraint.
+    """
+    parts = [column.name, column.type.compile(dialect=dialect)]
+    default_sql = _scalar_default_sql(column)
+    if default_sql is not None:
+        parts.append(f'DEFAULT {default_sql}')
+        if not column.nullable:
+            parts.append('NOT NULL')
+    for fk in column.foreign_keys:
+        ref_table, ref_col = fk.target_fullname.split('.', 1)
+        parts.append(f'REFERENCES {ref_table}({ref_col})')
+    return ' '.join(parts)
+
+
+def _run_schema_migrations(app):
+    """Add columns defined on the SQLAlchemy models but missing from existing tables.
+
+    ``db.create_all()`` only creates missing tables — never alters existing
+    ones — so when a model gains a new column the database it is pointed at
+    keeps the old shape. This routine walks every table+column in
+    ``db.metadata`` and issues an ``ALTER TABLE ... ADD COLUMN`` for each
+    column the live database is missing. Unique constraints are added via a
+    separate ``CREATE UNIQUE INDEX`` because SQLite rejects inline ``UNIQUE``
+    on ``ALTER TABLE ADD COLUMN``.
+
+    Failures are logged rather than raised: a single column we cannot apply
+    cleanly (for example ``NOT NULL`` without a default on a populated table)
+    must not block the rest of the schema from catching up. Issue #166 was a
+    direct consequence of the previous hardcoded list missing newly-added
+    User columns; the model-driven walk keeps recovery in lockstep with the
+    models automatically.
     """
     from sqlalchemy import text, inspect
 
-    # Define schema migrations: table -> [(column_name, column_type), ...]
-    migrations = {
-        'vehicles': [
-            ('tessie_vin', 'VARCHAR(20)'),
-            ('tessie_enabled', 'BOOLEAN DEFAULT 0'),
-            ('tessie_last_odometer', 'FLOAT'),
-            ('tessie_battery_level', 'INTEGER'),
-            ('tessie_battery_range', 'FLOAT'),
-            ('tessie_last_updated', 'DATETIME'),
-            ('tracking_unit', "VARCHAR(20) DEFAULT 'mileage'"),
-            ('annual_mileage_limit', 'FLOAT'),
-            ('annual_mileage_start_date', 'DATE'),
-        ],
-        'users': [
-            ('date_format', "VARCHAR(20) DEFAULT 'DD/MM/YYYY'"),
-            ('password_reset_token', 'VARCHAR(100)'),
-            ('password_reset_expires', 'DATETIME'),
-            ('default_vehicle_id', 'INTEGER REFERENCES vehicles(id)'),
-        ],
-        'charging_sessions': [
-            ('tessie_charge_id', 'VARCHAR(50)'),
-        ],
-    }
+    inspector = inspect(db.engine)
+    existing_tables = set(inspector.get_table_names())
+    dialect = db.engine.dialect
 
-    # Define unique indexes to create after adding columns
-    # SQLite doesn't support adding UNIQUE columns directly via ALTER TABLE
-    unique_indexes = [
-        ('charging_sessions', 'tessie_charge_id', 'ix_charging_sessions_tessie_charge_id'),
-        ('users', 'password_reset_token', 'ix_users_password_reset_token'),
-    ]
-
-    with db.engine.connect() as conn:
-        inspector = inspect(db.engine)
-
-        for table_name, columns in migrations.items():
-            # Check if table exists
-            if table_name not in inspector.get_table_names():
+    with db.engine.begin() as conn:
+        for table in db.metadata.tables.values():
+            if table.name not in existing_tables:
                 continue
-
-            # Get existing columns
-            existing_cols = [col['name'] for col in inspector.get_columns(table_name)]
-
-            # Add missing columns
-            for col_name, col_type in columns:
-                if col_name not in existing_cols:
-                    try:
-                        conn.execute(text(f'ALTER TABLE {table_name} ADD COLUMN {col_name} {col_type}'))
-                        app.logger.info(f'Added column {col_name} to {table_name}')
-                    except Exception as e:
-                        app.logger.warning(f'Could not add column {col_name} to {table_name}: {e}')
-
-        # Create unique indexes
-        for table_name, col_name, index_name in unique_indexes:
-            if table_name not in inspector.get_table_names():
-                continue
-            # Check if index already exists
-            existing_indexes = [idx['name'] for idx in inspector.get_indexes(table_name)]
-            if index_name not in existing_indexes:
+            existing_cols = {col['name'] for col in inspector.get_columns(table.name)}
+            for column in table.columns:
+                if column.name in existing_cols:
+                    continue
+                clause = _add_column_clause(column, dialect)
                 try:
-                    conn.execute(text(f'CREATE UNIQUE INDEX {index_name} ON {table_name} ({col_name})'))
-                    app.logger.info(f'Created unique index {index_name} on {table_name}.{col_name}')
+                    conn.execute(text(f'ALTER TABLE {table.name} ADD COLUMN {clause}'))
+                    app.logger.info(f'Added column {column.name} to {table.name}')
                 except Exception as e:
-                    app.logger.warning(f'Could not create index {index_name}: {e}')
+                    app.logger.warning(
+                        f'Could not add column {column.name} to {table.name}: {e}'
+                    )
 
-        conn.commit()
+        # Re-inspect so we see indexes on freshly-added columns.
+        inspector = inspect(db.engine)
+        for table in db.metadata.tables.values():
+            if table.name not in existing_tables:
+                continue
+            existing_indexes = {idx['name'] for idx in inspector.get_indexes(table.name)}
+            for column in table.columns:
+                if not (column.unique or column.index):
+                    continue
+                index_name = f'ix_{table.name}_{column.name}'
+                if index_name in existing_indexes:
+                    continue
+                kind = 'UNIQUE INDEX' if column.unique else 'INDEX'
+                try:
+                    conn.execute(text(
+                        f'CREATE {kind} {index_name} ON {table.name} ({column.name})'
+                    ))
+                    app.logger.info(f'Created {kind.lower()} {index_name}')
+                except Exception as e:
+                    app.logger.warning(
+                        f'Could not create {kind.lower()} {index_name}: {e}'
+                    )
 
 
 def get_locale():
@@ -302,6 +362,11 @@ def create_app(config_class=Config):
         return response
 
     with app.app_context():
+        # Surface the running version up front so anyone reading the logs
+        # for a startup failure can immediately tell what they're looking
+        # at — issue #166 stalled on triage because nothing in the worker
+        # boot trace identified the image version.
+        _log_startup_banner(app)
         db.create_all()
         # Stamp alembic_version for pre-Flask-Migrate databases so future
         # `flask db upgrade` runs apply only pending migrations.
