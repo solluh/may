@@ -188,32 +188,41 @@ def edit(log_id):
         if log.volume and log.price_per_unit and not log.total_cost:
             log.total_cost = round(log.volume * log.price_per_unit, 2)
 
-        # Keep fuel price history in sync with the edited log
+        # Reconcile fuel price history with the edited log.
+        # Issue #170: linking a station to an existing log via edit must
+        # both create the price-history row (so it shows in "cheapest fuel")
+        # and bump the station's `times_used` counter.
+        station_id = request.form.get('station_id', type=int)
+        existing_entry = None
         if old_price and old_date:
-            history_entry = FuelPriceHistory.query.filter_by(
+            existing_entry = FuelPriceHistory.query.filter_by(
                 user_id=current_user.id,
                 date=old_date,
-                price_per_unit=old_price
+                price_per_unit=old_price,
             ).first()
-            if history_entry:
-                if log.price_per_unit:
-                    history_entry.price_per_unit = log.price_per_unit
-                    history_entry.date = log.date
-                else:
-                    db.session.delete(history_entry)
+
+        if existing_entry:
+            if not log.price_per_unit:
+                db.session.delete(existing_entry)
             else:
-                # No existing history entry — create one if a station is now selected
-                station_id = request.form.get('station_id', type=int)
-                if station_id and log.price_per_unit:
-                    station = FuelStation.query.get(station_id)
-                    if station:
-                        db.session.add(FuelPriceHistory(
-                            station_id=station_id,
-                            user_id=current_user.id,
-                            date=log.date,
-                            fuel_type=log.fuel_type or log.vehicle.fuel_type or 'petrol',
-                            price_per_unit=log.price_per_unit
-                        ))
+                existing_entry.price_per_unit = log.price_per_unit
+                existing_entry.date = log.date
+                if station_id and existing_entry.station_id != station_id:
+                    new_station = FuelStation.query.get(station_id)
+                    if new_station:
+                        existing_entry.station_id = station_id
+                        new_station.increment_usage()
+        elif station_id and log.price_per_unit:
+            new_station = FuelStation.query.get(station_id)
+            if new_station:
+                db.session.add(FuelPriceHistory(
+                    station_id=station_id,
+                    user_id=current_user.id,
+                    date=log.date,
+                    fuel_type=log.fuel_type or log.vehicle.fuel_type or 'petrol',
+                    price_per_unit=log.price_per_unit,
+                ))
+                new_station.increment_usage()
 
         # Handle attachment upload
         if 'attachment' in request.files:

@@ -313,6 +313,45 @@ class TestPriceHistorySync:
         db.session.refresh(history)
         assert history.price_per_unit == 2.547
 
+    def test_edit_links_station_to_existing_log(
+            self, auth_client, test_user, sample_vehicle, sample_station):
+        """#170 — adding a station to a previously stationless log must
+        create the price-history row and bump the station's times_used."""
+        log = FuelLog(
+            vehicle_id=sample_vehicle.id,
+            user_id=test_user.id,
+            date=date(2026, 4, 15),
+            odometer=20000,
+            volume=40,
+            price_per_unit=1.50,
+            total_cost=60.0,
+            is_full_tank=True,
+        )
+        db.session.add(log)
+        db.session.commit()
+        log_id = log.id
+        starting_uses = sample_station.times_used or 0
+
+        auth_client.post(f'/fuel/{log_id}/edit', data={
+            'date': '2026-04-15',
+            'odometer': '20000',
+            'volume': '40',
+            'price_per_unit': '1.50',
+            'total_cost': '60.0',
+            'station_id': str(sample_station.id),
+            'is_full_tank': 'on',
+        }, follow_redirects=True)
+
+        db.session.refresh(sample_station)
+        assert sample_station.times_used == starting_uses + 1
+
+        history = FuelPriceHistory.query.filter_by(
+            station_id=sample_station.id,
+            price_per_unit=1.50,
+        ).first()
+        assert history is not None
+        assert history.date == date(2026, 4, 15)
+
 
 class TestFuelQuick:
     def test_quick_requires_auth(self, client):
