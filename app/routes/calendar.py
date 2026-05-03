@@ -155,8 +155,9 @@ def calendar_feed(user):
 
             summary = f"🔧 {schedule.name} - {vehicle_name}"
             description = f"Maintenance due for {vehicle_name}"
-            if schedule.next_due_mileage:
-                description += f"\\nDue at: {schedule.next_due_mileage} {vehicle.unit_distance if vehicle else 'km'}"
+            if schedule.next_due_odometer:
+                unit = vehicle.get_effective_odometer_unit() if vehicle else 'km'
+                description += f"\\nDue at: {schedule.next_due_odometer:.0f} {unit}"
             if schedule.notes:
                 description += f"\\nNotes: {schedule.notes}"
 

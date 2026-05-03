@@ -247,7 +247,7 @@ def alerts(user):
                 'vehicle': schedule.vehicle.name,
                 'title': schedule.name,
                 'status': 'overdue' if schedule.is_overdue() else 'due',
-                'due_mileage': schedule.next_due_mileage,
+                'due_odometer': schedule.next_due_odometer,
                 'due_date': schedule.next_due_date.isoformat() if schedule.next_due_date else None
             })
 

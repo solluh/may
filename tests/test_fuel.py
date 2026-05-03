@@ -150,6 +150,67 @@ class TestPartialFillConsumption:
         assert consumption is not None
         assert abs(consumption - 10.0) < 0.01
 
+    def test_full_tank_sums_intervening_partials(self, app, test_user, sample_vehicle):
+        """#169 — full tank consumption must sum partial fills since the previous full."""
+        # Astrmn's reported scenario: full → partial → partial → full,
+        # 1371 km between fulls, 19.67 + 12.71 + 53.80 = 86.18 L total.
+        log_first_full = FuelLog(
+            vehicle_id=sample_vehicle.id, user_id=test_user.id,
+            date=date(2026, 4, 21), odometer=10000, volume=50, is_full_tank=True,
+        )
+        partial_a = FuelLog(
+            vehicle_id=sample_vehicle.id, user_id=test_user.id,
+            date=date(2026, 4, 24), odometer=10500, volume=19.67, is_full_tank=False,
+        )
+        partial_b = FuelLog(
+            vehicle_id=sample_vehicle.id, user_id=test_user.id,
+            date=date(2026, 4, 27), odometer=10900, volume=12.71, is_full_tank=False,
+        )
+        log_last_full = FuelLog(
+            vehicle_id=sample_vehicle.id, user_id=test_user.id,
+            date=date(2026, 4, 29), odometer=11371, volume=53.80, is_full_tank=True,
+        )
+        db.session.add_all([log_first_full, partial_a, partial_b, log_last_full])
+        db.session.commit()
+        # Fill-to-fill: (19.67 + 12.71 + 53.80) / 1371 * 100 = 6.286 L/100km
+        consumption = log_last_full.get_consumption()
+        assert consumption is not None
+        assert abs(consumption - 6.286) < 0.01
+
+    def test_full_tank_returns_none_when_intervening_log_is_missed(
+            self, app, test_user, sample_vehicle):
+        """A missed fill in the range invalidates the consumption figure."""
+        log1 = FuelLog(vehicle_id=sample_vehicle.id, user_id=test_user.id,
+                       date=date(2026, 4, 1), odometer=10000, volume=40, is_full_tank=True)
+        missed = FuelLog(vehicle_id=sample_vehicle.id, user_id=test_user.id,
+                         date=date(2026, 4, 5), odometer=10300, volume=20,
+                         is_full_tank=False, is_missed=True)
+        log3 = FuelLog(vehicle_id=sample_vehicle.id, user_id=test_user.id,
+                       date=date(2026, 4, 10), odometer=10500, volume=42,
+                       is_full_tank=True)
+        db.session.add_all([log1, missed, log3])
+        db.session.commit()
+        assert log3.get_consumption() is None
+
+    def test_average_consumption_includes_partial_fills(
+            self, app, test_user, sample_vehicle):
+        """#169 — vehicle average must count partial fills between two fulls."""
+        logs = [
+            FuelLog(vehicle_id=sample_vehicle.id, user_id=test_user.id,
+                    date=date(2026, 4, 21), odometer=10000, volume=50, is_full_tank=True),
+            FuelLog(vehicle_id=sample_vehicle.id, user_id=test_user.id,
+                    date=date(2026, 4, 24), odometer=10500, volume=19.67, is_full_tank=False),
+            FuelLog(vehicle_id=sample_vehicle.id, user_id=test_user.id,
+                    date=date(2026, 4, 27), odometer=10900, volume=12.71, is_full_tank=False),
+            FuelLog(vehicle_id=sample_vehicle.id, user_id=test_user.id,
+                    date=date(2026, 4, 29), odometer=11371, volume=53.80, is_full_tank=True),
+        ]
+        db.session.add_all(logs)
+        db.session.commit()
+        avg = sample_vehicle.get_average_consumption()
+        assert avg is not None
+        assert abs(avg - 6.286) < 0.01
+
 
 @pytest.fixture
 def sample_station(app, test_user):

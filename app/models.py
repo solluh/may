@@ -285,18 +285,29 @@ class Vehicle(db.Model):
         return logs[-1].odometer - logs[0].odometer
 
     def get_average_consumption(self, consumption_unit=None, volume_unit='L'):
-        """Calculate average fuel consumption.
+        """Calculate average fuel consumption between the first and last
+        full-tank fill-ups.
 
-        Args:
-            consumption_unit: 'L/100km', 'mpg', or 'mpg_us'. If None, returns L/100km.
-            volume_unit: 'L', 'gal' (UK), or 'us_gal'. Used to convert volume for MPG.
+        Sums every litre poured between those two anchors so partial fills
+        in the middle are counted (issue #169). Returns None when any log
+        in the range is flagged ``is_missed`` — we have no way to make the
+        figure honest in that case.
         """
-        logs = self.fuel_logs.filter_by(is_full_tank=True).order_by(FuelLog.odometer).all()
-        if len(logs) < 2:
+        full_logs = self.fuel_logs.filter_by(is_full_tank=True).order_by(FuelLog.odometer).all()
+        if len(full_logs) < 2:
             return None
 
-        total_fuel = sum(log.volume for log in logs[1:] if log.volume)
-        total_distance = logs[-1].odometer - logs[0].odometer
+        first_odo = full_logs[0].odometer
+        last_odo = full_logs[-1].odometer
+        range_logs = self.fuel_logs.filter(
+            FuelLog.odometer > first_odo,
+            FuelLog.odometer <= last_odo,
+        ).all()
+        if any(log.is_missed for log in range_logs):
+            return None
+
+        total_fuel = sum(log.volume for log in range_logs if log.volume)
+        total_distance = last_odo - first_odo
 
         if total_distance > 0 and total_fuel > 0:
             if consumption_unit == 'mpg':
@@ -533,41 +544,55 @@ class FuelLog(db.Model):
     def get_consumption(self, consumption_unit=None, volume_unit='L'):
         """Calculate consumption for this fill-up.
 
-        For full-tank fill-ups, uses the previous full-tank as the baseline so
-        the figure accounts for a full tank-to-tank cycle.  For partial fills,
-        uses the immediately preceding log (any type) as the baseline to give
-        an instantaneous estimate for that segment.
+        For full-tank fill-ups, sum every litre poured between the previous
+        full tank and this one (inclusive) and divide by the distance covered
+        — the "fill-to-fill" method. Partial fills between two full tanks are
+        therefore counted (issue #169). If any of the intervening logs is
+        flagged ``is_missed``, the figure is unknowable and we return None.
 
-        Args:
-            consumption_unit: 'L/100km', 'mpg', or 'mpg_us'. If None, returns L/100km.
-            volume_unit: 'L', 'gal' (UK), or 'us_gal'. Used to convert volume for MPG.
+        For partial fills, compare against the immediately preceding log of
+        any type to give an instantaneous "fuel added per km" estimate; this
+        is a rough indicator, not a true consumption figure.
         """
         if not self.volume:
             return None
 
         if self.is_full_tank:
-            prev_log = FuelLog.query.filter(
+            prev_full = FuelLog.query.filter(
                 FuelLog.vehicle_id == self.vehicle_id,
                 FuelLog.odometer < self.odometer,
-                FuelLog.is_full_tank == True
+                FuelLog.is_full_tank == True,
             ).order_by(FuelLog.odometer.desc()).first()
+            if not prev_full:
+                return None
+            distance = self.odometer - prev_full.odometer
+            between = FuelLog.query.filter(
+                FuelLog.vehicle_id == self.vehicle_id,
+                FuelLog.odometer > prev_full.odometer,
+                FuelLog.odometer <= self.odometer,
+            ).all()
+            if any(log.is_missed for log in between):
+                return None
+            volume_native = sum(log.volume for log in between if log.volume)
         else:
             prev_log = FuelLog.query.filter(
                 FuelLog.vehicle_id == self.vehicle_id,
                 FuelLog.odometer < self.odometer,
             ).order_by(FuelLog.odometer.desc()).first()
-
-        if prev_log:
+            if not prev_log:
+                return None
             distance = self.odometer - prev_log.odometer
-            if distance > 0 and self.volume > 0:
-                if consumption_unit == 'mpg':
-                    gallons = _to_uk_gallons(self.volume, volume_unit)
-                    return distance / gallons if gallons > 0 else None
-                if consumption_unit == 'mpg_us':
-                    gallons = _to_us_gallons(self.volume, volume_unit)
-                    return distance / gallons if gallons > 0 else None
-                litres = _to_litres(self.volume, volume_unit)
-                return (litres / distance) * 100  # L/100km
+            volume_native = self.volume
+
+        if distance > 0 and volume_native > 0:
+            if consumption_unit == 'mpg':
+                gallons = _to_uk_gallons(volume_native, volume_unit)
+                return distance / gallons if gallons > 0 else None
+            if consumption_unit == 'mpg_us':
+                gallons = _to_us_gallons(volume_native, volume_unit)
+                return distance / gallons if gallons > 0 else None
+            litres = _to_litres(volume_native, volume_unit)
+            return (litres / distance) * 100  # L/100km
         return None
 
     def to_dict(self, consumption_unit=None, volume_unit='L'):
