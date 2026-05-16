@@ -192,6 +192,52 @@ class TestPartialFillConsumption:
         db.session.commit()
         assert log3.get_consumption() is None
 
+    def test_mpg_uk_for_km_vehicle_converts_distance(
+            self, app, test_user, sample_vehicle):
+        """#181 — km odometer + UK MPG must report miles per UK gallon."""
+        log1 = FuelLog(vehicle_id=sample_vehicle.id, user_id=test_user.id,
+                       date=date(2026, 4, 1), odometer=10000, volume=40, is_full_tank=True)
+        log2 = FuelLog(vehicle_id=sample_vehicle.id, user_id=test_user.id,
+                       date=date(2026, 4, 15), odometer=10500, volume=42, is_full_tank=True)
+        db.session.add_all([log1, log2])
+        db.session.commit()
+        # 500 km = 310.686 mi, 42 L = 9.239 UK gal, expected ~33.63 MPG (UK)
+        consumption = log2.get_consumption(consumption_unit='mpg')
+        assert consumption is not None
+        assert abs(consumption - 33.63) < 0.05
+
+    def test_mpg_uk_for_mi_vehicle_no_conversion(
+            self, app, test_user, sample_vehicle):
+        """Vehicle already in miles — distance passes through unchanged."""
+        sample_vehicle.odometer_unit = 'mi'
+        db.session.commit()
+        log1 = FuelLog(vehicle_id=sample_vehicle.id, user_id=test_user.id,
+                       date=date(2026, 4, 1), odometer=10000, volume=40, is_full_tank=True)
+        log2 = FuelLog(vehicle_id=sample_vehicle.id, user_id=test_user.id,
+                       date=date(2026, 4, 15), odometer=10500, volume=42, is_full_tank=True)
+        db.session.add_all([log1, log2])
+        db.session.commit()
+        # 500 mi / 9.239 UK gal = ~54.12 MPG (UK)
+        consumption = log2.get_consumption(consumption_unit='mpg')
+        assert consumption is not None
+        assert abs(consumption - 54.12) < 0.05
+
+    def test_l_per_100km_for_mi_vehicle_converts_distance(
+            self, app, test_user, sample_vehicle):
+        """Vehicle in miles, L/100km display: distance must be converted to km."""
+        sample_vehicle.odometer_unit = 'mi'
+        db.session.commit()
+        log1 = FuelLog(vehicle_id=sample_vehicle.id, user_id=test_user.id,
+                       date=date(2026, 4, 1), odometer=10000, volume=40, is_full_tank=True)
+        log2 = FuelLog(vehicle_id=sample_vehicle.id, user_id=test_user.id,
+                       date=date(2026, 4, 15), odometer=10500, volume=42, is_full_tank=True)
+        db.session.add_all([log1, log2])
+        db.session.commit()
+        # 500 mi = 804.672 km, 42 L over 804.672 km = 5.22 L/100km
+        consumption = log2.get_consumption(consumption_unit='L/100km')
+        assert consumption is not None
+        assert abs(consumption - 5.22) < 0.05
+
     def test_average_consumption_includes_partial_fills(
             self, app, test_user, sample_vehicle):
         """#169 — vehicle average must count partial fills between two fulls."""

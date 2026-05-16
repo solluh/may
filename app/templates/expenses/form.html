@@ -85,10 +85,11 @@
                     {% for attachment in expense.attachments.all() %}
                     <div class="mt-2 flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
                         <a href="{{ url_for('api.uploaded_file', filename=attachment.filename) }}" target="_blank" class="text-primary-600 hover:text-primary-500">{{ attachment.original_filename }}</a>
-                        <form method="POST" action="{{ url_for('expenses.delete_attachment', expense_id=expense.id, attachment_id=attachment.id) }}" onsubmit="return confirm('Delete this attachment?')">
-                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                            <button type="submit" class="text-red-600 hover:text-red-800 text-xs">Delete</button>
-                        </form>
+                        <button type="button" class="text-red-600 hover:text-red-800 text-xs"
+                                data-post-url="{{ url_for('expenses.delete_attachment', expense_id=expense.id, attachment_id=attachment.id) }}"
+                                data-confirm="{{ _('Delete this attachment?') }}">
+                            {{ _('Delete') }}
+                        </button>
                     </div>
                     {% endfor %}
                     {% endif %}

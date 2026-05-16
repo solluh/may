@@ -169,6 +169,30 @@ class TestVehicleOdometerUnit:
         db.session.commit()
         assert v.get_effective_odometer_unit() == 'km'
 
+    def test_get_total_distance_converts_units(self, app, test_user):
+        """#173 — dashboard requests a specific unit and must get a converted value."""
+        v = Vehicle(
+            owner_id=test_user.id,
+            name='KmCar', vehicle_type='car',
+            fuel_type='petrol', odometer_unit='km'
+        )
+        db.session.add(v)
+        db.session.commit()
+        from app.models import FuelLog
+        db.session.add_all([
+            FuelLog(vehicle_id=v.id, user_id=test_user.id,
+                    date=date(2026, 1, 1), odometer=10000, volume=40, is_full_tank=True),
+            FuelLog(vehicle_id=v.id, user_id=test_user.id,
+                    date=date(2026, 1, 15), odometer=11000, volume=42, is_full_tank=True),
+        ])
+        db.session.commit()
+        # 1000 km raw
+        assert abs(v.get_total_distance() - 1000) < 0.01
+        # Asked in km — same value
+        assert abs(v.get_total_distance('km') - 1000) < 0.01
+        # Asked in miles — converted
+        assert abs(v.get_total_distance('mi') - 621.371) < 0.05
+
 
 class TestVehicleRelationships:
     def test_vehicle_has_owner(self, sample_vehicle, test_user):

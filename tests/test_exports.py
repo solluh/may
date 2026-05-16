@@ -53,6 +53,19 @@ class TestExportCsv:
             vehicles_csv = zf.read('vehicles.csv').decode('utf-8')
             assert 'Test Car' in vehicles_csv
 
+    def test_export_csv_includes_odometer_unit(self, auth_client, sample_vehicle, sample_fuel_log, sample_expense):
+        """#173 — odometer values must be self-describing about units."""
+        resp = auth_client.get('/api/export/csv')
+        assert resp.status_code == 200
+        buf = io.BytesIO(resp.data)
+        with zipfile.ZipFile(buf) as zf:
+            vehicles_csv = zf.read('vehicles.csv').decode('utf-8')
+            fuel_csv = zf.read('fuel_logs.csv').decode('utf-8')
+            expenses_csv = zf.read('expenses.csv').decode('utf-8')
+            assert 'odometer_unit' in vehicles_csv.splitlines()[0]
+            assert 'odometer_unit' in fuel_csv.splitlines()[0]
+            assert 'odometer_unit' in expenses_csv.splitlines()[0]
+
 
 class TestExportJson:
     def test_export_json_requires_auth(self, client):

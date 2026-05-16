@@ -130,6 +130,7 @@ def sample_vehicle(app, test_user):
         model='Corolla',
         year=2023,
         fuel_type='petrol',
+        odometer_unit='km',
     )
     _db_ext.session.add(vehicle)
     _db_ext.session.commit()

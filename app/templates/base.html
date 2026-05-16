@@ -520,6 +520,27 @@
         document.addEventListener('htmx:configRequest', function(event) {
             event.detail.headers['X-CSRFToken'] = csrfToken;
         });
+
+        // Generic POST helper for buttons that would otherwise need a nested form.
+        // Nested <form> elements are invalid HTML — the browser silently closes the outer form,
+        // orphaning later submit buttons (issue #182).
+        document.addEventListener('click', function(event) {
+            const btn = event.target.closest('[data-post-url]');
+            if (!btn) return;
+            event.preventDefault();
+            const confirmMessage = btn.getAttribute('data-confirm');
+            if (confirmMessage && !window.confirm(confirmMessage)) return;
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = btn.getAttribute('data-post-url');
+            const tokenInput = document.createElement('input');
+            tokenInput.type = 'hidden';
+            tokenInput.name = 'csrf_token';
+            tokenInput.value = csrfToken;
+            form.appendChild(tokenInput);
+            document.body.appendChild(form);
+            form.submit();
+        });
     })();
 
     // Flatpickr date picker initialization

@@ -269,20 +269,25 @@ class Vehicle(db.Model):
         Otherwise, calculates from fuel log entries.
 
         Args:
-            distance_unit: If provided ('km' or 'mi'), converts to this unit.
+            distance_unit: If provided ('km' or 'mi'), converts the result
+                to this unit. Otherwise returns the raw value in the
+                vehicle's effective odometer unit.
         """
-        # If Tessie is enabled, use the odometer reading directly
+        # If Tessie is enabled, use the odometer reading directly (always stored in km)
         if self.uses_tessie_odometer() and self.tessie_last_odometer:
-            odometer = self.tessie_last_odometer  # Stored in km
+            odometer = self.tessie_last_odometer
             if distance_unit == 'mi':
                 return odometer * 0.621371
             return odometer
 
-        # Otherwise calculate from fuel logs
+        # Otherwise calculate from fuel logs, stored in the vehicle's odometer unit
         logs = self.fuel_logs.order_by(FuelLog.odometer).all()
         if len(logs) < 2:
             return 0
-        return logs[-1].odometer - logs[0].odometer
+        raw_distance = logs[-1].odometer - logs[0].odometer
+        if distance_unit:
+            return _distance_in(raw_distance, self.get_effective_odometer_unit(), distance_unit)
+        return raw_distance
 
     def get_average_consumption(self, consumption_unit=None, volume_unit='L'):
         """Calculate average fuel consumption between the first and last
@@ -310,14 +315,18 @@ class Vehicle(db.Model):
         total_distance = last_odo - first_odo
 
         if total_distance > 0 and total_fuel > 0:
+            odometer_unit = self.get_effective_odometer_unit()
             if consumption_unit == 'mpg':
+                miles = _distance_in(total_distance, odometer_unit, 'mi')
                 gallons = _to_uk_gallons(total_fuel, volume_unit)
-                return total_distance / gallons if gallons > 0 else None
+                return miles / gallons if gallons > 0 else None
             if consumption_unit == 'mpg_us':
+                miles = _distance_in(total_distance, odometer_unit, 'mi')
                 gallons = _to_us_gallons(total_fuel, volume_unit)
-                return total_distance / gallons if gallons > 0 else None
+                return miles / gallons if gallons > 0 else None
+            km = _distance_in(total_distance, odometer_unit, 'km')
             litres = _to_litres(total_fuel, volume_unit)
-            return (litres / total_distance) * 100  # L/100km
+            return (litres / km) * 100  # L/100km
         return None
 
     def uses_tessie_odometer(self):
@@ -348,7 +357,7 @@ class Vehicle(db.Model):
         last_fuel = self.fuel_logs.order_by(FuelLog.odometer.desc()).first()
         fuel_odo = last_fuel.odometer if last_fuel else 0
 
-        last_trip = self.trips.order_by(Trip.end_odometer.desc()).first()
+        last_trip = self.trips.filter(Trip.end_odometer.isnot(None)).order_by(Trip.end_odometer.desc()).first()
         trip_odo = last_trip.end_odometer if last_trip else 0
 
         last_charge = self.charging_sessions.filter(ChargingSession.odometer.isnot(None)).order_by(
@@ -515,6 +524,16 @@ def _to_us_gallons(volume, volume_unit):
     return volume / 3.78541  # litres to US gallons
 
 
+def _distance_in(distance, from_unit, to_unit):
+    if from_unit == to_unit:
+        return distance
+    if from_unit == 'km' and to_unit == 'mi':
+        return distance * 0.621371
+    if from_unit == 'mi' and to_unit == 'km':
+        return distance * 1.609344
+    return distance
+
+
 class FuelLog(db.Model):
     __tablename__ = 'fuel_logs'
 
@@ -585,14 +604,18 @@ class FuelLog(db.Model):
             volume_native = self.volume
 
         if distance > 0 and volume_native > 0:
+            odometer_unit = self.vehicle.get_effective_odometer_unit()
             if consumption_unit == 'mpg':
+                miles = _distance_in(distance, odometer_unit, 'mi')
                 gallons = _to_uk_gallons(volume_native, volume_unit)
-                return distance / gallons if gallons > 0 else None
+                return miles / gallons if gallons > 0 else None
             if consumption_unit == 'mpg_us':
+                miles = _distance_in(distance, odometer_unit, 'mi')
                 gallons = _to_us_gallons(volume_native, volume_unit)
-                return distance / gallons if gallons > 0 else None
+                return miles / gallons if gallons > 0 else None
+            km = _distance_in(distance, odometer_unit, 'km')
             litres = _to_litres(volume_native, volume_unit)
-            return (litres / distance) * 100  # L/100km
+            return (litres / km) * 100  # L/100km
         return None
 
     def to_dict(self, consumption_unit=None, volume_unit='L'):
@@ -1218,6 +1241,8 @@ class Trip(db.Model):
     @property
     def distance(self):
         """Calculate trip distance"""
+        if self.end_odometer is None or self.start_odometer is None:
+            return 0
         return self.end_odometer - self.start_odometer
 
     def to_dict(self):

@@ -1113,14 +1113,16 @@ def export_csv():
         writer.writerow([
             'id', 'name', 'vehicle_type', 'make', 'model', 'year',
             'registration', 'vin', 'fuel_type', 'tank_capacity',
-            'is_active', 'notes', 'created_at'
+            'odometer_unit', 'is_active', 'notes', 'created_at'
         ])
         for vehicle in current_user.get_all_vehicles():
             writer.writerow([
                 vehicle.id, vehicle.name, vehicle.vehicle_type,
                 vehicle.make, vehicle.model, vehicle.year,
                 vehicle.registration, vehicle.vin, vehicle.fuel_type,
-                vehicle.tank_capacity, vehicle.is_active, vehicle.notes,
+                vehicle.tank_capacity,
+                vehicle.get_effective_odometer_unit(),
+                vehicle.is_active, vehicle.notes,
                 vehicle.created_at.isoformat() if vehicle.created_at else ''
             ])
         zip_file.writestr('vehicles.csv', vehicles_csv.getvalue())
@@ -1140,15 +1142,17 @@ def export_csv():
         fuel_csv = io.StringIO()
         writer = csv.writer(fuel_csv)
         writer.writerow([
-            'id', 'vehicle_id', 'vehicle_name', 'date', 'odometer',
+            'id', 'vehicle_id', 'vehicle_name', 'date', 'odometer', 'odometer_unit',
             'volume', 'price_per_unit', 'total_cost', 'is_full_tank',
             'is_missed', 'station', 'notes', 'created_at'
         ])
         for vehicle in current_user.get_all_vehicles():
+            odometer_unit = vehicle.get_effective_odometer_unit()
             for log in vehicle.fuel_logs.order_by(FuelLog.date.desc()).all():
                 writer.writerow([
                     log.id, vehicle.id, vehicle.name, log.date.isoformat(),
-                    log.odometer, log.volume, log.price_per_unit, log.total_cost,
+                    log.odometer, odometer_unit,
+                    log.volume, log.price_per_unit, log.total_cost,
                     log.is_full_tank, log.is_missed, log.station, log.notes,
                     log.created_at.isoformat() if log.created_at else ''
                 ])
@@ -1159,14 +1163,16 @@ def export_csv():
         writer = csv.writer(expenses_csv)
         writer.writerow([
             'id', 'vehicle_id', 'vehicle_name', 'date', 'category',
-            'description', 'cost', 'odometer', 'vendor', 'notes', 'created_at'
+            'description', 'cost', 'odometer', 'odometer_unit', 'vendor', 'notes', 'created_at'
         ])
         for vehicle in current_user.get_all_vehicles():
+            odometer_unit = vehicle.get_effective_odometer_unit()
             for expense in vehicle.expenses.order_by(Expense.date.desc()).all():
                 writer.writerow([
                     expense.id, vehicle.id, vehicle.name, expense.date.isoformat(),
                     expense.category, expense.description, expense.cost,
-                    expense.odometer, expense.vendor, expense.notes,
+                    expense.odometer, odometer_unit if expense.odometer is not None else '',
+                    expense.vendor, expense.notes,
                     expense.created_at.isoformat() if expense.created_at else ''
                 ])
         zip_file.writestr('expenses.csv', expenses_csv.getvalue())
@@ -1266,15 +1272,16 @@ def export_csv():
         writer = csv.writer(trips_csv)
         writer.writerow([
             'id', 'vehicle_id', 'vehicle_name', 'date', 'start_odometer', 'end_odometer',
-            'distance', 'purpose', 'description', 'start_location', 'end_location',
+            'distance', 'distance_unit', 'purpose', 'description', 'start_location', 'end_location',
             'notes', 'created_at'
         ])
         for vehicle in current_user.get_all_vehicles():
+            odometer_unit = vehicle.get_effective_odometer_unit()
             for trip in vehicle.trips.order_by(Trip.date.desc()).all():
                 writer.writerow([
                     trip.id, vehicle.id, vehicle.name,
                     trip.date.isoformat() if trip.date else '',
-                    trip.start_odometer, trip.end_odometer, trip.distance,
+                    trip.start_odometer, trip.end_odometer, trip.distance, odometer_unit,
                     trip.purpose, trip.description,
                     trip.start_location, trip.end_location,
                     trip.notes,
