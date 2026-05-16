@@ -65,6 +65,33 @@ class TestTripNew:
         assert trip.end_odometer == 12200.0
         assert trip.user_id == test_user.id
 
+class TestTripNewNoEndOdometer:
+    def test_new_requires_auth(self, client):
+        resp = client.get('/trips/new', follow_redirects=False)
+        assert resp.status_code == 302
+        assert '/auth/login' in resp.headers['Location']
+
+    def test_get_new_form_returns_200(self, auth_client, sample_vehicle):
+        resp = auth_client.get('/trips/new')
+        assert resp.status_code == 200
+
+    def test_create_trip(self, auth_client, sample_vehicle, test_user):
+        resp = auth_client.post('/trips/new', data={
+            'vehicle_id': str(sample_vehicle.id),
+            'date': '2024-03-01',
+            'start_odometer': '12000',
+            'purpose': 'business',
+            'description': 'No end odometer trip',
+            'start_location': 'Office',
+            'end_location': 'Client',
+        }, follow_redirects=True)
+        assert resp.status_code == 200
+        trip = Trip.query.filter_by(description='No end odometer trip').first()
+        assert trip is not None
+        assert trip.start_odometer == 12000.0
+        assert trip.end_odometer == None
+        assert trip.user_id == test_user.id
+
 
 class TestTripEdit:
     def test_edit_requires_auth(self, client, sample_trip):

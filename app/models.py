@@ -1218,6 +1218,8 @@ class Trip(db.Model):
     @property
     def distance(self):
         """Calculate trip distance"""
+        if self.end_odometer is None or self.start_odometer is None:
+            return 0
         return self.end_odometer - self.start_odometer
 
     def to_dict(self):
