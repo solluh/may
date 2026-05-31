@@ -158,3 +158,38 @@ class TestStationCheapest:
     def test_cheapest_with_prices(self, auth_client, station_with_prices):
         resp = auth_client.get('/stations/cheapest')
         assert resp.status_code == 200
+
+
+class TestStationDeletePrice:
+    def test_delete_price_requires_auth(self, client, station_with_prices):
+        price = FuelPriceHistory.query.filter_by(station_id=station_with_prices.id).first()
+        resp = client.post(f'/stations/prices/{price.id}/delete', follow_redirects=False)
+        assert resp.status_code == 302
+        assert '/auth/login' in resp.headers['Location']
+
+    def test_delete_price_removes_entry(self, auth_client, station_with_prices):
+        price = FuelPriceHistory.query.filter_by(station_id=station_with_prices.id).first()
+        price_id = price.id
+        resp = auth_client.post(f'/stations/prices/{price_id}/delete', follow_redirects=True)
+        assert resp.status_code == 200
+        assert FuelPriceHistory.query.get(price_id) is None
+
+    def test_delete_price_other_user_blocked(self, auth_client, sample_station):
+        from app.models import User
+        other = User(username='other', email='other@example.com')
+        other.set_password('pw')
+        db.session.add(other)
+        db.session.commit()
+        price = FuelPriceHistory(
+            station_id=sample_station.id,
+            user_id=other.id,
+            date=date(2024, 4, 1),
+            fuel_type='petrol',
+            price_per_unit=1.55,
+        )
+        db.session.add(price)
+        db.session.commit()
+        price_id = price.id
+        resp = auth_client.post(f'/stations/prices/{price_id}/delete', follow_redirects=True)
+        assert resp.status_code == 200
+        assert FuelPriceHistory.query.get(price_id) is not None

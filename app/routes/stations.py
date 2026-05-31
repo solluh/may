@@ -151,6 +151,28 @@ def price_history(station_id):
     return render_template('stations/prices.html', station=station, prices=prices, prices_json=prices_json)
 
 
+@bp.route('/prices/<int:price_id>/delete', methods=['POST'])
+@login_required
+def delete_price(price_id):
+    """Delete a single fuel price history entry.
+
+    Lets users clean up stale or orphan rows in the Cheapest Fuel table
+    (e.g. entries left behind by test logs or pre-cleanup-logic versions).
+    """
+    price = FuelPriceHistory.query.get_or_404(price_id)
+
+    if price.user_id != current_user.id:
+        flash(_('You can only delete your own price entries'), 'error')
+        return redirect(url_for('stations.price_history', station_id=price.station_id))
+
+    station_id = price.station_id
+    db.session.delete(price)
+    db.session.commit()
+
+    flash(_('Price entry deleted'), 'success')
+    return redirect(url_for('stations.price_history', station_id=station_id))
+
+
 @bp.route('/cheapest')
 @login_required
 def cheapest():
