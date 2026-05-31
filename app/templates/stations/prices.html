@@ -32,12 +32,26 @@
     <!-- Price List -->
     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
         {% for price in prices %}
-        <li class="px-6 py-4 flex items-center justify-between">
+        <li class="px-6 py-4 flex items-center justify-between gap-4">
             <div>
                 <p class="text-sm font-medium text-gray-900 dark:text-white">{{ price.date|format_date }}</p>
                 <p class="text-sm text-gray-500 dark:text-gray-400 capitalize">{{ price.fuel_type }}</p>
             </div>
-            <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ "%.3f"|format(price.price_per_unit) }} {{ current_user.currency }}/{{ current_user.volume_unit }}</p>
+            <div class="flex items-center gap-4">
+                <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ "%.3f"|format(price.price_per_unit) }} {{ current_user.currency }}/{{ current_user.volume_unit }}</p>
+                {% if price.user_id == current_user.id %}
+                <form method="post" action="{{ url_for('stations.delete_price', price_id=price.id) }}"
+                      onsubmit="return confirm('{{ _('Delete this price entry? This cannot be undone.') }}');">
+                    <button type="submit"
+                            class="text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+                            title="{{ _('Delete this entry') }}">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3"/>
+                        </svg>
+                    </button>
+                </form>
+                {% endif %}
+            </div>
         </li>
         {% endfor %}
     </ul>
