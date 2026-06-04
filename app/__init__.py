@@ -324,7 +324,7 @@ def create_app(config_class=Config):
         fmt = formats.get(style, formats['default'])
         return value.strftime(fmt)
 
-    from app.routes import main, auth, vehicles, fuel, expenses, api, reminders, maintenance, documents, stations, recurring, homeassistant, calendar, trips, charging
+    from app.routes import main, auth, vehicles, fuel, expenses, api, reminders, maintenance, documents, stations, recurring, homeassistant, calendar, trips, charging, notes, allowance
     app.register_blueprint(main.bp)
     app.register_blueprint(auth.bp)
     app.register_blueprint(vehicles.bp)
@@ -340,6 +340,8 @@ def create_app(config_class=Config):
     app.register_blueprint(calendar.bp)
     app.register_blueprint(trips.bp)
     app.register_blueprint(charging.bp)
+    app.register_blueprint(notes.bp)
+    app.register_blueprint(allowance.bp)
 
     # Health check endpoint for container orchestration
     @app.route('/health')

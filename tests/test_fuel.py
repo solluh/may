@@ -48,6 +48,55 @@ class TestFuelNew:
         assert log.volume == 45.0
         assert log.user_id == test_user.id
 
+    def test_discount_applied_to_calculated_total(self, auth_client, sample_vehicle):
+        # No total_cost given: server computes volume * (price - discount) (#209)
+        resp = auth_client.post('/fuel/new', data={
+            'vehicle_id': str(sample_vehicle.id),
+            'date': '2024-03-02',
+            'odometer': '15100',
+            'volume': '50.0',
+            'price_per_unit': '1.50',
+            'discount_per_unit': '0.10',
+            'is_full_tank': 'on',
+        }, follow_redirects=True)
+        assert resp.status_code == 200
+        log = FuelLog.query.filter_by(vehicle_id=sample_vehicle.id, odometer=15100.0).first()
+        assert log is not None
+        assert log.discount_per_unit == 0.10
+        # 50 * (1.50 - 0.10) = 70.00
+        assert log.total_cost == 70.0
+
+    def test_explicit_total_overrides_discount_calc(self, auth_client, sample_vehicle):
+        resp = auth_client.post('/fuel/new', data={
+            'vehicle_id': str(sample_vehicle.id),
+            'date': '2024-03-03',
+            'odometer': '15200',
+            'volume': '50.0',
+            'price_per_unit': '1.50',
+            'discount_per_unit': '0.10',
+            'total_cost': '68.0',
+            'is_full_tank': 'on',
+        }, follow_redirects=True)
+        assert resp.status_code == 200
+        log = FuelLog.query.filter_by(vehicle_id=sample_vehicle.id, odometer=15200.0).first()
+        assert log is not None
+        assert log.total_cost == 68.0
+
+    def test_no_discount_is_none(self, auth_client, sample_vehicle):
+        resp = auth_client.post('/fuel/new', data={
+            'vehicle_id': str(sample_vehicle.id),
+            'date': '2024-03-04',
+            'odometer': '15300',
+            'volume': '40.0',
+            'price_per_unit': '1.50',
+            'is_full_tank': 'on',
+        }, follow_redirects=True)
+        assert resp.status_code == 200
+        log = FuelLog.query.filter_by(vehicle_id=sample_vehicle.id, odometer=15300.0).first()
+        assert log is not None
+        assert log.discount_per_unit is None
+        assert log.total_cost == 60.0
+
     def test_new_redirects_to_vehicles_if_none(self, auth_client):
         # No vehicles exist for this user
         resp = auth_client.get('/fuel/new', follow_redirects=False)

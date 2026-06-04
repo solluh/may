@@ -80,6 +80,13 @@ def new():
             flash(err, 'error')
             return render_template('fuel/new.html', vehicles=vehicles)
 
+        discount_per_unit = None
+        if request.form.get('discount_per_unit'):
+            discount_per_unit, err = validate_positive_number(request.form.get('discount_per_unit'), 'Discount per unit', max_value=1000)
+            if err:
+                flash(err, 'error')
+                return render_template('fuel/new.html', vehicles=vehicles)
+
         total_cost, err = validate_positive_number(request.form.get('total_cost'), 'Total cost', max_value=100000)
         if err:
             flash(err, 'error')
@@ -92,6 +99,7 @@ def new():
             odometer=odometer,
             volume=volume,
             price_per_unit=price_per_unit,
+            discount_per_unit=discount_per_unit,
             total_cost=total_cost,
             fuel_type=request.form.get('fuel_type') or None,
             is_full_tank=request.form.get('is_full_tank') == 'on',
@@ -100,9 +108,10 @@ def new():
             notes=request.form.get('notes')
         )
 
-        # Calculate total cost if not provided
+        # Calculate total cost if not provided, applying any per-unit discount (#209)
         if log.volume and log.price_per_unit and not log.total_cost:
-            log.total_cost = round(log.volume * log.price_per_unit, 2)
+            effective_price = log.price_per_unit - (log.discount_per_unit or 0)
+            log.total_cost = round(log.volume * effective_price, 2)
 
         db.session.add(log)
         db.session.commit()
@@ -186,6 +195,7 @@ def edit(log_id):
         log.odometer = float(request.form.get('odometer'))
         log.volume = float(request.form.get('volume')) if request.form.get('volume') else None
         log.price_per_unit = float(request.form.get('price_per_unit')) if request.form.get('price_per_unit') else None
+        log.discount_per_unit = float(request.form.get('discount_per_unit')) if request.form.get('discount_per_unit') else None
         log.total_cost = float(request.form.get('total_cost')) if request.form.get('total_cost') else None
         log.fuel_type = request.form.get('fuel_type') or None
         log.is_full_tank = request.form.get('is_full_tank') == 'on'
@@ -193,9 +203,10 @@ def edit(log_id):
         log.station = request.form.get('station')
         log.notes = request.form.get('notes')
 
-        # Calculate total cost if not provided
+        # Calculate total cost if not provided, applying any per-unit discount (#209)
         if log.volume and log.price_per_unit and not log.total_cost:
-            log.total_cost = round(log.volume * log.price_per_unit, 2)
+            effective_price = log.price_per_unit - (log.discount_per_unit or 0)
+            log.total_cost = round(log.volume * effective_price, 2)
 
         # Reconcile fuel price history with the edited log.
         # Issue #170: linking a station to an existing log via edit must

@@ -130,6 +130,8 @@ def view(vehicle_id):
         'avg_charging_consumption': vehicle.get_average_charging_consumption(),
         'cost_per_kwh': vehicle.get_cost_per_kwh(),
         'total_cost': vehicle.get_total_cost(),
+        'total_allowance': vehicle.get_total_allowance(),
+        'net_cost': vehicle.get_net_cost(),
         'total_distance': vehicle.get_total_distance(vehicle.get_effective_odometer_unit()),
         'avg_consumption': vehicle.get_average_consumption(current_user.consumption_unit, current_user.volume_unit),
         'cost_per_distance': vehicle.get_cost_per_distance(),

@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from datetime import datetime, timedelta
 from sqlalchemy import func
 from app import db
-from app.models import Vehicle, FuelLog, Expense, ChargingSession, FuelPriceHistory, FuelStation
+from app.models import Vehicle, FuelLog, Expense, ChargingSession, FuelPriceHistory, FuelStation, MileageAllowance
 
 bp = Blueprint('main', __name__)
 
@@ -26,6 +26,8 @@ def index():
             'stations': 'stations.index',
             'trips': 'trips.index',
             'charging': 'charging.index',
+            'notes': 'notes.index',
+            'allowance': 'allowance.index',
         }
         route = page_routes.get(start_page, 'main.dashboard')
         return redirect(url_for(route))
@@ -97,8 +99,17 @@ def dashboard():
         ).scalar()
         total_charging_cost = charging_result or 0
 
+    # Total mileage allowance received (#208) — offsets running costs
+    total_allowance = 0
+    if vehicle_ids:
+        allowance_result = db.session.query(func.sum(MileageAllowance.amount)).filter(
+            MileageAllowance.vehicle_id.in_(vehicle_ids)
+        ).scalar()
+        total_allowance = allowance_result or 0
+
     # Calculate cost per distance
     total_cost = total_fuel_cost + total_expense_cost + total_charging_cost
+    net_cost = total_cost - total_allowance
     cost_per_distance = None
     if total_distance > 0:
         cost_per_distance = total_cost / total_distance
@@ -124,6 +135,8 @@ def dashboard():
                            total_fuel_cost=total_fuel_cost,
                            total_expense_cost=total_expense_cost,
                            total_charging_cost=total_charging_cost,
+                           total_allowance=total_allowance,
+                           net_cost=net_cost,
                            total_distance=total_distance,
                            cost_per_distance=cost_per_distance,
                            recent_logs=recent_logs,

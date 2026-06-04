@@ -411,6 +411,8 @@
                                     <option value="stations" {% if current_user.start_page == 'stations' %}selected{% endif %}>{{ _('Fuel Stations') }}</option>
                                     <option value="trips" {% if current_user.start_page == 'trips' %}selected{% endif %}>{{ _('Trips') }}</option>
                                     <option value="charging" {% if current_user.start_page == 'charging' %}selected{% endif %}>{{ _('EV Charging') }}</option>
+                                    <option value="allowance" {% if current_user.start_page == 'allowance' %}selected{% endif %}>{{ _('Mileage Allowance') }}</option>
+                                    <option value="notes" {% if current_user.start_page == 'notes' %}selected{% endif %}>{{ _('Notes') }}</option>
                                 </select>
                             </div>
 
@@ -495,6 +497,16 @@
                                         <input type="checkbox" name="show_menu_charging" {% if current_user.show_menu_charging is not defined or current_user.show_menu_charging %}checked{% endif %}
                                                class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500">
                                         <span class="ml-3 text-sm text-gray-700 dark:text-gray-300">{{ _('EV Charging') }}</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="show_menu_allowance" {% if current_user.show_menu_allowance is not defined or current_user.show_menu_allowance %}checked{% endif %}
+                                               class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-3 text-sm text-gray-700 dark:text-gray-300">{{ _('Mileage Allowance') }}</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="show_menu_notes" {% if current_user.show_menu_notes is not defined or current_user.show_menu_notes %}checked{% endif %}
+                                               class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-3 text-sm text-gray-700 dark:text-gray-300">{{ _('Notes') }}</span>
                                     </label>
                                 </div>
                             </div>

@@ -75,6 +75,16 @@
                 </div>
 
                 <div>
+                    <label for="discount_per_unit" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ _('Discount per') }} {{ current_user.volume_unit }} ({{ current_user.currency }})</label>
+                    <input type="number" name="discount_per_unit" id="discount_per_unit" step="0.001" min="0"
+                           value="{{ log.discount_per_unit if log and log.discount_per_unit is not none else '' }}"
+                           onchange="calculateTotal()"
+                           placeholder="0.000"
+                           class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ _('Optional loyalty discount, subtracted from the price per unit.') }}</p>
+                </div>
+
+                <div>
                     <label for="total_cost" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Total Cost ({{ current_user.currency }})</label>
                     <input type="number" name="total_cost" id="total_cost" step="0.01"
                            value="{{ log.total_cost if log else '' }}"
@@ -236,8 +246,10 @@ function updateFuelTypeSelector(selectedOption) {
 function calculateTotal() {
     const volume = parseFloat(document.getElementById('volume').value) || 0;
     const pricePerUnit = parseFloat(document.getElementById('price_per_unit').value) || 0;
+    const discountPerUnit = parseFloat(document.getElementById('discount_per_unit').value) || 0;
     if (volume && pricePerUnit) {
-        document.getElementById('total_cost').value = (volume * pricePerUnit).toFixed(2);
+        const effectivePrice = Math.max(pricePerUnit - discountPerUnit, 0);
+        document.getElementById('total_cost').value = (volume * effectivePrice).toFixed(2);
     }
 }
 

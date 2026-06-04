@@ -89,6 +89,18 @@
         <dd class="mt-1 text-xl font-semibold text-gray-900 dark:text-white">{{ "%.2f"|format(stats.total_expense_cost) }}</dd>
         <dd class="text-sm text-gray-500 dark:text-gray-400">{{ current_user.currency }}</dd>
     </div>
+    {% if stats.total_allowance and stats.total_allowance > 0 %}
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ _('Mileage Allowance') }}</dt>
+        <dd class="mt-1 text-xl font-semibold text-emerald-600 dark:text-emerald-400">-{{ "%.2f"|format(stats.total_allowance) }}</dd>
+        <dd class="text-sm text-gray-500 dark:text-gray-400">{{ current_user.currency }}</dd>
+    </div>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ _('Net Cost') }}</dt>
+        <dd class="mt-1 text-xl font-semibold text-gray-900 dark:text-white">{{ "%.2f"|format(stats.net_cost) }}</dd>
+        <dd class="text-sm text-gray-500 dark:text-gray-400">{{ current_user.currency }}</dd>
+    </div>
+    {% endif %}
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ _('Total Distance') }}</dt>
         <dd class="mt-1 text-xl font-semibold text-gray-900 dark:text-white">{{ "%.0f"|format(stats.total_distance) }}</dd>

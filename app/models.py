@@ -88,6 +88,8 @@ class User(UserMixin, db.Model):
     show_menu_stations = db.Column(db.Boolean, default=True)
     show_menu_trips = db.Column(db.Boolean, default=True)
     show_menu_charging = db.Column(db.Boolean, default=True)
+    show_menu_notes = db.Column(db.Boolean, default=True)  # issue #204
+    show_menu_allowance = db.Column(db.Boolean, default=True)  # issue #208
     show_quick_entry = db.Column(db.Boolean, default=False)  # Show quick entry button in navbar
 
     # Relationships
@@ -253,6 +255,14 @@ class Vehicle(db.Model):
 
     def get_total_cost(self):
         return self.get_total_fuel_cost() + self.get_total_expense_cost() + self.get_total_charging_cost()
+
+    def get_total_allowance(self):
+        """Total mileage-allowance income recorded for this vehicle (issue #208)."""
+        return sum(a.amount for a in self.mileage_allowances.all() if a.amount) or 0
+
+    def get_net_cost(self):
+        """Running cost after mileage allowance is deducted (issue #208)."""
+        return self.get_total_cost() - self.get_total_allowance()
 
     @property
     def vehicle_type_label(self):
@@ -582,6 +592,7 @@ class FuelLog(db.Model):
     odometer = db.Column(db.Float, nullable=False)  # stored in km
     volume = db.Column(db.Float)  # stored in liters
     price_per_unit = db.Column(db.Float)  # price per liter
+    discount_per_unit = db.Column(db.Float)  # optional loyalty discount per liter (issue #209)
     total_cost = db.Column(db.Float)
 
     fuel_type = db.Column(db.String(20), nullable=True)  # overrides vehicle primary; set when vehicle has secondary fuel type
@@ -656,6 +667,7 @@ class FuelLog(db.Model):
             'odometer': self.odometer,
             'volume': self.volume,
             'price_per_unit': self.price_per_unit,
+            'discount_per_unit': self.discount_per_unit,
             'total_cost': self.total_cost,
             'is_full_tank': self.is_full_tank,
             'is_missed': self.is_missed,
@@ -1462,3 +1474,75 @@ class FuelPriceHistory(db.Model):
     # Relationships
     station = db.relationship('FuelStation', backref=db.backref('price_history', lazy='dynamic'))
     user = db.relationship('User', backref=db.backref('fuel_price_history', lazy='dynamic'))
+
+
+class Note(db.Model):
+    """Freeform note attached to a vehicle, with optional odometer reading.
+
+    Issue #204: a place to record things that don't fit fuel/expenses/maintenance
+    (e.g. a DPF regeneration) without inventing a cost.
+    """
+    __tablename__ = 'notes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
+    title = db.Column(db.String(200))
+    content = db.Column(db.Text, nullable=False)
+    odometer = db.Column(db.Float)  # optional, stored in vehicle odometer unit
+
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Relationships — backref is `note_entries` to avoid clashing with Vehicle.notes column
+    vehicle = db.relationship('Vehicle', backref=db.backref('note_entries', lazy='dynamic', cascade='all, delete-orphan'))
+    user = db.relationship('User', backref=db.backref('notes', lazy='dynamic'))
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'vehicle_id': self.vehicle_id,
+            'date': self.date.isoformat() if self.date else None,
+            'title': self.title,
+            'content': self.content,
+            'odometer': self.odometer,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+        }
+
+
+class MileageAllowance(db.Model):
+    """Mileage-allowance income for a vehicle used for business (issue #208).
+
+    Records money received per the recorded distance; the totals offset the
+    vehicle's running costs (see Vehicle.get_net_cost).
+    """
+    __tablename__ = 'mileage_allowances'
+
+    id = db.Column(db.Integer, primary_key=True)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
+    description = db.Column(db.String(200))
+    distance = db.Column(db.Float)  # optional, stored in vehicle odometer unit
+    rate_per_unit = db.Column(db.Float)  # optional reimbursement rate per distance unit
+    amount = db.Column(db.Float, nullable=False)  # total amount received
+
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Relationships
+    vehicle = db.relationship('Vehicle', backref=db.backref('mileage_allowances', lazy='dynamic', cascade='all, delete-orphan'))
+    user = db.relationship('User', backref=db.backref('mileage_allowances', lazy='dynamic'))
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'vehicle_id': self.vehicle_id,
+            'date': self.date.isoformat() if self.date else None,
+            'description': self.description,
+            'distance': self.distance,
+            'rate_per_unit': self.rate_per_unit,
+            'amount': self.amount,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+        }
