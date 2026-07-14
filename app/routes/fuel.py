@@ -29,7 +29,7 @@ def index():
     # Get all fuel logs for user's vehicles
     logs = FuelLog.query.filter(
         FuelLog.vehicle_id.in_(vehicle_ids)
-    ).order_by(FuelLog.date.desc()).all()
+    ).order_by(FuelLog.date.desc(), FuelLog.odometer.desc()).all()
 
     # #175 — also surface charging sessions on this page when the user has EVs
     from app.models import ChargingSession
@@ -403,8 +403,10 @@ def quick():
             return redirect(url_for('fuel.quick', vehicle_id=vehicle_id))
         return redirect(url_for('vehicles.view', vehicle_id=vehicle_id))
 
-    # Pre-select vehicle
-    selected_vehicle_id = request.args.get('vehicle_id')
+    # Pre-select vehicle: explicit param > default vehicle preference > single vehicle
+    selected_vehicle_id = request.args.get('vehicle_id', type=int)
+    if not selected_vehicle_id and current_user.default_vehicle_id in [v.id for v in vehicles]:
+        selected_vehicle_id = current_user.default_vehicle_id
     if not selected_vehicle_id and len(vehicles) == 1:
         selected_vehicle_id = vehicles[0].id
 

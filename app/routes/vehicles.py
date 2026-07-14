@@ -115,7 +115,7 @@ def view(vehicle_id):
         return redirect(url_for('vehicles.index'))
 
     # Get recent activity
-    recent_logs = vehicle.fuel_logs.order_by(FuelLog.date.desc()).limit(10).all()
+    recent_logs = vehicle.fuel_logs.order_by(FuelLog.date.desc(), FuelLog.odometer.desc()).limit(10).all()
     recent_expenses = vehicle.expenses.order_by(Expense.date.desc()).limit(10).all()
 
     # Get specifications
@@ -384,7 +384,7 @@ def report(vehicle_id):
         return redirect(url_for('vehicles.view', vehicle_id=vehicle_id))
 
     # Gather all data for the report
-    fuel_logs = vehicle.fuel_logs.order_by(FuelLog.date.desc()).all()
+    fuel_logs = vehicle.fuel_logs.order_by(FuelLog.date.desc(), FuelLog.odometer.desc()).all()
     expenses = vehicle.expenses.order_by(Expense.date.desc()).all()
     specs = vehicle.specs.all()
 
