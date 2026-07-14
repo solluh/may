@@ -400,6 +400,63 @@ class TestMaintenanceSchedule:
         ms.calculate_next_due()
         assert ms.next_due_odometer == 15000.0
 
+    def _make_miles_vehicle(self, test_user):
+        v = Vehicle(
+            owner_id=test_user.id,
+            name='Miles Car',
+            vehicle_type='car',
+            fuel_type='petrol',
+            odometer_unit='mi',
+        )
+        db.session.add(v)
+        db.session.commit()
+        return v
+
+    def test_calculate_next_due_miles_interval_miles_unit(self, app, test_user):
+        """issue #230: miles-interval schedule for a miles-unit vehicle must
+        add the interval as-is, not a km-converted value."""
+        v = self._make_miles_vehicle(test_user)
+        ms = self._make_schedule(
+            test_user, v,
+            last_performed_odometer=29711.0,
+            interval_miles=5000,
+        )
+        ms.calculate_next_due()
+        assert ms.next_due_odometer == 34711.0
+
+    def test_calculate_next_due_km_interval_km_unit(self, app, test_user, sample_vehicle):
+        """km-interval schedule for a km-unit vehicle stays correct."""
+        ms = self._make_schedule(
+            test_user, sample_vehicle,
+            last_performed_odometer=29711.0,
+            interval_km=5000,
+        )
+        ms.calculate_next_due()
+        assert ms.next_due_odometer == 34711.0
+
+    def test_calculate_next_due_km_interval_miles_unit(self, app, test_user):
+        """Cross case: km interval on a miles-unit vehicle converts to miles."""
+        v = self._make_miles_vehicle(test_user)
+        ms = self._make_schedule(
+            test_user, v,
+            last_performed_odometer=10000.0,
+            interval_km=8000,
+        )
+        ms.calculate_next_due()
+        # 8000 km == 4970.968 mi added to a miles odometer
+        assert ms.next_due_odometer == pytest.approx(10000 + 8000 * 0.621371, abs=0.01)
+
+    def test_calculate_next_due_miles_interval_km_unit(self, app, test_user, sample_vehicle):
+        """Cross case: miles interval on a km-unit vehicle converts to km."""
+        ms = self._make_schedule(
+            test_user, sample_vehicle,
+            last_performed_odometer=10000.0,
+            interval_miles=5000,
+        )
+        ms.calculate_next_due()
+        # 5000 mi == 8046.72 km added to a km odometer
+        assert ms.next_due_odometer == pytest.approx(10000 + 5000 * 1.609344, abs=0.01)
+
 
 # ---------------------------------------------------------------------------
 # RecurringExpense model
