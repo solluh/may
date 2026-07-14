@@ -82,7 +82,7 @@ def dashboard():
         # Recent activity
         recent_logs = FuelLog.query.filter(
             FuelLog.vehicle_id.in_(vehicle_ids)
-        ).order_by(FuelLog.date.desc()).limit(5).all()
+        ).order_by(FuelLog.date.desc(), FuelLog.odometer.desc()).limit(5).all()
 
         recent_expenses = Expense.query.filter(
             Expense.vehicle_id.in_(vehicle_ids)
@@ -203,7 +203,7 @@ def timeline(vehicle_id):
         return redirect(url_for('main.dashboard'))
 
     # Get all fuel logs, expenses, and charging sessions for timeline
-    fuel_logs = vehicle.fuel_logs.order_by(FuelLog.date.desc()).all()
+    fuel_logs = vehicle.fuel_logs.order_by(FuelLog.date.desc(), FuelLog.odometer.desc()).all()
     expenses = vehicle.expenses.order_by(Expense.date.desc()).all()
     charging_sessions = vehicle.charging_sessions.order_by(ChargingSession.date.desc()).all()
 

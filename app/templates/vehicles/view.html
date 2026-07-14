@@ -109,8 +109,21 @@
     {% if vehicle.uses_fuel() %}
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
         <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ _('Avg. Consumption') }}</dt>
-        <dd class="mt-1 text-xl font-semibold text-gray-900 dark:text-white">{% if stats.avg_consumption %}{{ "%.1f"|format(stats.avg_consumption) }}{% else %}-{% endif %}</dd>
+        {% if stats.avg_consumption %}
+        <dd class="mt-1 text-xl font-semibold text-gray-900 dark:text-white">{{ "%.1f"|format(stats.avg_consumption) }}</dd>
         <dd class="text-sm text-gray-500 dark:text-gray-400">{{ current_user.consumption_unit }}</dd>
+        {% else %}
+        {% set reason = vehicle.get_consumption_unavailable_reason() %}
+        {% if reason == 'missed_fill_up' %}
+            {% set consumption_hint = _('A missed fill-up in the range means we can’t calculate this honestly.') %}
+        {% elif reason == 'insufficient_data' %}
+            {% set consumption_hint = _('Not enough distance or fuel data yet to calculate this.') %}
+        {% else %}
+            {% set consumption_hint = _('Needs at least two full-tank fill-ups.') %}
+        {% endif %}
+        <dd class="mt-1 text-xl font-semibold text-gray-400 dark:text-gray-500" title="{{ consumption_hint }}">&mdash;</dd>
+        <dd class="text-xs text-gray-400 dark:text-gray-500">{{ consumption_hint }}</dd>
+        {% endif %}
     </div>
     {% endif %}
     {% if vehicle.uses_charging() %}

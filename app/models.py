@@ -339,6 +339,38 @@ class Vehicle(db.Model):
             return (litres / km) * 100  # L/100km
         return None
 
+    def get_consumption_unavailable_reason(self):
+        """Explain why :meth:`get_average_consumption` returns ``None``.
+
+        Returns a stable reason code (translated for display in the template)
+        or ``None`` when a figure is available. Mirrors the exact conditions
+        in ``get_average_consumption`` (issues #169/#194) so the UI can show a
+        helpful empty state instead of a bare dash (issue #214):
+
+        - ``'insufficient_full_tanks'`` — fewer than two full-tank fill-ups
+        - ``'missed_fill_up'`` — a fill-up in the range is flagged missed
+        - ``'insufficient_data'`` — not enough distance/volume to calculate
+        """
+        full_logs = self.fuel_logs.filter_by(is_full_tank=True).order_by(FuelLog.odometer).all()
+        if len(full_logs) < 2:
+            return 'insufficient_full_tanks'
+
+        first_odo = full_logs[0].odometer
+        last_odo = full_logs[-1].odometer
+        range_logs = self.fuel_logs.filter(
+            FuelLog.odometer > first_odo,
+            FuelLog.odometer <= last_odo,
+        ).all()
+        if any(log.is_missed for log in range_logs):
+            return 'missed_fill_up'
+
+        total_fuel = sum(log.volume for log in range_logs if log.volume)
+        total_distance = last_odo - first_odo
+        if total_distance <= 0 or total_fuel <= 0:
+            return 'insufficient_data'
+
+        return None
+
     def uses_tessie_odometer(self):
         """Check if this vehicle uses Tessie for odometer tracking"""
         from app.services.tessie import TessieService
