@@ -1,39 +1,569 @@
-# Czech translations for May.
-# Copyright (C) 2026 May contributors
-# This file is distributed under the same license as the May project.
-# javlk <jv.vlk83@gmail.com>, 2026.
+# Czech translations for .
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the  project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: May\n"
+"Project-Id-Version:  May\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 20:55+0000\n"
+"POT-Creation-Date: 2026-07-14 12:57+0100\n"
 "PO-Revision-Date: 2026-03-08 17:23+0000\n"
 "Last-Translator: javlk <jv.vlk83@gmail.com>\n"
-"Language-Team: Czech <https://hosted.weblate.org/projects/may/may-0-15-0/cs/>"
-"\n"
 "Language: cs\n"
+"Language-Team: Czech "
+"<https://hosted.weblate.org/projects/may/may-0-15-0/cs/>\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.17-dev\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: app/routes/api.py:2141 app/routes/api.py:2354 app/routes/api.py:2527
+#: app/models.py:895
+msgid "Front Tire Size"
+msgstr ""
+
+#: app/models.py:896
+#, fuzzy
+msgid "Rear Tire Size"
+msgstr "Vytvořit uživatele"
+
+#: app/models.py:897
+msgid "Wheel Size"
+msgstr ""
+
+#: app/models.py:898
+#, fuzzy
+msgid "Engine Oil Type"
+msgstr "Neplatný typ souboru"
+
+#: app/models.py:899
+msgid "Oil Capacity"
+msgstr ""
+
+#: app/models.py:900
+#, fuzzy
+msgid "Coolant Type"
+msgstr "Cena za"
+
+#: app/models.py:901
+msgid "Front Wiper Size"
+msgstr ""
+
+#: app/models.py:902
+msgid "Rear Wiper Size"
+msgstr ""
+
+#: app/models.py:903
+#, fuzzy
+msgid "Battery Type"
+msgstr "Úroveň baterie"
+
+#: app/models.py:904
+msgid "Spark Plug Type"
+msgstr ""
+
+#: app/models.py:905
+msgid "Air Filter Part #"
+msgstr ""
+
+#: app/models.py:906
+msgid "Cabin Filter Part #"
+msgstr ""
+
+#: app/models.py:907
+msgid "Front Brake Pads"
+msgstr ""
+
+#: app/models.py:908
+msgid "Rear Brake Pads"
+msgstr ""
+
+#: app/models.py:909 app/models.py:1460
+msgid "Transmission Fluid"
+msgstr ""
+
+#: app/models.py:910 app/models.py:981 app/models.py:1034
+#: app/templates/auth/settings.html:176
+msgid "Custom"
+msgstr "Vlastní"
+
+#: app/models.py:915 app/templates/auth/settings.html:408
+#: app/templates/auth/settings.html:474 app/templates/base.html:308
+#: app/templates/base.html:389
+msgid "Maintenance"
+msgstr "Údržba"
+
+#: app/models.py:916
+#, fuzzy
+msgid "Repairs"
+msgstr "Platnost vyprší"
+
+#: app/models.py:917
+#, fuzzy
+msgid "Inspection"
+msgstr "Integrace"
+
+#: app/models.py:918
+#, fuzzy
+msgid "Insurance"
+msgstr "Vzdálenost"
+
+#: app/models.py:919 app/models.py:976
+msgid "Road Tax"
+msgstr ""
+
+#: app/models.py:920 app/templates/vehicles/view.html:59
+#, fuzzy
+msgid "Registration"
+msgstr "Povolit registraci"
+
+#: app/models.py:921
+#, fuzzy
+msgid "Parking"
+msgstr "Nabíjení"
+
+#: app/models.py:922
+#, fuzzy
+msgid "Tolls"
+msgstr "Celkový"
+
+#: app/models.py:923
+#, fuzzy
+msgid "Cleaning"
+msgstr "Nabíjení"
+
+#: app/models.py:924
+#, fuzzy
+msgid "Accessories"
+msgstr "Přístup odepřen"
+
+#: app/models.py:925 app/models.py:942 app/models.py:968 app/models.py:1002
+#: app/models.py:1012 app/models.py:1046 app/models.py:1466
+#, fuzzy
+msgid "Other"
+msgstr "Tachometr"
+
+#: app/models.py:930
+#, fuzzy
+msgid "Car"
+msgstr "Vyčistit"
+
+#: app/models.py:931
+#, fuzzy
+msgid "Van"
+msgstr "VIN"
+
+#: app/models.py:932
+#, fuzzy
+msgid "Motorbike"
+msgstr "Více"
+
+#: app/models.py:933
+#, fuzzy
+msgid "Scooter"
+msgstr "Tachometr"
+
+#: app/models.py:934
+msgid "Truck"
+msgstr ""
+
+#: app/models.py:935
+msgid "SUV"
+msgstr ""
+
+#: app/models.py:936
+msgid "Hatchback"
+msgstr ""
+
+#: app/models.py:937
+msgid "Station Wagon / Estate"
+msgstr ""
+
+#: app/models.py:938
+msgid "Pickup / Ute"
+msgstr ""
+
+#: app/models.py:939
+#, fuzzy
+msgid "Tractor"
+msgstr "Správce"
+
+#: app/models.py:940
+msgid "ATV/UTV"
+msgstr ""
+
+#: app/models.py:941
+#, fuzzy
+msgid "Boat"
+msgstr "O"
+
+#: app/models.py:947
+msgid "Mileage (km/mi)"
+msgstr ""
+
+#: app/models.py:948
+#, fuzzy
+msgid "Hours"
+msgstr "Uživatelé"
+
+#: app/models.py:953
+msgid "Kilometres (km)"
+msgstr ""
+
+#: app/models.py:954
+#, fuzzy
+msgid "Miles (mi)"
+msgstr "E-mail (SMTP)"
+
+#: app/models.py:959
+msgid "Petrol/Gasoline"
+msgstr ""
+
+#: app/models.py:960
+msgid "Diesel"
+msgstr ""
+
+#: app/models.py:961
+msgid "Electric"
+msgstr ""
+
+#: app/models.py:962
+msgid "Hybrid"
+msgstr ""
+
+#: app/models.py:963
+msgid "Plug-in Hybrid"
+msgstr ""
+
+#: app/models.py:964
+msgid "LPG"
+msgstr ""
+
+#: app/models.py:965
+msgid "CNG"
+msgstr ""
+
+#: app/models.py:966
+msgid "Hydrogen"
+msgstr ""
+
+#: app/models.py:967
+msgid "E85/Flex Fuel"
+msgstr ""
+
+#: app/models.py:973
+msgid "MOT/Inspection"
+msgstr ""
+
+#: app/models.py:974
+#, fuzzy
+msgid "Service Due"
+msgstr "Časová osa servisu"
+
+#: app/models.py:975
+msgid "Insurance Renewal"
+msgstr ""
+
+#: app/models.py:977
+#, fuzzy
+msgid "Registration Renewal"
+msgstr "Nastavení registrace aktualizováno"
+
+#: app/models.py:978
+#, fuzzy
+msgid "Warranty Expiry"
+msgstr "Vypršení platnosti technické kontroly"
+
+#: app/models.py:979
+#, fuzzy
+msgid "Tire Change"
+msgstr "Uložit změny"
+
+#: app/models.py:980 app/models.py:1017
+#, fuzzy
+msgid "Oil Change"
+msgstr "např. výměna oleje"
+
+#: app/models.py:988
+msgid "No Repeat"
+msgstr ""
+
+#: app/models.py:989
+msgid "Day(s)"
+msgstr ""
+
+#: app/models.py:990
+msgid "Week(s)"
+msgstr ""
+
+#: app/models.py:991
+#, fuzzy
+msgid "Month(s)"
+msgstr "Měsíční"
+
+#: app/models.py:992
+#, fuzzy
+msgid "Year(s)"
+msgstr "Rok"
+
+#: app/models.py:997
+#, fuzzy
+msgid "Business"
+msgstr "Použít SSL"
+
+#: app/models.py:998
+#, fuzzy
+msgid "Personal"
+msgstr "Verze"
+
+#: app/models.py:999
+#, fuzzy
+msgid "Commute"
+msgstr "Kompletní"
+
+#: app/models.py:1000
+msgid "Medical"
+msgstr ""
+
+#: app/models.py:1001
+#, fuzzy
+msgid "Charity"
+msgstr "Město"
+
+#: app/models.py:1007
+#, fuzzy
+msgid "Home Charging"
+msgstr "Nabíjení elektromobilů"
+
+#: app/models.py:1008
+msgid "Level 1"
+msgstr ""
+
+#: app/models.py:1009
+msgid "Level 2"
+msgstr ""
+
+#: app/models.py:1010
+#, fuzzy
+msgid "DC Fast Charge"
+msgstr "Zaznamenejte si první platbu"
+
+#: app/models.py:1011
+msgid "Tesla Supercharger"
+msgstr ""
+
+#: app/models.py:1018 app/models.py:1452
+#, fuzzy
+msgid "Oil Filter"
+msgstr "Filtr"
+
+#: app/models.py:1019 app/models.py:1453
+#, fuzzy
+msgid "Air Filter"
+msgstr "Filtr"
+
+#: app/models.py:1020
+msgid "Cabin/Pollen Filter"
+msgstr ""
+
+#: app/models.py:1021 app/models.py:1454
+#, fuzzy
+msgid "Fuel Filter"
+msgstr "Filtr"
+
+#: app/models.py:1022
+msgid "Spark Plugs"
+msgstr ""
+
+#: app/models.py:1023
+msgid "Brake Pads"
+msgstr ""
+
+#: app/models.py:1024 app/models.py:1458
+msgid "Brake Fluid"
+msgstr ""
+
+#: app/models.py:1025
+msgid "Coolant Flush"
+msgstr ""
+
+#: app/models.py:1026
+#, fuzzy
+msgid "Transmission Service"
+msgstr "Oznamovací služby"
+
+#: app/models.py:1027
+msgid "Timing Belt"
+msgstr ""
+
+#: app/models.py:1028
+msgid "Serpentine Belt"
+msgstr ""
+
+#: app/models.py:1029
+#, fuzzy
+msgid "Tire Rotation"
+msgstr "Integrace Tessie"
+
+#: app/models.py:1030
+msgid "Wheel Alignment"
+msgstr ""
+
+#: app/models.py:1031
+msgid "Battery Check/Replace"
+msgstr ""
+
+#: app/models.py:1032
+msgid "Wiper Blades"
+msgstr ""
+
+#: app/models.py:1033
+msgid "Full Service"
+msgstr ""
+
+#: app/models.py:1039
+#, fuzzy
+msgid "Insurance Policy"
+msgstr "např. pojistná smlouva 2024"
+
+#: app/models.py:1040
+#, fuzzy
+msgid "Registration/V5C"
+msgstr "Povolit registraci"
+
+#: app/models.py:1041
+msgid "MOT Certificate"
+msgstr ""
+
+#: app/models.py:1042
+#, fuzzy
+msgid "Service Record"
+msgstr "Servisní interval"
+
+#: app/models.py:1043
+msgid "Purchase Invoice"
+msgstr ""
+
+#: app/models.py:1044
+#, fuzzy
+msgid "Warranty Document"
+msgstr "Žádné dokumenty"
+
+#: app/models.py:1045
+msgid "Owner's Manual"
+msgstr ""
+
+#: app/models.py:1451
+msgid "Engine Oil"
+msgstr ""
+
+#: app/models.py:1455
+#, fuzzy
+msgid "Cabin Filter"
+msgstr "Filtr"
+
+#: app/models.py:1456
+#, fuzzy
+msgid "Spark Plug"
+msgstr "Úvodní stránka"
+
+#: app/models.py:1457
+msgid "Brake Pad"
+msgstr ""
+
+#: app/models.py:1459
+msgid "Coolant"
+msgstr ""
+
+#: app/models.py:1461
+#, fuzzy
+msgid "Battery"
+msgstr "Úroveň baterie"
+
+#: app/models.py:1462
+#, fuzzy
+msgid "Tire"
+msgstr "Titul"
+
+#: app/models.py:1463
+#, fuzzy
+msgid "Belt"
+msgstr "Vymazat"
+
+#: app/models.py:1464
+msgid "Wiper Blade"
+msgstr ""
+
+#: app/models.py:1465
+msgid "Light Bulb"
+msgstr ""
+
+#: app/routes/allowance.py:31 app/routes/expenses.py:49 app/routes/fuel.py:53
+#: app/routes/fuel.py:348 app/routes/notes.py:31 app/routes/reminders.py:63
+#: app/routes/trips.py:67
+msgid "Please add a vehicle first"
+msgstr "Nejprve prosím přidejte vozidlo"
+
+#: app/routes/allowance.py:40 app/routes/allowance.py:78
+#: app/routes/allowance.py:110 app/routes/charging.py:63
+#: app/routes/charging.py:123 app/routes/charging.py:173
+#: app/routes/documents.py:130 app/routes/documents.py:146
+#: app/routes/documents.py:165 app/routes/documents.py:205
+#: app/routes/expenses.py:58 app/routes/expenses.py:116
+#: app/routes/expenses.py:171 app/routes/expenses.py:195
+#: app/routes/expenses.py:200 app/routes/fuel.py:62 app/routes/fuel.py:181
+#: app/routes/fuel.py:289 app/routes/fuel.py:321 app/routes/fuel.py:326
+#: app/routes/fuel.py:362 app/routes/maintenance.py:106
+#: app/routes/maintenance.py:148 app/routes/maintenance.py:191
+#: app/routes/notes.py:40 app/routes/notes.py:82 app/routes/notes.py:118
+#: app/routes/reminders.py:71 app/routes/reminders.py:126
+#: app/routes/reminders.py:164 app/routes/reminders.py:228
+#: app/routes/reminders.py:247 app/routes/trips.py:75 app/routes/trips.py:139
+#: app/routes/trips.py:174 app/routes/trips.py:207 app/routes/trips.py:239
+#: app/routes/trips.py:250 app/routes/trips.py:279 app/routes/vehicles.py:115
+#: app/routes/vehicles.py:190 app/routes/vehicles.py:273
+#: app/routes/vehicles.py:295 app/routes/vehicles.py:326
+#: app/routes/vehicles.py:345 app/routes/vehicles.py:361
+#: app/routes/vehicles.py:378 app/routes/vehicles.py:443
+#: app/routes/vehicles.py:472 app/routes/vehicles.py:510
+#: app/routes/vehicles.py:548
+msgid "Access denied"
+msgstr "Přístup odepřen"
+
+#: app/routes/allowance.py:55 app/routes/allowance.py:90
+msgid "Invalid data submitted. Please check the date and amount fields."
+msgstr ""
+
+#: app/routes/allowance.py:61
+#, fuzzy
+msgid "Mileage allowance added successfully"
+msgstr "Výdaj byl úspěšně přidán"
+
+#: app/routes/allowance.py:95
+#, fuzzy
+msgid "Mileage allowance updated successfully"
+msgstr "Výdaj byl úspěšně aktualizován"
+
+#: app/routes/allowance.py:116
+#, fuzzy
+msgid "Mileage allowance deleted successfully"
+msgstr "Výdaj byl úspěšně smazán"
+
+#: app/routes/api.py:2148 app/routes/api.py:2361 app/routes/api.py:2536
 msgid "No file uploaded"
 msgstr "Žádný soubor nebyl nahrán"
 
-#: app/routes/api.py:2146 app/routes/api.py:2359 app/routes/api.py:2532
+#: app/routes/api.py:2153 app/routes/api.py:2366 app/routes/api.py:2541
 #: app/routes/documents.py:67 app/routes/documents.py:72
 msgid "No file selected"
 msgstr "Není vybrán žádný soubor"
 
-#: app/routes/api.py:2168
+#: app/routes/api.py:2175
 msgid "The uploaded file is not a valid SQLite database."
 msgstr "Nahraný soubor není platnou databází SQLite."
 
-#: app/routes/api.py:2173
+#: app/routes/api.py:2180
 msgid ""
 "This does not appear to be a Hammond database — no vehicles, fillups, or "
 "expenses tables found."
@@ -41,7 +571,7 @@ msgstr ""
 "Zdá se, že se nejedná o databázi Hammond – nenašly se žádné tabulky s "
 "vozidly, tankováními ani výdaji."
 
-#: app/routes/api.py:2322
+#: app/routes/api.py:2329
 #, python-format
 msgid ""
 "Hammond import complete: %(vehicles)s vehicles, %(fuel_logs)s fuel logs, "
@@ -50,7 +580,7 @@ msgstr ""
 "Import Hammond dokončen: importováno %(vehicles)s vozidel, %(fuel_logs)s "
 "záznamů o palivu, %(expenses)s výdajů."
 
-#: app/routes/api.py:2324
+#: app/routes/api.py:2331
 #, python-format
 msgid ""
 "(%(total_skipped)s records skipped due to errors — check server logs for "
@@ -59,69 +589,69 @@ msgstr ""
 "(%(total_skipped)s záznamů bylo přeskočeno kvůli chybám – podrobnosti "
 "naleznete v protokolech serveru.)"
 
-#: app/routes/api.py:2331
+#: app/routes/api.py:2338
 #, python-format
 msgid ""
 "Import failed due to a database error. Check that the file is a valid "
 "Hammond database. Error: %(error)s"
 msgstr ""
-"Import se nezdařil kvůli chybě databáze. Zkontrolujte, zda je soubor platnou "
-"databází Hammond. Chyba: %(error)s"
+"Import se nezdařil kvůli chybě databáze. Zkontrolujte, zda je soubor "
+"platnou databází Hammond. Chyba: %(error)s"
 
-#: app/routes/api.py:2336 app/routes/api.py:2478 app/routes/api.py:2650
-#: app/routes/api.py:3106
+#: app/routes/api.py:2343 app/routes/api.py:2487 app/routes/api.py:2659
+#: app/routes/api.py:3117
 #, python-format
 msgid "Import failed: %(error)s"
 msgstr "Import se nezdařil: %(error)s"
 
-#: app/routes/api.py:2474
+#: app/routes/api.py:2483
 #, python-format
 msgid "Clarkson import complete: %(vehicles)s vehicles, %(fuel_logs)s fuel logs"
 msgstr ""
 "Import Clarksonu dokončen: %(vehicles)s vozidel, %(fuel_logs)s záznamů o "
 "spotřebě paliva"
 
-#: app/routes/api.py:2646
+#: app/routes/api.py:2655
 #, python-format
 msgid "Fuelly import complete: %(vehicles)s new vehicles, %(fuel_logs)s fuel logs"
 msgstr ""
-"Import paliva dokončen: %(vehicles)s nových vozidel, %(fuel_logs)s záznamů o "
-"palivu"
+"Import paliva dokončen: %(vehicles)s nových vozidel, %(fuel_logs)s "
+"záznamů o palivu"
 
-#: app/routes/api.py:2959
+#: app/routes/api.py:2970
 msgid "Please add a vehicle before importing data."
 msgstr "Před importem dat prosím přidejte vozidlo."
 
-#: app/routes/api.py:2972
+#: app/routes/api.py:2983
 msgid "Invalid data type selected."
 msgstr "Vybrán neplatný datový typ."
 
-#: app/routes/api.py:2977 app/routes/api.py:3052
+#: app/routes/api.py:2988 app/routes/api.py:3063
 msgid "Vehicle not found."
 msgstr "Vozidlo nenalezeno."
 
-#: app/routes/api.py:2981
+#: app/routes/api.py:2992
 msgid "No CSV file uploaded."
 msgstr "Nebyl nahrán žádný soubor CSV."
 
-#: app/routes/api.py:2992
+#: app/routes/api.py:3003
 msgid "CSV file has no column headers."
 msgstr "Soubor CSV nemá žádné záhlaví sloupců."
 
-#: app/routes/api.py:3033
+#: app/routes/api.py:3044
 #, python-format
 msgid "Failed to parse CSV file: %(error)s"
 msgstr "Nepodařilo se analyzovat soubor CSV: %(error)s"
 
-#: app/routes/api.py:3047
+#: app/routes/api.py:3058
 msgid "Invalid data type."
 msgstr "Neplatný datový typ."
 
-#: app/routes/api.py:3056
+#: app/routes/api.py:3067
 msgid "CSV file expired. Please upload again."
 msgstr "Platnost souboru CSV vypršela. Nahrajte jej prosím znovu."
 
-#: app/routes/api.py:3094
+#: app/routes/api.py:3105
 #, python-format
 msgid "CSV import complete: %(count)s %(label)s imported."
 msgstr "Import CSV dokončen: %(count)s %(label)s importováno."
@@ -133,7 +663,8 @@ msgstr "Neplatné uživatelské jméno nebo heslo"
 #: app/routes/auth.py:62
 msgid "Password reset by email is not available. Please contact an administrator."
 msgstr ""
-"Obnovení hesla e-mailem není k dispozici. Kontaktujte prosím administrátora."
+"Obnovení hesla e-mailem není k dispozici. Kontaktujte prosím "
+"administrátora."
 
 #: app/routes/auth.py:91
 msgid "If an account with that email exists, a password reset link has been sent."
@@ -145,8 +676,8 @@ msgstr ""
 msgid "Invalid or expired reset link. Please request a new one."
 msgstr "Neplatný nebo vypršelý odkaz pro reset. Požádejte o nový."
 
-#: app/routes/auth.py:112 app/routes/auth.py:168 app/routes/auth.py:234
-#: app/routes/auth.py:522 app/routes/auth.py:558
+#: app/routes/auth.py:112 app/routes/auth.py:170 app/routes/auth.py:236
+#: app/routes/auth.py:537 app/routes/auth.py:573
 msgid "Passwords do not match"
 msgstr "Hesla se neshodují"
 
@@ -154,138 +685,122 @@ msgstr "Hesla se neshodují"
 msgid "Your password has been reset. Please log in."
 msgstr "Vaše heslo bylo resetováno. Přihlaste se prosím."
 
-#: app/routes/auth.py:158
+#: app/routes/auth.py:160
 msgid "New account registration is currently disabled."
 msgstr "Registrace nového účtu je momentálně zakázána."
 
-#: app/routes/auth.py:178 app/routes/auth.py:567
+#: app/routes/auth.py:180 app/routes/auth.py:582
 msgid "Username already exists"
 msgstr "Uživatelské jméno již existuje"
 
-#: app/routes/auth.py:182
+#: app/routes/auth.py:184
 msgid "Email already registered"
 msgstr "E-mail již zaregistrován"
 
-#: app/routes/auth.py:190
+#: app/routes/auth.py:192
 msgid "Registration successful! Please log in."
 msgstr "Registrace úspěšná! Prosím, přihlaste se."
 
-#: app/routes/auth.py:200
+#: app/routes/auth.py:202
 msgid "You have been logged out."
 msgstr "Byli jste odhlášeni."
 
-#: app/routes/auth.py:224 app/routes/auth.py:514
+#: app/routes/auth.py:226 app/routes/auth.py:529
 msgid "Email already in use by another account"
 msgstr "E-mail již používá jiný účet"
 
-#: app/routes/auth.py:246
+#: app/routes/auth.py:248
 msgid "Settings updated successfully"
 msgstr "Nastavení bylo úspěšně aktualizováno"
 
-#: app/routes/auth.py:324
+#: app/routes/auth.py:326
 #, python-format
 msgid "Invalid webhook URL: %(error)s"
 msgstr "Neplatná URL adresa webhooku: %(error)s"
 
-#: app/routes/auth.py:334
+#: app/routes/auth.py:336
 msgid "Notification preferences updated"
 msgstr "Předvolby oznámení byly aktualizovány"
 
-#: app/routes/auth.py:355
+#: app/routes/auth.py:361
 msgid "Menu preferences updated"
 msgstr "Předvolby nabídky byly aktualizovány"
 
-#: app/routes/auth.py:380
+#: app/routes/auth.py:386
 msgid "Notification settings updated"
 msgstr "Nastavení oznámení aktualizováno"
 
-#: app/routes/auth.py:409
+#: app/routes/auth.py:415
 msgid "Branding settings updated successfully"
 msgstr "Nastavení brandingu bylo úspěšně aktualizováno"
 
-#: app/routes/auth.py:425
+#: app/routes/auth.py:431
 msgid "Logo removed successfully"
 msgstr "Logo bylo úspěšně odstraněno"
 
-#: app/routes/auth.py:438
+#: app/routes/auth.py:444
 msgid "DVLA settings updated"
 msgstr "Nastavení DVLA aktualizováno"
 
-#: app/routes/auth.py:451
+#: app/routes/auth.py:457
 msgid "Tessie settings updated"
 msgstr "Nastavení Tessie bylo aktualizováno"
 
-#: app/routes/auth.py:464
+#: app/routes/auth.py:470
 msgid "Registration settings updated"
 msgstr "Nastavení registrace aktualizováno"
 
-#: app/routes/auth.py:484
+#: app/routes/auth.py:494
+msgid "Cannot remove admin status from the last administrator."
+msgstr ""
+
+#: app/routes/auth.py:499
 #, python-format
 msgid "Admin status updated for %(username)s"
 msgstr "Stav administrátora byl aktualizován pro %(username)s"
 
-#: app/routes/auth.py:497
+#: app/routes/auth.py:512
 #, python-format
 msgid "User %(username)s deleted"
 msgstr "Uživatel %(username)s byl smazán"
 
-#: app/routes/auth.py:535
+#: app/routes/auth.py:550
 #, python-format
 msgid "User %(username)s updated successfully"
 msgstr "Uživatel %(username)s byl úspěšně aktualizován"
 
-#: app/routes/auth.py:554
+#: app/routes/auth.py:569
 msgid "Username, email, and password are required"
 msgstr "Uživatelské jméno, e-mail a heslo jsou vyžadovány"
 
-#: app/routes/auth.py:571
+#: app/routes/auth.py:586
 msgid "Email already in use"
 msgstr "E-mail se již používá"
 
-#: app/routes/auth.py:579
+#: app/routes/auth.py:594
 #, python-format
 msgid "User %(username)s created successfully"
 msgstr "Uživatel %(username)s byl úspěšně vytvořen"
 
-#: app/routes/charging.py:54
+#: app/routes/charging.py:55
 msgid "No electric vehicles found. Add an EV or hybrid vehicle first."
 msgstr ""
-"Nenalezena žádná elektromobily. Nejprve přidejte elektromobil nebo hybridní "
-"vozidlo."
+"Nenalezena žádná elektromobily. Nejprve přidejte elektromobil nebo "
+"hybridní vozidlo."
 
-#: app/routes/charging.py:62 app/routes/charging.py:122
-#: app/routes/charging.py:172 app/routes/documents.py:130
-#: app/routes/documents.py:146 app/routes/documents.py:165
-#: app/routes/documents.py:205 app/routes/expenses.py:49
-#: app/routes/expenses.py:107 app/routes/expenses.py:154 app/routes/fuel.py:52
-#: app/routes/fuel.py:160 app/routes/fuel.py:219 app/routes/fuel.py:259
-#: app/routes/maintenance.py:105 app/routes/maintenance.py:147
-#: app/routes/maintenance.py:190 app/routes/reminders.py:71
-#: app/routes/reminders.py:125 app/routes/reminders.py:162
-#: app/routes/reminders.py:206 app/routes/reminders.py:225
-#: app/routes/trips.py:73 app/routes/trips.py:126 app/routes/trips.py:160
-#: app/routes/vehicles.py:109 app/routes/vehicles.py:164
-#: app/routes/vehicles.py:239 app/routes/vehicles.py:261
-#: app/routes/vehicles.py:292 app/routes/vehicles.py:311
-#: app/routes/vehicles.py:327 app/routes/vehicles.py:344
-#: app/routes/vehicles.py:409 app/routes/vehicles.py:438
-#: app/routes/vehicles.py:476 app/routes/vehicles.py:514
-msgid "Access denied"
-msgstr "Přístup odepřen"
-
-#: app/routes/charging.py:100
+#: app/routes/charging.py:101
 msgid "Charging session logged successfully"
 msgstr "Nabíjení bylo úspěšně zaznamenáno"
 
-#: app/routes/charging.py:154
+#: app/routes/charging.py:155
 msgid "Charging session updated successfully"
 msgstr "Relace nabíjení byla úspěšně aktualizována"
 
-#: app/routes/charging.py:177
+#: app/routes/charging.py:178
 msgid "Charging session deleted successfully"
 msgstr "Relace nabíjení byla úspěšně smazána"
 
-#: app/routes/documents.py:62 app/routes/maintenance.py:48
+#: app/routes/documents.py:62 app/routes/maintenance.py:49
 msgid "Invalid vehicle"
 msgstr "Neplatné vozidlo"
 
@@ -307,335 +822,587 @@ msgstr "Dokument aktualizován"
 msgid "Document \"%(title)s\" deleted"
 msgstr "Dokument „%(title)s“ byl smazán"
 
-#: app/routes/expenses.py:40 app/routes/fuel.py:43 app/routes/fuel.py:245
-#: app/routes/reminders.py:63 app/routes/trips.py:65
-msgid "Please add a vehicle first"
-msgstr "Nejprve prosím přidejte vozidlo"
-
-#: app/routes/expenses.py:86
+#: app/routes/expenses.py:95
 msgid "Expense added successfully"
 msgstr "Výdaj byl úspěšně přidán"
 
-#: app/routes/expenses.py:136
+#: app/routes/expenses.py:130
+msgid "Invalid data submitted. Please check the date and cost fields."
+msgstr ""
+
+#: app/routes/expenses.py:153
 msgid "Expense updated successfully"
 msgstr "Výdaj byl úspěšně aktualizován"
 
-#: app/routes/expenses.py:167
+#: app/routes/expenses.py:184
 msgid "Expense deleted successfully"
 msgstr "Výdaj byl úspěšně smazán"
 
-#: app/routes/fuel.py:133
+#: app/routes/expenses.py:209 app/routes/fuel.py:335
+msgid "Attachment deleted"
+msgstr ""
+
+#: app/routes/fuel.py:153
 msgid "Fuel log added successfully"
 msgstr "Záznam paliva byl úspěšně přidán"
 
-#: app/routes/fuel.py:195
+#: app/routes/fuel.py:264
 msgid "Fuel log updated successfully"
 msgstr "Záznam paliva byl úspěšně aktualizován"
 
-#: app/routes/fuel.py:232
+#: app/routes/fuel.py:310
 msgid "Fuel log deleted successfully"
 msgstr "Záznam paliva byl úspěšně smazán"
 
-#: app/routes/fuel.py:290
+#: app/routes/fuel.py:400
 msgid "Fuel log added!"
 msgstr "Přidán záznam o palivu!"
 
-#: app/routes/maintenance.py:84
+#: app/routes/maintenance.py:85
 #, python-format
 msgid "Maintenance schedule \"%(name)s\" created"
 msgstr "Plán údržby „%(name)s“ byl vytvořen"
 
-#: app/routes/maintenance.py:129
+#: app/routes/maintenance.py:130
 msgid "Maintenance schedule updated"
 msgstr "Harmonogram údržby aktualizován"
 
-#: app/routes/maintenance.py:178
+#: app/routes/maintenance.py:179
 #, python-format
 msgid "Maintenance \"%(name)s\" marked as completed"
 msgstr "Údržba uživatele „%(name)s“ byla označena jako dokončená"
 
-#: app/routes/maintenance.py:197
+#: app/routes/maintenance.py:198
 #, python-format
 msgid "Maintenance schedule \"%(name)s\" deleted"
 msgstr "Plán údržby „%(name)s“ byl smazán"
 
-#: app/routes/recurring.py:36
+#: app/routes/notes.py:54 app/routes/notes.py:93
+msgid "Invalid data submitted. Please check the date and odometer fields."
+msgstr ""
+
+#: app/routes/notes.py:59 app/routes/notes.py:98
+msgid "Please enter some note text"
+msgstr ""
+
+#: app/routes/notes.py:65
+#, fuzzy
+msgid "Note added successfully"
+msgstr "Výdaj byl úspěšně přidán"
+
+#: app/routes/notes.py:103
+#, fuzzy
+msgid "Note updated successfully"
+msgstr "Cesta byla úspěšně aktualizována"
+
+#: app/routes/notes.py:124
+#, fuzzy
+msgid "Note deleted successfully"
+msgstr "Cesta byla úspěšně smazána"
+
+#: app/routes/recurring.py:37
 msgid "Please add a vehicle first."
 msgstr "Nejprve prosím přidejte vozidlo."
 
-#: app/routes/recurring.py:45
+#: app/routes/recurring.py:46
 msgid "Invalid vehicle."
 msgstr "Neplatné vozidlo."
 
-#: app/routes/recurring.py:72
+#: app/routes/recurring.py:73
 msgid "Recurring expense created."
 msgstr "Vytvořen opakující se výdaj."
 
-#: app/routes/recurring.py:114
+#: app/routes/recurring.py:115
 msgid "Recurring expense updated."
 msgstr "Opakující se výdaje aktualizovány."
 
-#: app/routes/recurring.py:137
+#: app/routes/recurring.py:138
 msgid "Recurring expense deleted."
 msgstr "Opakující se výdaj smazán."
 
-#: app/routes/recurring.py:177
+#: app/routes/recurring.py:178
 #, python-format
 msgid "Expense created for %(name)s."
 msgstr "Výdaj vytvořen pro %(name)s."
 
-#: app/routes/recurring.py:196
+#: app/routes/recurring.py:197
 #, python-format
 msgid "Recurring expense %(status)s."
 msgstr "Opakující se výdaje %(status)s."
 
-#: app/routes/reminders.py:77 app/routes/reminders.py:132
+#: app/routes/reminders.py:77 app/routes/reminders.py:133
 msgid "Invalid date format"
 msgstr "Neplatný formát data"
 
-#: app/routes/reminders.py:94
+#: app/routes/reminders.py:95
 #, python-format
 msgid "Reminder \"%(title)s\" created successfully"
 msgstr "Připomenutí „%(title)s“ bylo úspěšně vytvořeno"
 
-#: app/routes/reminders.py:143
+#: app/routes/reminders.py:145
 msgid "Reminder updated successfully"
 msgstr "Připomenutí bylo úspěšně aktualizováno"
 
-#: app/routes/reminders.py:184
+#: app/routes/reminders.py:192 app/routes/reminders.py:208
+msgid "Reminder marked as completed"
+msgstr "Připomenutí označeno jako dokončené"
+
+#: app/routes/reminders.py:206
 #, python-format
 msgid "Reminder completed. Next occurrence created for %(date)s"
 msgstr "Připomenutí dokončeno. Další výskyt vytvořen pro %(date)s."
 
-#: app/routes/reminders.py:186
-msgid "Reminder marked as completed"
-msgstr "Připomenutí označeno jako dokončené"
-
-#: app/routes/reminders.py:213
+#: app/routes/reminders.py:235
 msgid "Reminder marked as not completed"
 msgstr "Připomenutí označeno jako nedokončené"
 
-#: app/routes/reminders.py:232
+#: app/routes/reminders.py:254
 msgid "Reminder deleted"
 msgstr "Připomenutí smazáno"
 
-#: app/routes/stations.py:49
+#: app/routes/stations.py:50
 #, python-format
 msgid "Station \"%(name)s\" added"
 msgstr "Stanice „%(name)s“ byla přidána"
 
-#: app/routes/stations.py:80
+#: app/routes/stations.py:81
 msgid "Station updated"
 msgstr "Stanice aktualizována"
 
-#: app/routes/stations.py:108
+#: app/routes/stations.py:109
 #, python-format
 msgid "Station \"%(name)s\" deleted"
 msgstr "Stanice „%(name)s“ byla smazána"
 
-#: app/routes/trips.py:95
+#: app/routes/stations.py:166
+msgid "You can only delete your own price entries"
+msgstr ""
+
+#: app/routes/stations.py:173
+#, fuzzy
+msgid "Price entry deleted"
+msgstr "Připomenutí smazáno"
+
+#: app/routes/trips.py:97
 msgid "Trip logged successfully"
 msgstr "Cesta byla úspěšně zaznamenána"
 
-#: app/routes/trips.py:141
+#: app/routes/trips.py:154
 msgid "Trip updated successfully"
 msgstr "Cesta byla úspěšně aktualizována"
 
-#: app/routes/trips.py:165
+#: app/routes/trips.py:179
 msgid "Trip deleted successfully"
 msgstr "Cesta byla úspěšně smazána"
 
-#: app/routes/vehicles.py:89
+#: app/routes/trips.py:224
+msgid "Template saved"
+msgstr ""
+
+#: app/routes/trips.py:264
+#, fuzzy
+msgid "Template updated"
+msgstr "Naposledy aktualizováno"
+
+#: app/routes/trips.py:284
+#, fuzzy
+msgid "Template deleted"
+msgstr "Připomenutí smazáno"
+
+#: app/routes/vehicles.py:94
 #, python-format
 msgid "Vehicle \"%(name)s\" added successfully"
 msgstr "Vozidlo „%(name)s“ bylo úspěšně přidáno"
 
-#: app/routes/vehicles.py:217
+#: app/routes/vehicles.py:250
 msgid "Vehicle updated successfully"
 msgstr "Vozidlo bylo úspěšně aktualizováno"
 
-#: app/routes/vehicles.py:250
+#: app/routes/vehicles.py:284
 msgid "Vehicle deleted successfully"
 msgstr "Vozidlo bylo úspěšně smazáno"
 
-#: app/routes/vehicles.py:269
+#: app/routes/vehicles.py:303
 msgid "User not found"
 msgstr "Uživatel nebyl nalezen"
 
-#: app/routes/vehicles.py:271
+#: app/routes/vehicles.py:305
 msgid "You are already the owner"
 msgstr "Již jste vlastníkem"
 
-#: app/routes/vehicles.py:273
+#: app/routes/vehicles.py:307
 msgid "Vehicle already shared with this user"
 msgstr "Vozidlo již s tímto uživatelem sdíleno"
 
-#: app/routes/vehicles.py:277
+#: app/routes/vehicles.py:311
 #, python-format
 msgid "Vehicle shared with %(username)s"
 msgstr "Vozidlo sdílené s uživatelem %(username)s"
 
-#: app/routes/vehicles.py:299
+#: app/routes/vehicles.py:333
 #, python-format
 msgid "Sharing removed for %(username)s"
 msgstr "Sdílení bylo zrušeno pro %(username)s"
 
-#: app/routes/vehicles.py:316
+#: app/routes/vehicles.py:350
 #, python-format
 msgid "Vehicle \"%(name)s\" has been archived"
 msgstr "Vozidlo „%(name)s“ bylo archivováno"
 
-#: app/routes/vehicles.py:332
+#: app/routes/vehicles.py:366
 #, python-format
 msgid "Vehicle \"%(name)s\" has been restored"
 msgstr "Vozidlo „%(name)s“ bylo obnoveno"
 
-#: app/routes/vehicles.py:350
+#: app/routes/vehicles.py:384
 msgid "PDF generation is not available. Please install weasyprint."
 msgstr "Generování PDF není k dispozici. Nainstalujte weasyprint."
 
-#: app/routes/vehicles.py:458
+#: app/routes/vehicles.py:492
 #, python-format
 msgid "Part \"%(name)s\" added successfully"
 msgstr "Část „%(name)s“ byla úspěšně přidána"
 
-#: app/routes/vehicles.py:481 app/routes/vehicles.py:519
+#: app/routes/vehicles.py:515 app/routes/vehicles.py:553
 msgid "Part not found"
 msgstr "Díl nenalezen"
 
-#: app/routes/vehicles.py:496
+#: app/routes/vehicles.py:530
 msgid "Part updated successfully"
 msgstr "Část byla úspěšně aktualizována"
 
-#: app/routes/vehicles.py:525
+#: app/routes/vehicles.py:559
 msgid "Part deleted successfully"
 msgstr "Část byla úspěšně smazána"
 
-#: app/templates/auth/settings.html:402 app/templates/base.html:257
-#: app/templates/base.html:356
+#: app/templates/auth/settings.html:402 app/templates/base.html:262
+#: app/templates/base.html:369 app/templates/dashboard.html:2
+#: app/templates/dashboard.html:11
 msgid "Dashboard"
 msgstr "Přehled"
 
-#: app/templates/auth/settings.html:403 app/templates/auth/settings.html:439
-#: app/templates/base.html:261 app/templates/base.html:358
-#: app/templates/dashboard.html:27
+#: app/templates/auth/settings.html:403 app/templates/auth/settings.html:454
+#: app/templates/base.html:266 app/templates/base.html:371
+#: app/templates/dashboard.html:27 app/templates/vehicles/index.html:2
+#: app/templates/vehicles/index.html:7
 msgid "Vehicles"
 msgstr "Vozidla"
 
-#: app/templates/auth/settings.html:404 app/templates/auth/settings.html:444
-#: app/templates/base.html:266 app/templates/base.html:361
+#: app/templates/auth/settings.html:404 app/templates/auth/settings.html:459
+#: app/templates/base.html:271 app/templates/base.html:374
+#: app/templates/fuel/index.html:2 app/templates/fuel/index.html:7
+#: app/templates/vehicles/view.html:754
 msgid "Fuel Logs"
 msgstr "Záznamy o palivu"
 
-#: app/templates/auth/settings.html:406 app/templates/auth/settings.html:449
-#: app/templates/base.html:271 app/templates/base.html:364
-#: app/templates/timeline/index.html:108
+#: app/templates/auth/settings.html:406 app/templates/auth/settings.html:464
+#: app/templates/base.html:276 app/templates/base.html:377
+#: app/templates/expenses/index.html:2 app/templates/expenses/index.html:7
+#: app/templates/timeline/index.html:108 app/templates/vehicles/view.html:805
 msgid "Expenses"
 msgstr "Výdaje"
 
-#: app/templates/auth/settings.html:407 app/templates/auth/settings.html:454
-#: app/templates/base.html:276 app/templates/base.html:367
+#: app/templates/auth/settings.html:407 app/templates/auth/settings.html:469
+#: app/templates/base.html:281 app/templates/base.html:380
+#: app/templates/reminders/index.html:2 app/templates/reminders/index.html:7
 msgid "Reminders"
 msgstr "Připomenutí"
 
-#: app/templates/auth/settings.html:412 app/templates/auth/settings.html:479
-#: app/templates/base.html:281 app/templates/base.html:370
+#: app/templates/auth/settings.html:412 app/templates/auth/settings.html:494
+#: app/templates/base.html:286 app/templates/base.html:383
 #: app/templates/trips/index.html:7
 msgid "Trips"
 msgstr "Výlety"
 
-#: app/templates/base.html:293
+#: app/templates/base.html:300
 msgid "More"
 msgstr "Více"
 
-#: app/templates/auth/settings.html:408 app/templates/auth/settings.html:459
-#: app/templates/base.html:301 app/templates/base.html:376
-msgid "Maintenance"
-msgstr "Údržba"
-
-#: app/templates/base.html:304 app/templates/base.html:379
+#: app/templates/base.html:311 app/templates/base.html:392
 msgid "Recurring"
 msgstr "Opakující se"
 
-#: app/templates/auth/settings.html:410 app/templates/auth/settings.html:469
-#: app/templates/base.html:307 app/templates/base.html:382
+#: app/templates/auth/settings.html:410 app/templates/auth/settings.html:484
+#: app/templates/base.html:314 app/templates/base.html:395
 #: app/templates/documents/index.html:7
 msgid "Documents"
 msgstr "Dokumenty"
 
-#: app/templates/auth/settings.html:411 app/templates/auth/settings.html:474
-#: app/templates/base.html:310 app/templates/base.html:385
+#: app/templates/auth/settings.html:411 app/templates/auth/settings.html:489
+#: app/templates/base.html:317 app/templates/base.html:398
 #: app/templates/stations/index.html:7
 msgid "Fuel Stations"
 msgstr "Čerpací stanice"
 
-#: app/templates/auth/settings.html:413 app/templates/auth/settings.html:484
-#: app/templates/base.html:313 app/templates/base.html:373
+#: app/templates/auth/settings.html:413 app/templates/auth/settings.html:499
+#: app/templates/base.html:320 app/templates/base.html:386
 msgid "EV Charging"
 msgstr "Nabíjení elektromobilů"
 
-#: app/templates/auth/settings.html:405 app/templates/base.html:315
-#: app/templates/base.html:325 app/templates/base.html:387
+#: app/templates/allowance/index.html:2 app/templates/allowance/index.html:7
+#: app/templates/auth/settings.html:414 app/templates/auth/settings.html:504
+#: app/templates/base.html:323 app/templates/base.html:401
+#: app/templates/dashboard.html:140 app/templates/vehicles/view.html:94
+msgid "Mileage Allowance"
+msgstr ""
+
+#: app/templates/auth/settings.html:415 app/templates/auth/settings.html:509
+#: app/templates/base.html:326 app/templates/base.html:404
+#: app/templates/charging/form.html:144 app/templates/expenses/form.html:77
+#: app/templates/fuel/form.html:143 app/templates/notes/index.html:2
+#: app/templates/notes/index.html:7 app/templates/stations/form.html:74
+#: app/templates/trips/form.html:116 app/templates/trips/template_form.html:76
+#: app/templates/vehicles/form.html:222
+#: app/templates/vehicles/part_form.html:87
+#: app/templates/vehicles/view.html:588
+msgid "Notes"
+msgstr "Poznámky"
+
+#: app/templates/auth/settings.html:405 app/templates/base.html:328
+#: app/templates/base.html:338 app/templates/base.html:406
 #: app/templates/fuel/quick.html:7
 msgid "Quick Fuel Entry"
 msgstr "Rychlý vstup paliva"
 
-#: app/templates/base.html:329 app/templates/timeline/index.html:102
+#: app/templates/base.html:342 app/templates/timeline/index.html:102
+#: app/templates/vehicles/view.html:55
 msgid "Fuel"
 msgstr "Palivo"
 
 #: app/templates/auth/settings.html:2 app/templates/auth/settings.html:6
-#: app/templates/base.html:332 app/templates/base.html:388
+#: app/templates/base.html:345 app/templates/base.html:407
 msgid "Settings"
 msgstr "Nastavení"
 
-#: app/templates/base.html:339 app/templates/base.html:393
+#: app/templates/base.html:352 app/templates/base.html:412
 msgid "Logout"
 msgstr "Odhlásit se"
 
-#: app/templates/dashboard.html:45
+#: app/templates/dashboard.html:12
+msgid "Overview of your vehicles and expenses"
+msgstr ""
+
+#: app/templates/dashboard.html:45 app/templates/vehicles/view.html:75
 msgid "Total Fuel Cost"
 msgstr "Celkové náklady na palivo"
 
-#: app/templates/dashboard.html:63
+#: app/templates/dashboard.html:64 app/templates/vehicles/view.html:82
+#, fuzzy
+msgid "Total Charging Cost"
+msgstr "Celková cena"
+
+#: app/templates/dashboard.html:83 app/templates/vehicles/view.html:88
 msgid "Other Expenses"
 msgstr "Ostatní výdaje"
 
-#: app/templates/dashboard.html:81 app/templates/trips/index.html:31
-#: app/templates/trips/report.html:35
+#: app/templates/dashboard.html:101 app/templates/trips/index.html:38
+#: app/templates/trips/report.html:35 app/templates/vehicles/view.html:105
 msgid "Total Distance"
 msgstr "Celková vzdálenost"
 
-#: app/templates/dashboard.html:99
+#: app/templates/dashboard.html:119 app/templates/vehicles/view.html:137
 msgid "Cost per"
 msgstr "Cena za"
 
-#: app/templates/dashboard.html:113
+#: app/templates/dashboard.html:158 app/templates/vehicles/view.html:99
+#, fuzzy
+msgid "Net Cost"
+msgstr "Celková cena"
+
+#: app/templates/dashboard.html:171
 msgid "Monthly Spending"
 msgstr "Měsíční výdaje"
 
-#: app/templates/dashboard.html:122 app/templates/stations/cheapest.html:7
+#: app/templates/dashboard.html:180 app/templates/stations/cheapest.html:7
 #: app/templates/stations/index.html:16
 msgid "Cheapest Fuel"
 msgstr "Nejlevnější palivo"
 
-#: app/templates/dashboard.html:123
+#: app/templates/dashboard.html:181 app/templates/dashboard.html:258
+#: app/templates/dashboard.html:282 app/templates/vehicles/view.html:498
+#: app/templates/vehicles/view.html:608 app/templates/vehicles/view.html:666
 msgid "View all"
 msgstr "Zobrazit vše"
 
-#: app/templates/dashboard.html:147
+#: app/templates/dashboard.html:205
 msgid "No price data yet. Add fuel stations and log fuel to track prices."
 msgstr ""
-"Zatím žádné údaje o cenách. Přidejte čerpací stanice a zaznamenávejte palivo "
-"pro sledování cen."
+"Zatím žádné údaje o cenách. Přidejte čerpací stanice a zaznamenávejte "
+"palivo pro sledování cen."
 
-#: app/templates/dashboard.html:156
+#: app/templates/dashboard.html:213
 msgid "Your Vehicles"
 msgstr "Vaše vozidla"
 
-#: app/templates/dashboard.html:157
+#: app/templates/dashboard.html:214
 msgid "Add"
 msgstr "Přidat"
+
+#: app/templates/dashboard.html:249
+#, fuzzy
+msgid "No vehicles yet."
+msgstr "Vaše vozidla"
+
+#: app/templates/dashboard.html:249
+#, fuzzy
+msgid "Add your first vehicle"
+msgstr "Vaše vozidla"
+
+#: app/templates/dashboard.html:257
+#, fuzzy
+msgid "Recent Fuel Logs"
+msgstr "Záznamy o palivu"
+
+#: app/templates/dashboard.html:275 app/templates/vehicles/view.html:799
+#, fuzzy
+msgid "No fuel logs yet."
+msgstr "Záznamy o palivu"
+
+#: app/templates/dashboard.html:281
+#, fuzzy
+msgid "Recent Expenses"
+msgstr "Opakující se výdaje"
+
+#: app/templates/dashboard.html:299 app/templates/vehicles/view.html:843
+#, fuzzy
+msgid "No expenses yet."
+msgstr "Ostatní výdaje"
+
+#: app/templates/allowance/form.html:2 app/templates/allowance/form.html:8
+#, fuzzy
+msgid "Edit Allowance"
+msgstr "Vzdálenost"
+
+#: app/templates/allowance/form.html:2 app/templates/allowance/form.html:8
+#: app/templates/allowance/form.html:77 app/templates/allowance/index.html:15
+#: app/templates/allowance/index.html:74
+msgid "Add Allowance"
+msgstr ""
+
+#: app/templates/allowance/form.html:7
+#, fuzzy
+msgid "Back to mileage allowance"
+msgstr "Zpět k údržbě"
+
+#: app/templates/allowance/form.html:16 app/templates/allowance/index.html:26
+#: app/templates/charging/form.html:16 app/templates/charging/index.html:36
+#: app/templates/documents/form.html:21 app/templates/expenses/form.html:16
+#: app/templates/expenses/index.html:27 app/templates/fuel/form.html:16
+#: app/templates/fuel/index.html:26 app/templates/fuel/index.html:111
+#: app/templates/fuel/quick.html:15 app/templates/maintenance/form.html:20
+#: app/templates/notes/form.html:16 app/templates/notes/index.html:27
+#: app/templates/recurring/form.html:21 app/templates/reminders/form.html:26
+#: app/templates/reminders/index.html:25 app/templates/trips/form.html:32
+#: app/templates/trips/index.html:51 app/templates/trips/report.html:99
+msgid "Vehicle"
+msgstr "Vozidlo"
+
+#: app/templates/allowance/form.html:30 app/templates/allowance/index.html:25
+#: app/templates/charging/form.html:32 app/templates/expenses/form.html:30
+#: app/templates/expenses/index.html:26 app/templates/fuel/form.html:37
+#: app/templates/fuel/index.html:25 app/templates/fuel/index.html:110
+#: app/templates/maintenance/form.html:100 app/templates/notes/form.html:30
+#: app/templates/notes/index.html:26 app/templates/trips/form.html:58
+#: app/templates/trips/report.html:98
+msgid "Date"
+msgstr "Datum"
+
+#: app/templates/allowance/form.html:37 app/templates/allowance/index.html:29
+#: app/templates/recurring/form.html:65
+msgid "Amount"
+msgstr "Množství"
+
+#: app/templates/allowance/form.html:44 app/templates/allowance/index.html:28
+#: app/templates/auth/settings.html:126 app/templates/trips/form.html:88
+#: app/templates/trips/report.html:102 app/templates/vehicles/view.html:448
+msgid "Distance"
+msgstr "Vzdálenost"
+
+#: app/templates/allowance/form.html:52
+msgid "Rate per unit"
+msgstr ""
+
+#: app/templates/allowance/form.html:57
+msgid "Optional. If set with distance, the amount is calculated for you."
+msgstr ""
+
+#: app/templates/allowance/form.html:61 app/templates/allowance/index.html:27
+#: app/templates/documents/form.html:91 app/templates/documents/view.html:96
+#: app/templates/expenses/form.html:47 app/templates/expenses/index.html:29
+#: app/templates/maintenance/form.html:57 app/templates/recurring/form.html:96
+#: app/templates/trips/form.html:108 app/templates/trips/report.html:101
+#: app/templates/trips/template_form.html:68
+msgid "Description"
+msgstr "Popis"
+
+#: app/templates/allowance/form.html:64
+#, fuzzy
+msgid "e.g., June client visits"
+msgstr "např. schůzka s klientem, návštěva místa"
+
+#: app/templates/allowance/form.html:73 app/templates/charging/form.html:154
+#: app/templates/documents/form.html:122 app/templates/expenses/form.html:105
+#: app/templates/fuel/form.html:171 app/templates/maintenance/form.html:156
+#: app/templates/maintenance/index.html:152 app/templates/notes/form.html:63
+#: app/templates/recurring/form.html:128 app/templates/reminders/form.html:126
+#: app/templates/stations/form.html:101 app/templates/trips/form.html:126
+#: app/templates/trips/template_form.html:86
+#: app/templates/vehicles/form.html:310
+#: app/templates/vehicles/part_form.html:98
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: app/templates/allowance/form.html:77 app/templates/auth/edit_user.html:74
+#: app/templates/auth/settings.html:193 app/templates/charging/form.html:158
+#: app/templates/documents/form.html:126 app/templates/expenses/form.html:109
+#: app/templates/fuel/form.html:175 app/templates/maintenance/form.html:160
+#: app/templates/notes/form.html:67 app/templates/recurring/form.html:132
+#: app/templates/stations/form.html:105 app/templates/trips/form.html:130
+#: app/templates/trips/template_form.html:90
+#: app/templates/vehicles/form.html:314
+#: app/templates/vehicles/part_form.html:102
+msgid "Save Changes"
+msgstr "Uložit změny"
+
+#: app/templates/allowance/index.html:8
+msgid "Record allowance income for business use; it offsets your running costs"
+msgstr ""
+
+#: app/templates/allowance/index.html:30 app/templates/expenses/index.html:32
+#: app/templates/fuel/index.html:31 app/templates/fuel/index.html:116
+#: app/templates/notes/index.html:30
+#, fuzzy
+msgid "Actions"
+msgstr "Stanice"
+
+#: app/templates/allowance/index.html:48 app/templates/documents/view.html:30
+#: app/templates/expenses/index.html:60 app/templates/fuel/index.html:59
+#: app/templates/fuel/index.html:139 app/templates/maintenance/index.html:83
+#: app/templates/notes/index.html:52 app/templates/stations/index.html:65
+#: app/templates/vehicles/view.html:40 app/templates/vehicles/view.html:440
+msgid "Edit"
+msgstr "Upravit"
+
+#: app/templates/allowance/index.html:50
+#, fuzzy
+msgid "Delete this allowance entry?"
+msgstr "Smazat tento dokument?"
+
+#: app/templates/allowance/index.html:52 app/templates/documents/form.html:114
+#: app/templates/expenses/form.html:91 app/templates/expenses/index.html:64
+#: app/templates/fuel/form.html:157 app/templates/fuel/index.html:63
+#: app/templates/notes/index.html:56 app/templates/recurring/form.html:120
+#: app/templates/stations/form.html:93
+msgid "Delete"
+msgstr "Vymazat"
+
+#: app/templates/allowance/index.html:66
+msgid "No allowance entries"
+msgstr ""
+
+#: app/templates/allowance/index.html:67
+msgid "Track mileage allowance you receive for business journeys."
+msgstr ""
 
 #: app/templates/auth/create_user.html:8 app/templates/auth/create_user.html:62
 #: app/templates/auth/users.html:9
@@ -655,20 +1422,25 @@ msgid "Account Details"
 msgstr "Podrobnosti o účtu"
 
 #: app/templates/auth/create_user.html:27 app/templates/auth/edit_user.html:28
+#: app/templates/auth/login.html:18 app/templates/auth/register.html:18
 #: app/templates/auth/settings.html:211
 msgid "Username"
 msgstr "Uživatelské jméno"
 
 #: app/templates/auth/create_user.html:33 app/templates/auth/edit_user.html:33
-#: app/templates/auth/settings.html:215 app/templates/auth/settings.html:1202
+#: app/templates/auth/forgot_password.html:20
+#: app/templates/auth/register.html:24 app/templates/auth/settings.html:215
+#: app/templates/auth/settings.html:1227
 msgid "Email"
 msgstr "E-mail"
 
-#: app/templates/auth/create_user.html:40
+#: app/templates/auth/create_user.html:40 app/templates/auth/login.html:24
+#: app/templates/auth/register.html:30
 msgid "Password"
 msgstr "Heslo"
 
-#: app/templates/auth/create_user.html:45
+#: app/templates/auth/create_user.html:45 app/templates/auth/register.html:36
+#: app/templates/auth/reset_password.html:24
 msgid "Confirm Password"
 msgstr "Potvrzení hesla"
 
@@ -681,6 +1453,7 @@ msgid "Update user details and credentials"
 msgstr "Aktualizace uživatelských údajů a přihlašovacích údajů"
 
 #: app/templates/auth/edit_user.html:51
+#: app/templates/auth/reset_password.html:31
 msgid "Reset Password"
 msgstr "Obnovit heslo"
 
@@ -688,7 +1461,9 @@ msgstr "Obnovit heslo"
 msgid "Leave blank to keep the current password"
 msgstr "Pro zachování aktuálního hesla ponechte prázdné."
 
-#: app/templates/auth/edit_user.html:58 app/templates/auth/settings.html:340
+#: app/templates/auth/edit_user.html:58
+#: app/templates/auth/reset_password.html:18
+#: app/templates/auth/settings.html:340
 msgid "New Password"
 msgstr "Nové heslo"
 
@@ -696,13 +1471,66 @@ msgstr "Nové heslo"
 msgid "Confirm New Password"
 msgstr "Potvrdit nové heslo"
 
-#: app/templates/auth/edit_user.html:74 app/templates/auth/settings.html:193
-#: app/templates/charging/form.html:158 app/templates/documents/form.html:126
-#: app/templates/maintenance/form.html:160
-#: app/templates/recurring/form.html:132 app/templates/stations/form.html:105
-#: app/templates/trips/form.html:114
-msgid "Save Changes"
-msgstr "Uložit změny"
+#: app/templates/auth/forgot_password.html:12
+#, fuzzy
+msgid "Reset your password"
+msgstr "Obnovit heslo"
+
+#: app/templates/auth/forgot_password.html:15
+msgid "Enter your email address and we'll send you a link to reset your password."
+msgstr ""
+
+#: app/templates/auth/forgot_password.html:27
+msgid "Send Reset Link"
+msgstr ""
+
+#: app/templates/auth/forgot_password.html:32
+#: app/templates/auth/reset_password.html:36
+#, fuzzy
+msgid "Back to login"
+msgstr "Zpět k"
+
+#: app/templates/auth/login.html:33
+#, fuzzy
+msgid "Remember me"
+msgstr "Člen od"
+
+#: app/templates/auth/login.html:36
+#, fuzzy
+msgid "Forgot password?"
+msgstr "Obnovit heslo"
+
+#: app/templates/auth/login.html:42 app/templates/auth/register.html:49
+msgid "Sign in"
+msgstr ""
+
+#: app/templates/auth/login.html:48
+msgid "Don't have an account?"
+msgstr ""
+
+#: app/templates/auth/login.html:49
+msgid "Register"
+msgstr ""
+
+#: app/templates/auth/register.html:12
+#, fuzzy
+msgid "Create your account"
+msgstr "Propojte svůj účet Tesla"
+
+#: app/templates/auth/register.html:43
+#, fuzzy
+msgid "Create Account"
+msgstr "Smazat účet"
+
+#: app/templates/auth/register.html:48
+#, fuzzy
+msgid "Already have an account?"
+msgstr "E-mail již používá jiný účet"
+
+#: app/templates/auth/reset_password.html:12
+#, fuzzy
+msgid "Set a new password"
+msgstr "Nové heslo"
 
 #: app/templates/auth/settings.html:7
 msgid "Manage your preferences and account"
@@ -729,7 +1557,7 @@ msgid "API"
 msgstr "API"
 
 #: app/templates/auth/settings.html:58 app/templates/auth/settings.html:324
-#: app/templates/auth/settings.html:723
+#: app/templates/auth/settings.html:748
 msgid "Integrations"
 msgstr "Integrace"
 
@@ -741,7 +1569,7 @@ msgstr "Oznámení"
 msgid "Branding"
 msgstr "Vzhled a logo"
 
-#: app/templates/auth/settings.html:84 app/templates/auth/settings.html:1588
+#: app/templates/auth/settings.html:84 app/templates/auth/settings.html:1613
 msgid "About"
 msgstr "O"
 
@@ -757,12 +1585,8 @@ msgstr "Jazyk"
 msgid "Date Format"
 msgstr "Formát data"
 
-#: app/templates/auth/settings.html:126 app/templates/trips/form.html:72
-#: app/templates/trips/report.html:102
-msgid "Distance"
-msgstr "Vzdálenost"
-
-#: app/templates/auth/settings.html:135 app/templates/fuel/quick.html:55
+#: app/templates/auth/settings.html:135 app/templates/fuel/form.html:62
+#: app/templates/fuel/index.html:28 app/templates/fuel/quick.html:56
 msgid "Volume"
 msgstr "Objem"
 
@@ -773,10 +1597,6 @@ msgstr "Spotřeba paliva"
 #: app/templates/auth/settings.html:157
 msgid "Currency"
 msgstr "Měna"
-
-#: app/templates/auth/settings.html:176
-msgid "Custom"
-msgstr "Vlastní"
 
 #: app/templates/auth/settings.html:179
 msgid "Custom Currency"
@@ -878,7 +1698,7 @@ msgstr "Aktualizujte si heslo, aby byl váš účet v bezpečí"
 msgid "Update Password"
 msgstr "Aktualizovat heslo"
 
-#: app/templates/auth/settings.html:364
+#: app/templates/auth/settings.html:364 app/templates/vehicles/view.html:851
 msgid "Danger Zone"
 msgstr "Nebezpečná zóna"
 
@@ -906,54 +1726,70 @@ msgstr "Úvodní stránka"
 msgid "Which page to show when you log in"
 msgstr "Která stránka se má zobrazit po přihlášení"
 
-#: app/templates/auth/settings.html:409 app/templates/auth/settings.html:464
+#: app/templates/auth/settings.html:409 app/templates/auth/settings.html:479
 #: app/templates/recurring/index.html:7
 msgid "Recurring Expenses"
 msgstr "Opakující se výdaje"
 
-#: app/templates/auth/settings.html:420
+#: app/templates/auth/settings.html:421
+#: app/templates/trips/template_form.html:27
+#, fuzzy
+msgid "Default Vehicle"
+msgstr "Všechna vozidla"
+
+#: app/templates/auth/settings.html:422
+msgid ""
+"Pre-selected vehicle when adding fuel logs, expenses, trips, and charging"
+" sessions"
+msgstr ""
+
+#: app/templates/auth/settings.html:425
+msgid "No default"
+msgstr ""
+
+#: app/templates/auth/settings.html:435
 msgid "Quick Entry Button"
 msgstr "Tlačítko pro rychlý vstup"
 
-#: app/templates/auth/settings.html:421
+#: app/templates/auth/settings.html:436
 msgid "Show a quick fuel entry button in the navigation bar for rapid logging"
 msgstr ""
 "Zobrazit tlačítko pro rychlé zadání paliva v navigační liště pro rychlé "
 "zaznamenávání"
 
-#: app/templates/auth/settings.html:432
+#: app/templates/auth/settings.html:447
 msgid "Show Menu Items"
 msgstr "Zobrazit položky nabídky"
 
-#: app/templates/auth/settings.html:433
+#: app/templates/auth/settings.html:448
 msgid "Choose which items appear in the navigation menu"
 msgstr "Vyberte, které položky se zobrazí v navigační nabídce"
 
-#: app/templates/auth/settings.html:493 app/templates/auth/settings.html:1293
+#: app/templates/auth/settings.html:518 app/templates/auth/settings.html:1318
 msgid "Save Preferences"
 msgstr "Uložit předvolby"
 
-#: app/templates/auth/settings.html:506
+#: app/templates/auth/settings.html:531
 msgid "Import Data"
 msgstr "Import dat"
 
-#: app/templates/auth/settings.html:507
+#: app/templates/auth/settings.html:532
 msgid "Import your data from other fuel tracking applications"
 msgstr "Importujte data z jiných aplikací pro sledování paliva"
 
-#: app/templates/auth/settings.html:586
+#: app/templates/auth/settings.html:611
 msgid "Export Data"
 msgstr "Export dat"
 
-#: app/templates/auth/settings.html:587
+#: app/templates/auth/settings.html:612
 msgid "Download your data for backup or migration"
 msgstr "Stažení dat pro zálohování nebo migraci"
 
-#: app/templates/auth/settings.html:593
+#: app/templates/auth/settings.html:618
 msgid "Export as CSV"
 msgstr "Exportovat jako CSV"
 
-#: app/templates/auth/settings.html:594
+#: app/templates/auth/settings.html:619
 msgid ""
 "Download all your vehicles, fuel logs, and expenses as CSV files (ZIP "
 "archive)"
@@ -961,281 +1797,285 @@ msgstr ""
 "Stáhněte si všechna svá vozidla, záznamy o spotřebě paliva a výdaje jako "
 "soubory CSV (ZIP archiv)"
 
-#: app/templates/auth/settings.html:598
+#: app/templates/auth/settings.html:623
 msgid "Download CSV"
 msgstr "Stáhnout CSV"
 
-#: app/templates/auth/settings.html:604
+#: app/templates/auth/settings.html:629
 msgid "Export as JSON"
 msgstr "Exportovat jako JSON"
 
-#: app/templates/auth/settings.html:605
+#: app/templates/auth/settings.html:630
 msgid "Download a complete backup of your data in JSON format"
 msgstr "Stáhněte si kompletní zálohu svých dat ve formátu JSON"
 
-#: app/templates/auth/settings.html:609
+#: app/templates/auth/settings.html:634
 msgid "Download JSON"
 msgstr "Stáhnout JSON"
 
-#: app/templates/auth/settings.html:615
+#: app/templates/auth/settings.html:640
 msgid "Full Backup"
 msgstr "Úplná záloha"
 
-#: app/templates/auth/settings.html:616
+#: app/templates/auth/settings.html:641
 msgid ""
 "Download all data and files (images, documents, attachments) as a ZIP "
 "archive"
 msgstr ""
-"Stáhnout všechna data a soubory (obrázky, dokumenty, přílohy) jako ZIP archiv"
+"Stáhnout všechna data a soubory (obrázky, dokumenty, přílohy) jako ZIP "
+"archiv"
 
-#: app/templates/auth/settings.html:620
+#: app/templates/auth/settings.html:645
 msgid "Download ZIP"
 msgstr "Stáhnout ZIP"
 
-#: app/templates/auth/settings.html:636
+#: app/templates/auth/settings.html:661
 msgid "API Access"
 msgstr "Přístup k API"
 
-#: app/templates/auth/settings.html:637
+#: app/templates/auth/settings.html:662
 msgid "Generate API keys to connect external applications"
 msgstr "Generování API klíčů pro připojení externích aplikací"
 
-#: app/templates/auth/settings.html:639
+#: app/templates/auth/settings.html:664
 msgid "View API Docs"
 msgstr "Zobrazit dokumentaci k API"
 
-#: app/templates/auth/settings.html:648
+#: app/templates/auth/settings.html:673
 msgid "Your API Key"
 msgstr "Váš API klíč"
 
-#: app/templates/auth/settings.html:667 app/templates/auth/settings.html:704
-#: app/templates/auth/settings.html:858 app/templates/auth/settings.html:872
+#: app/templates/auth/settings.html:692 app/templates/auth/settings.html:729
+#: app/templates/auth/settings.html:883 app/templates/auth/settings.html:897
 msgid "Copy"
 msgstr "kopírovat"
 
-#: app/templates/auth/settings.html:670
+#: app/templates/auth/settings.html:695
 msgid "Created"
 msgstr "Vytvořeno"
 
-#: app/templates/auth/settings.html:674
+#: app/templates/auth/settings.html:699
 msgid "Regenerate Key"
 msgstr "Vygenerovat klíč"
 
-#: app/templates/auth/settings.html:678
+#: app/templates/auth/settings.html:703
 msgid "Revoke Key"
 msgstr "Zrušit klíč"
 
-#: app/templates/auth/settings.html:685
+#: app/templates/auth/settings.html:710
 msgid "API Key"
 msgstr "API klíč"
 
-#: app/templates/auth/settings.html:686
+#: app/templates/auth/settings.html:711
 msgid ""
 "Generate an API key to access May programmatically. You can use it to "
 "integrate with other applications or build your own tools."
 msgstr ""
-"Vygenerujte si API klíč pro programový přístup k aplikaci May. Můžete jej "
-"použít k integraci s jinými aplikacemi nebo k vytváření vlastních nástrojů."
+"Vygenerujte si API klíč pro programový přístup k aplikaci May. Můžete jej"
+" použít k integraci s jinými aplikacemi nebo k vytváření vlastních "
+"nástrojů."
 
-#: app/templates/auth/settings.html:689
+#: app/templates/auth/settings.html:714
 msgid "Generate API Key"
 msgstr "Generovat API klíč"
 
-#: app/templates/auth/settings.html:698
+#: app/templates/auth/settings.html:723
 msgid "API Key Generated"
 msgstr "Vygenerován API klíč"
 
-#: app/templates/auth/settings.html:699
+#: app/templates/auth/settings.html:724
 msgid "Copy your API key now. For security, it won't be shown in full again."
 msgstr ""
 "Zkopírujte si nyní svůj API klíč. Z bezpečnostních důvodů se již nebude "
 "zobrazovat v plném rozsahu."
 
-#: app/templates/auth/settings.html:710
+#: app/templates/auth/settings.html:735
 msgid "Done"
 msgstr "Hotovo"
 
-#: app/templates/auth/settings.html:724
+#: app/templates/auth/settings.html:749
 msgid "Connect May with external services and applications"
 msgstr "Propojte May s externími službami a aplikacemi"
 
-#: app/templates/auth/settings.html:738
+#: app/templates/auth/settings.html:763
 msgid "Calendar"
 msgstr "Kalendář"
 
-#: app/templates/auth/settings.html:741
+#: app/templates/auth/settings.html:766
 msgid "Subscribe to reminders in your calendar app"
 msgstr "Přihlaste se k odběru připomenutí v aplikaci Kalendář"
 
-#: app/templates/auth/settings.html:743 app/templates/auth/settings.html:764
+#: app/templates/auth/settings.html:768 app/templates/auth/settings.html:789
 msgid "Ready"
 msgstr "Připraven"
 
-#: app/templates/auth/settings.html:745 app/templates/auth/settings.html:766
+#: app/templates/auth/settings.html:770 app/templates/auth/settings.html:791
 msgid "Requires API key"
 msgstr "Vyžaduje API klíč"
 
-#: app/templates/auth/settings.html:759 app/templates/auth/settings.html:924
+#: app/templates/auth/settings.html:784 app/templates/auth/settings.html:949
 msgid "Home Assistant"
 msgstr "Home Assistant"
 
-#: app/templates/auth/settings.html:762 app/templates/auth/settings.html:925
+#: app/templates/auth/settings.html:787 app/templates/auth/settings.html:950
 msgid "Create sensors and automations for your vehicles"
 msgstr "Vytvořte senzory a automatizace pro vaše vozidla"
 
-#: app/templates/auth/settings.html:781
+#: app/templates/auth/settings.html:806
 msgid "DVLA"
 msgstr "DVLA"
 
-#: app/templates/auth/settings.html:782 app/templates/auth/settings.html:804
-#: app/templates/auth/settings.html:1309
+#: app/templates/auth/settings.html:807 app/templates/auth/settings.html:829
+#: app/templates/auth/settings.html:1334
 msgid "Admin"
 msgstr "Administrátor"
 
-#: app/templates/auth/settings.html:785 app/templates/auth/settings.html:1020
+#: app/templates/auth/settings.html:810 app/templates/auth/settings.html:1045
 msgid "Look up UK vehicle MOT and tax status"
 msgstr ""
-"Vyhledejte si technický průkaz vozidla a daňový status ve Spojeném království"
+"Vyhledejte si technický průkaz vozidla a daňový status ve Spojeném "
+"království"
 
-#: app/templates/auth/settings.html:787 app/templates/auth/settings.html:809
+#: app/templates/auth/settings.html:812 app/templates/auth/settings.html:834
 msgid "Configured"
 msgstr "Nakonfigurováno"
 
-#: app/templates/auth/settings.html:789 app/templates/auth/settings.html:811
+#: app/templates/auth/settings.html:814 app/templates/auth/settings.html:836
 msgid "Not configured"
 msgstr "Není nakonfigurováno"
 
-#: app/templates/auth/settings.html:803
+#: app/templates/auth/settings.html:828
 msgid "Tessie"
 msgstr "Tessie"
 
-#: app/templates/auth/settings.html:807
+#: app/templates/auth/settings.html:832
 msgid "Sync Tesla vehicle odometer and battery"
 msgstr "Synchronizace počítadla kilometrů a baterie vozidla Tesla"
 
-#: app/templates/auth/settings.html:825 app/templates/auth/settings.html:911
-#: app/templates/auth/settings.html:1006 app/templates/auth/settings.html:1077
+#: app/templates/auth/settings.html:850 app/templates/auth/settings.html:936
+#: app/templates/auth/settings.html:1031 app/templates/auth/settings.html:1102
 msgid "Back to Integrations"
 msgstr "Zpět k integracím"
 
-#: app/templates/auth/settings.html:838
+#: app/templates/auth/settings.html:863
 msgid "Calendar Subscription"
 msgstr "Předplatné kalendáře"
 
-#: app/templates/auth/settings.html:839
+#: app/templates/auth/settings.html:864
 msgid "Subscribe to your reminders in any calendar app"
 msgstr "Přihlaste se k odběru připomenutí v jakékoli aplikaci kalendáře"
 
-#: app/templates/auth/settings.html:847
+#: app/templates/auth/settings.html:872
 msgid ""
 "Add this calendar to Apple Calendar, Google Calendar, Outlook, or any "
 "other calendar app that supports iCal subscriptions."
 msgstr ""
-"Přidejte tento kalendář do Kalendáře Apple, Kalendáře Google, Outlooku nebo "
-"jakékoli jiné aplikace kalendáře, která podporuje předplatné iCal."
+"Přidejte tento kalendář do Kalendáře Apple, Kalendáře Google, Outlooku "
+"nebo jakékoli jiné aplikace kalendáře, která podporuje předplatné iCal."
 
-#: app/templates/auth/settings.html:850
+#: app/templates/auth/settings.html:875
 msgid "Webcal URL"
 msgstr "URL adresa Webcalu"
 
-#: app/templates/auth/settings.html:851
+#: app/templates/auth/settings.html:876
 msgid "Use this URL for most calendar apps (Apple Calendar, Outlook, etc.)"
 msgstr ""
-"Tuto adresu URL použijte pro většinu kalendářových aplikací (Apple Calendar, "
-"Outlook atd.)"
+"Tuto adresu URL použijte pro většinu kalendářových aplikací (Apple "
+"Calendar, Outlook atd.)"
 
-#: app/templates/auth/settings.html:864
+#: app/templates/auth/settings.html:889
 msgid "HTTPS URL"
 msgstr "URL adresa HTTPS"
 
-#: app/templates/auth/settings.html:865
+#: app/templates/auth/settings.html:890
 msgid "Use this URL for Google Calendar"
 msgstr "Použít tuto URL adresu pro Kalendář Google"
 
-#: app/templates/auth/settings.html:878
+#: app/templates/auth/settings.html:903
 msgid "What's included in the calendar?"
 msgstr "Co je součástí kalendáře?"
 
-#: app/templates/auth/settings.html:880
+#: app/templates/auth/settings.html:905
 msgid "Maintenance schedules"
 msgstr "Harmonogramy údržby"
 
-#: app/templates/auth/settings.html:881
+#: app/templates/auth/settings.html:906
 msgid "Recurring expense due dates"
 msgstr "Termíny splatnosti opakujících se výdajů"
 
-#: app/templates/auth/settings.html:882
+#: app/templates/auth/settings.html:907
 msgid "Document expiry dates"
 msgstr "Datum vypršení platnosti dokumentu"
 
-#: app/templates/auth/settings.html:883
+#: app/templates/auth/settings.html:908
 msgid "Custom reminders"
 msgstr "Vlastní připomenutí"
 
-#: app/templates/auth/settings.html:892 app/templates/auth/settings.html:986
+#: app/templates/auth/settings.html:917 app/templates/auth/settings.html:1011
 msgid "API Key Required"
 msgstr "Vyžadován API klíč"
 
-#: app/templates/auth/settings.html:893
+#: app/templates/auth/settings.html:918
 msgid "Generate an API key in the API section to enable calendar integration."
 msgstr "V sekci API vygenerujte API klíč pro povolení integrace kalendáře."
 
-#: app/templates/auth/settings.html:896 app/templates/auth/settings.html:990
+#: app/templates/auth/settings.html:921 app/templates/auth/settings.html:1015
 msgid "Go to API Settings"
 msgstr "Přejít do nastavení API"
 
-#: app/templates/auth/settings.html:933
+#: app/templates/auth/settings.html:958
 msgid ""
 "Add the following configuration to your Home Assistant configuration.yaml"
 " to create vehicle sensors."
 msgstr ""
-"Přidejte následující konfiguraci do souboru configuration.yaml vašeho Home "
-"Assistant pro vytvoření senzorů vozidel."
+"Přidejte následující konfiguraci do souboru configuration.yaml vašeho "
+"Home Assistant pro vytvoření senzorů vozidel."
 
-#: app/templates/auth/settings.html:936
+#: app/templates/auth/settings.html:961
 msgid "REST Sensor Configuration"
 msgstr "RESET konfigurace senzoru"
 
-#: app/templates/auth/settings.html:952
+#: app/templates/auth/settings.html:977
 msgid "Copy configuration"
 msgstr "Kopírovat konfiguraci"
 
-#: app/templates/auth/settings.html:956
+#: app/templates/auth/settings.html:981
 msgid "Available API Endpoints"
 msgstr "Dostupné koncové body API"
 
-#: app/templates/auth/settings.html:960
+#: app/templates/auth/settings.html:985
 msgid "API health check"
 msgstr "Kontrola stavu API"
 
-#: app/templates/auth/settings.html:964
+#: app/templates/auth/settings.html:989
 msgid "List all vehicles"
 msgstr "Seznam všech vozidel"
 
-#: app/templates/auth/settings.html:968
+#: app/templates/auth/settings.html:993
 msgid "Vehicle statistics"
 msgstr "Statistiky vozidel"
 
-#: app/templates/auth/settings.html:972
+#: app/templates/auth/settings.html:997
 msgid "Upcoming reminders"
 msgstr "Nadcházející připomenutí"
 
-#: app/templates/auth/settings.html:976
+#: app/templates/auth/settings.html:1001
 msgid "Combined summary"
 msgstr "Kombinovaný souhrn"
 
-#: app/templates/auth/settings.html:987
+#: app/templates/auth/settings.html:1012
 msgid ""
 "Generate an API key in the API section to enable Home Assistant "
 "integration."
 msgstr ""
-"V sekci API vygenerujte API klíč, abyste povolili integraci s Home Assistant."
+"V sekci API vygenerujte API klíč, abyste povolili integraci s Home "
+"Assistant."
 
-#: app/templates/auth/settings.html:1019
+#: app/templates/auth/settings.html:1044
 msgid "DVLA Vehicle Lookup"
 msgstr "Vyhledávání vozidel DVLA"
 
-#: app/templates/auth/settings.html:1028
+#: app/templates/auth/settings.html:1053
 msgid ""
 "The DVLA Vehicle Enquiry Service allows you to look up MOT status, tax "
 "status, and vehicle details for UK registered vehicles. This enables "
@@ -1243,55 +2083,55 @@ msgid ""
 msgstr ""
 "Služba DVLA pro dotazy na vozidla vám umožňuje vyhledávat stav technické "
 "prohlídky, daňový status a podrobnosti o vozidlech registrovaných ve "
-"Spojeném království. To umožňuje automatické vyplňování informací o vozidle "
-"při přidávání nových vozidel."
+"Spojeném království. To umožňuje automatické vyplňování informací o "
+"vozidle při přidávání nových vozidel."
 
-#: app/templates/auth/settings.html:1032
+#: app/templates/auth/settings.html:1057
 msgid "How to get an API key"
 msgstr "Jak získat API klíč"
 
-#: app/templates/auth/settings.html:1034
+#: app/templates/auth/settings.html:1059
 msgid "Visit the"
 msgstr "Navštivte"
 
-#: app/templates/auth/settings.html:1034
+#: app/templates/auth/settings.html:1059
 msgid "DVLA Developer Portal"
 msgstr "Portál pro vývojáře DVLA"
 
-#: app/templates/auth/settings.html:1035
+#: app/templates/auth/settings.html:1060
 msgid "Register for a free account"
 msgstr "Zaregistrujte si bezplatný účet"
 
-#: app/templates/auth/settings.html:1036
+#: app/templates/auth/settings.html:1061
 msgid "Subscribe to the Vehicle Enquiry Service API"
 msgstr "Přihlaste se k odběru API služby pro dotazy na vozidla"
 
-#: app/templates/auth/settings.html:1037
+#: app/templates/auth/settings.html:1062
 msgid "Copy your API key and paste it below"
 msgstr "Zkopírujte svůj API klíč a vložte jej níže"
 
-#: app/templates/auth/settings.html:1044
+#: app/templates/auth/settings.html:1069
 msgid "DVLA API Key"
 msgstr "DVLA API klíč"
 
-#: app/templates/auth/settings.html:1052 app/templates/auth/settings.html:1132
-#: app/templates/auth/settings.html:1394
+#: app/templates/auth/settings.html:1077 app/templates/auth/settings.html:1157
+#: app/templates/auth/settings.html:1419
 msgid "Test"
 msgstr "Test"
 
-#: app/templates/auth/settings.html:1061
+#: app/templates/auth/settings.html:1086
 msgid "Save DVLA Settings"
 msgstr "Uložit nastavení DVLA"
 
-#: app/templates/auth/settings.html:1090
+#: app/templates/auth/settings.html:1115 app/templates/vehicles/form.html:257
 msgid "Tessie Integration"
 msgstr "Integrace Tessie"
 
-#: app/templates/auth/settings.html:1091
+#: app/templates/auth/settings.html:1116
 msgid "Sync Tesla vehicle data via Tessie"
 msgstr "Synchronizace dat vozidel Tesla přes Tessie"
 
-#: app/templates/auth/settings.html:1099
+#: app/templates/auth/settings.html:1124
 msgid ""
 "Tessie allows you to automatically sync odometer readings, battery level,"
 " and range from your Tesla vehicles. When enabled for a vehicle, odometer"
@@ -1302,405 +2142,405 @@ msgstr ""
 "funkce pro vozidlo povolena, sledování počítadla kilometrů se stane "
 "automatickým."
 
-#: app/templates/auth/settings.html:1103
+#: app/templates/auth/settings.html:1128
 msgid "Important"
 msgstr "Důležité"
 
-#: app/templates/auth/settings.html:1105
+#: app/templates/auth/settings.html:1130
 msgid "Tessie subscription required ($6.99/month per vehicle)"
 msgstr "Vyžaduje se předplatné Tessie ($6.99/měsíc za vozidlo)"
 
-#: app/templates/auth/settings.html:1106
+#: app/templates/auth/settings.html:1131
 msgid "Your Tesla must be connected to Tessie"
 msgstr "Vaše Tesla musí být připojena k Tessie"
 
-#: app/templates/auth/settings.html:1107
+#: app/templates/auth/settings.html:1132
 msgid "When enabled, manual odometer entry is disabled"
 msgstr "Pokud je povoleno, ruční zadávání stavu počítadla kilometrů je zakázáno"
 
-#: app/templates/auth/settings.html:1112
+#: app/templates/auth/settings.html:1137
 msgid "How to get an API token"
 msgstr "Jak získat API token"
 
-#: app/templates/auth/settings.html:1114
+#: app/templates/auth/settings.html:1139
 msgid "Sign up at"
 msgstr "Zaregistrujte se na"
 
-#: app/templates/auth/settings.html:1115
+#: app/templates/auth/settings.html:1140
 msgid "Connect your Tesla account"
 msgstr "Propojte svůj účet Tesla"
 
-#: app/templates/auth/settings.html:1116
+#: app/templates/auth/settings.html:1141
 msgid "Go to Settings and create an API token"
 msgstr "Přejděte do Nastavení a vytvořte API token"
 
-#: app/templates/auth/settings.html:1117
+#: app/templates/auth/settings.html:1142
 msgid "Paste the token below"
 msgstr "Vložte token níže"
 
-#: app/templates/auth/settings.html:1124
+#: app/templates/auth/settings.html:1149
 msgid "Tessie API Token"
 msgstr "Tessie API token"
 
-#: app/templates/auth/settings.html:1141
+#: app/templates/auth/settings.html:1166
 msgid "Save Tessie Settings"
 msgstr "Uložit nastavení Tessie"
 
-#: app/templates/auth/settings.html:1160
+#: app/templates/auth/settings.html:1185
 msgid "Notification Preferences"
 msgstr "Předvolby oznámení"
 
-#: app/templates/auth/settings.html:1161
+#: app/templates/auth/settings.html:1186
 msgid "Configure how you receive reminders about your vehicles"
 msgstr "Nastavte si, jak chcete dostávat upomínky týkající se vašich vozidel"
 
-#: app/templates/auth/settings.html:1168
+#: app/templates/auth/settings.html:1193
 msgid "Enable Reminders"
 msgstr "Povolit připomenutí"
 
-#: app/templates/auth/settings.html:1169
+#: app/templates/auth/settings.html:1194
 msgid "Receive notifications for upcoming reminders"
 msgstr "Dostávejte oznámení o nadcházejících připomenutích"
 
-#: app/templates/auth/settings.html:1181
+#: app/templates/auth/settings.html:1206
 msgid "Default Reminder Lead Time"
 msgstr "Výchozí doba upozornění předem"
 
-#: app/templates/auth/settings.html:1182
+#: app/templates/auth/settings.html:1207
 msgid "How many days before the due date should you be notified?"
 msgstr "Kolik dní před termínem chcete dostat upozornění?"
 
-#: app/templates/auth/settings.html:1185
+#: app/templates/auth/settings.html:1210 app/templates/reminders/form.html:108
 msgid "On the due date"
 msgstr "V den splatnosti"
 
-#: app/templates/auth/settings.html:1186
+#: app/templates/auth/settings.html:1211 app/templates/reminders/form.html:109
 msgid "1 day before"
 msgstr "1 den předtím"
 
-#: app/templates/auth/settings.html:1187
+#: app/templates/auth/settings.html:1212 app/templates/reminders/form.html:110
 msgid "3 days before"
 msgstr "3 dny předtím"
 
-#: app/templates/auth/settings.html:1188
+#: app/templates/auth/settings.html:1213 app/templates/reminders/form.html:111
 msgid "1 week before"
 msgstr "1 týden předtím"
 
-#: app/templates/auth/settings.html:1189
+#: app/templates/auth/settings.html:1214 app/templates/reminders/form.html:112
 msgid "2 weeks before"
 msgstr "2 týdny předtím"
 
-#: app/templates/auth/settings.html:1190
+#: app/templates/auth/settings.html:1215 app/templates/reminders/form.html:113
 msgid "1 month before"
 msgstr "1 měsíc předtím"
 
-#: app/templates/auth/settings.html:1196
+#: app/templates/auth/settings.html:1221
 msgid "Notification Method"
 msgstr "Metoda oznámení"
 
-#: app/templates/auth/settings.html:1197
+#: app/templates/auth/settings.html:1222
 msgid "Choose how you want to receive notifications"
 msgstr "Vyberte, jak chcete dostávat oznámení"
 
-#: app/templates/auth/settings.html:1202 app/templates/auth/settings.html:1206
+#: app/templates/auth/settings.html:1227 app/templates/auth/settings.html:1231
 msgid "not configured"
 msgstr "není nakonfigurováno"
 
-#: app/templates/auth/settings.html:1204
+#: app/templates/auth/settings.html:1229
 msgid "ntfy (Push Notifications)"
 msgstr "ntfy (Push notifikace)"
 
-#: app/templates/auth/settings.html:1206 app/templates/auth/settings.html:1407
+#: app/templates/auth/settings.html:1231 app/templates/auth/settings.html:1432
 msgid "Pushover"
 msgstr "Pushover"
 
-#: app/templates/auth/settings.html:1208
+#: app/templates/auth/settings.html:1233
 msgid "Webhook (HTTP POST)"
 msgstr "Webhook (HTTP POST)"
 
-#: app/templates/auth/settings.html:1218
+#: app/templates/auth/settings.html:1243
 msgid "Notifications will be sent to"
 msgstr "Oznámení budou zasílána na"
 
-#: app/templates/auth/settings.html:1225
+#: app/templates/auth/settings.html:1250
 msgid "Email not configured. Ask an administrator to configure SMTP settings."
 msgstr ""
-"E-mail není nakonfigurován. Požádejte administrátora o konfiguraci nastavení "
-"SMTP."
+"E-mail není nakonfigurován. Požádejte administrátora o konfiguraci "
+"nastavení SMTP."
 
-#: app/templates/auth/settings.html:1234
+#: app/templates/auth/settings.html:1259
 msgid "is a simple pub-sub notification service. Enter your topic below."
 msgstr "je jednoduchá služba pro upozornění na odběry. Zadejte níže své téma."
 
-#: app/templates/auth/settings.html:1237
+#: app/templates/auth/settings.html:1262
 msgid "ntfy Topic or Server URL"
 msgstr "ntfy URL adresy tématu nebo serveru"
 
-#: app/templates/auth/settings.html:1242
+#: app/templates/auth/settings.html:1267
 msgid ""
 "For ntfy.sh, just enter your topic name. For self-hosted, enter the full "
 "URL."
 msgstr ""
-"Pro ntfy.sh stačí zadat název tématu. Pro vlastní hostování zadejte celou "
-"URL adresu."
+"Pro ntfy.sh stačí zadat název tématu. Pro vlastní hostování zadejte celou"
+" URL adresu."
 
-#: app/templates/auth/settings.html:1250
+#: app/templates/auth/settings.html:1275
 msgid "sends notifications to your devices. Enter your User Key below."
 msgstr "odesílá oznámení na vaše zařízení. Zadejte níže svůj uživatelský klíč."
 
-#: app/templates/auth/settings.html:1253
+#: app/templates/auth/settings.html:1278
 msgid "Pushover User Key"
 msgstr "Uživatelský klíč Pushover"
 
-#: app/templates/auth/settings.html:1258
+#: app/templates/auth/settings.html:1283
 msgid "Find your User Key on your Pushover dashboard."
 msgstr "Najděte svůj uživatelský klíč na řídicím panelu Pushover."
 
-#: app/templates/auth/settings.html:1265
+#: app/templates/auth/settings.html:1290
 msgid "Notifications will be sent as JSON POST requests to your webhook URL."
 msgstr ""
 "Oznámení budou odesílána jako požadavky JSON POST na vaši URL adresu "
 "webhooku."
 
-#: app/templates/auth/settings.html:1268
+#: app/templates/auth/settings.html:1293
 msgid "Webhook URL"
 msgstr "Webhook URL"
 
-#: app/templates/auth/settings.html:1273
+#: app/templates/auth/settings.html:1298
 #, python-brace-format
 msgid "JSON payload: {title, message, reminder_id, vehicle_name, due_date}"
 msgstr "Datová část JSON: {title, message, reminder_id, vehicle_name, due_date}"
 
-#: app/templates/auth/settings.html:1284
+#: app/templates/auth/settings.html:1309
 msgid "Send Test Notification"
 msgstr "Odeslat testovací oznámení"
 
-#: app/templates/auth/settings.html:1308
+#: app/templates/auth/settings.html:1333
 msgid "Notification Services"
 msgstr "Oznamovací služby"
 
-#: app/templates/auth/settings.html:1311
+#: app/templates/auth/settings.html:1336
 msgid "Configure notification services available to all users"
 msgstr "Konfigurace dostupných oznamovacích služeb všem uživatelům"
 
-#: app/templates/auth/settings.html:1324
+#: app/templates/auth/settings.html:1349
 msgid "Email (SMTP)"
 msgstr "E-mail (SMTP)"
 
-#: app/templates/auth/settings.html:1336
+#: app/templates/auth/settings.html:1361
 msgid "SMTP Host"
 msgstr "Hostitel SMTP"
 
-#: app/templates/auth/settings.html:1343
+#: app/templates/auth/settings.html:1368
 msgid "SMTP Port"
 msgstr "SMTP Port"
 
-#: app/templates/auth/settings.html:1350
+#: app/templates/auth/settings.html:1375
 msgid "SMTP Username"
 msgstr "Uživatelské jméno SMTP"
 
-#: app/templates/auth/settings.html:1357
+#: app/templates/auth/settings.html:1382
 msgid "SMTP Password"
 msgstr "Heslo SMTP"
 
-#: app/templates/auth/settings.html:1364
+#: app/templates/auth/settings.html:1389
 msgid "Sender Email"
 msgstr "E-mail odesílatele"
 
-#: app/templates/auth/settings.html:1371
+#: app/templates/auth/settings.html:1396
 msgid "Sender Name"
 msgstr "Jméno odesílatele"
 
-#: app/templates/auth/settings.html:1384
+#: app/templates/auth/settings.html:1409
 msgid "Use TLS"
 msgstr "Použít TLS"
 
-#: app/templates/auth/settings.html:1390
+#: app/templates/auth/settings.html:1415
 msgid "Use SSL"
 msgstr "Použít SSL"
 
-#: app/templates/auth/settings.html:1418
+#: app/templates/auth/settings.html:1443
 msgid "sends push notifications to iOS and Android devices."
 msgstr "odesílá push notifikace na zařízení iOS a Android."
 
-#: app/templates/auth/settings.html:1421
+#: app/templates/auth/settings.html:1446
 msgid "Application Token"
 msgstr "Token aplikace"
 
-#: app/templates/auth/settings.html:1426
+#: app/templates/auth/settings.html:1451
 msgid "Create an application at pushover.net to get your token"
 msgstr "Vytvořte si aplikaci na pushover.net a získejte svůj token"
 
-#: app/templates/auth/settings.html:1436
+#: app/templates/auth/settings.html:1461
 msgid "ntfy"
 msgstr "ntfy"
 
-#: app/templates/auth/settings.html:1437 app/templates/auth/settings.html:1452
+#: app/templates/auth/settings.html:1462 app/templates/auth/settings.html:1477
 msgid "Always available"
 msgstr "Vždy k dispozici"
 
-#: app/templates/auth/settings.html:1441
+#: app/templates/auth/settings.html:1466
 msgid ""
 "is a free, open-source notification service that requires no admin "
 "configuration. Users can set their own topic."
 msgstr ""
 "je bezplatná open-source notifikační služba, která nevyžaduje žádnou "
-"konfiguraci ze strany administrátora. Uživatelé si mohou nastavit vlastní "
-"téma."
+"konfiguraci ze strany administrátora. Uživatelé si mohou nastavit vlastní"
+" téma."
 
-#: app/templates/auth/settings.html:1451
+#: app/templates/auth/settings.html:1476
 msgid "Webhook"
 msgstr "Webhook"
 
-#: app/templates/auth/settings.html:1455
+#: app/templates/auth/settings.html:1480
 msgid ""
 "Webhooks allow users to integrate with any service that accepts HTTP POST"
 " requests (Home Assistant, Discord, Slack, etc.)"
 msgstr ""
-"Webhooky umožňují uživatelům integraci s jakoukoli službou, která přijímá "
-"HTTP POST požadavky (Home Assistant, Discord, Slack atd.)"
+"Webhooky umožňují uživatelům integraci s jakoukoli službou, která přijímá"
+" HTTP POST požadavky (Home Assistant, Discord, Slack atd.)"
 
-#: app/templates/auth/settings.html:1462
+#: app/templates/auth/settings.html:1487
 msgid "Save Notification Settings"
 msgstr "Uložit nastavení oznámení"
 
-#: app/templates/auth/settings.html:1473
+#: app/templates/auth/settings.html:1498
 msgid "Manage Reminders"
 msgstr "Správa připomenutí"
 
-#: app/templates/auth/settings.html:1474
+#: app/templates/auth/settings.html:1499
 msgid "View and manage your upcoming reminders"
 msgstr "Zobrazení a správa nadcházejících připomenutí"
 
-#: app/templates/auth/settings.html:1479
+#: app/templates/auth/settings.html:1504
 msgid "View all reminders"
 msgstr "Zobrazit všechna připomenutí"
 
-#: app/templates/auth/settings.html:1496
+#: app/templates/auth/settings.html:1521
 msgid "Application Branding"
 msgstr "Vzhled a logo aplikace"
 
-#: app/templates/auth/settings.html:1497
+#: app/templates/auth/settings.html:1522
 msgid "Customize how May appears to all users"
 msgstr "Přizpůsobte si, jak se May zobrazuje všem uživatelům"
 
-#: app/templates/auth/settings.html:1503
+#: app/templates/auth/settings.html:1528
 msgid "Application Name"
 msgstr "Název aplikace"
 
-#: app/templates/auth/settings.html:1511
+#: app/templates/auth/settings.html:1536
 msgid "Tagline"
 msgstr "Slogan"
 
-#: app/templates/auth/settings.html:1519
+#: app/templates/auth/settings.html:1544
 msgid "Primary Color"
 msgstr "Základní barva"
 
-#: app/templates/auth/settings.html:1531
+#: app/templates/auth/settings.html:1556
 msgid "Logo"
 msgstr "Logo"
 
-#: app/templates/auth/settings.html:1535 app/templates/auth/settings.html:1536
+#: app/templates/auth/settings.html:1560 app/templates/auth/settings.html:1561
 msgid "Current logo"
 msgstr "Aktuální logo"
 
-#: app/templates/auth/settings.html:1548
+#: app/templates/auth/settings.html:1573
 msgid "Remove Logo"
 msgstr "Odebrat logo"
 
-#: app/templates/auth/settings.html:1553
+#: app/templates/auth/settings.html:1578
 msgid "Are you sure you want to remove the logo?"
 msgstr "Jste si jisti, že chcete logo odstranit?"
 
-#: app/templates/auth/settings.html:1576
+#: app/templates/auth/settings.html:1601
 msgid "Save Branding"
 msgstr "Uložit vzhled a logo"
 
-#: app/templates/auth/settings.html:1589
+#: app/templates/auth/settings.html:1614
 msgid "Version information and updates"
 msgstr "Informace o verzi a aktualizace"
 
-#: app/templates/auth/settings.html:1596
+#: app/templates/auth/settings.html:1621
 msgid "Current Version"
 msgstr "Aktuální verze"
 
-#: app/templates/auth/settings.html:1619
+#: app/templates/auth/settings.html:1644
 msgid "Check for Updates"
 msgstr "Zkontrolovat aktualizace"
 
-#: app/templates/auth/settings.html:1620
+#: app/templates/auth/settings.html:1645
 msgid "Click to check for newer versions"
 msgstr "Kliknutím zkontrolujete dostupnost nových verzí"
 
-#: app/templates/auth/settings.html:1627
+#: app/templates/auth/settings.html:1652
 msgid "Check Now"
 msgstr "Zkontrolovat nyní"
 
-#: app/templates/auth/settings.html:1638
+#: app/templates/auth/settings.html:1663
 msgid "Update Available"
 msgstr "Aktualizace k dispozici"
 
-#: app/templates/auth/settings.html:1640
+#: app/templates/auth/settings.html:1665
 msgid "Version"
 msgstr "Verze"
 
-#: app/templates/auth/settings.html:1640
+#: app/templates/auth/settings.html:1665
 msgid "is available"
 msgstr "je k dispozici"
 
-#: app/templates/auth/settings.html:1644
+#: app/templates/auth/settings.html:1669
 msgid "View Release Notes"
 msgstr "Zobrazit poznámky k vydání"
 
-#: app/templates/auth/settings.html:1651
+#: app/templates/auth/settings.html:1676
 msgid "To update (Docker):"
 msgstr "Aktualizace (Docker):"
 
-#: app/templates/auth/settings.html:1654
+#: app/templates/auth/settings.html:1679
 msgid "Or use Watchtower for automatic updates."
 msgstr "Nebo použijte Watchtower pro automatické aktualizace."
 
-#: app/templates/auth/settings.html:1666
+#: app/templates/auth/settings.html:1691
 msgid "You are running the latest version"
 msgstr "Používáte nejnovější verzi"
 
-#: app/templates/auth/settings.html:1673
+#: app/templates/auth/settings.html:1698
 msgid "Resources"
 msgstr "Zdroje"
 
-#: app/templates/auth/settings.html:1680
+#: app/templates/auth/settings.html:1705
 msgid "Source Code"
 msgstr "Zdrojový kód"
 
-#: app/templates/auth/settings.html:1687
+#: app/templates/auth/settings.html:1712
 msgid "Report an Issue"
 msgstr "Nahlásit problém"
 
-#: app/templates/auth/settings.html:1694
+#: app/templates/auth/settings.html:1719
 msgid "All Releases"
 msgstr "Všechna vydání"
 
-#: app/templates/auth/settings.html:1701
+#: app/templates/auth/settings.html:1726
 msgid "Documentation"
 msgstr "Dokumentace"
 
-#: app/templates/auth/settings.html:2106
+#: app/templates/auth/settings.html:2132
 msgid "Checking..."
 msgstr "Kontrola..."
 
-#: app/templates/auth/settings.html:2118
+#: app/templates/auth/settings.html:2144
 msgid "A newer version is available"
 msgstr "K dispozici je novější verze"
 
-#: app/templates/auth/settings.html:2123
+#: app/templates/auth/settings.html:2149
 msgid "Last checked just now"
 msgstr "Naposledy zkontrolováno právě teď"
 
-#: app/templates/auth/settings.html:2127
+#: app/templates/auth/settings.html:2153
 msgid "Could not check for updates"
 msgstr "Nepodařilo se zkontrolovat aktualizace"
 
-#: app/templates/auth/settings.html:2132
+#: app/templates/auth/settings.html:2158
 msgid "Error checking for updates"
 msgstr "Chyba při kontrole aktualizací"
 
@@ -1715,19 +2555,6 @@ msgstr "Upravit záznam o nabíjení"
 #: app/templates/charging/form.html:8 app/templates/charging/form.html:158
 msgid "Log Charging Session"
 msgstr "Protokol nabíjecí relace"
-
-#: app/templates/charging/form.html:16 app/templates/charging/index.html:36
-#: app/templates/documents/form.html:21 app/templates/fuel/quick.html:15
-#: app/templates/maintenance/form.html:20 app/templates/recurring/form.html:21
-#: app/templates/trips/form.html:16 app/templates/trips/index.html:44
-#: app/templates/trips/report.html:99
-msgid "Vehicle"
-msgstr "Vozidlo"
-
-#: app/templates/charging/form.html:32 app/templates/maintenance/form.html:100
-#: app/templates/trips/form.html:42 app/templates/trips/report.html:98
-msgid "Date"
-msgstr "Datum"
 
 #: app/templates/charging/form.html:39
 msgid "Charger Type"
@@ -1745,7 +2572,7 @@ msgstr "Čas zahájení"
 msgid "End Time"
 msgstr "Čas ukončení"
 
-#: app/templates/charging/form.html:64
+#: app/templates/charging/form.html:64 app/templates/fuel/index.html:115
 msgid "Location"
 msgstr "Umístění"
 
@@ -1761,8 +2588,12 @@ msgstr "Síť"
 msgid "e.g., ChargePoint, Electrify America"
 msgstr "např. ChargePoint, Electrify America"
 
-#: app/templates/charging/form.html:81 app/templates/fuel/quick.html:33
-#: app/templates/maintenance/form.html:106 app/templates/vehicles/view.html:284
+#: app/templates/charging/form.html:81 app/templates/expenses/form.html:62
+#: app/templates/expenses/index.html:30 app/templates/fuel/form.html:45
+#: app/templates/fuel/index.html:27 app/templates/fuel/index.html:112
+#: app/templates/fuel/quick.html:34 app/templates/maintenance/form.html:106
+#: app/templates/notes/form.html:37 app/templates/notes/index.html:29
+#: app/templates/vehicles/view.html:332
 msgid "Odometer"
 msgstr "Tachometr"
 
@@ -1782,7 +2613,9 @@ msgstr "Spustit SOC"
 msgid "End SOC"
 msgstr "Konec SOC"
 
-#: app/templates/charging/form.html:125
+#: app/templates/charging/form.html:125 app/templates/expenses/form.html:55
+#: app/templates/expenses/index.html:31 app/templates/fuel/index.html:29
+#: app/templates/fuel/index.html:114
 msgid "Cost"
 msgstr "Cena"
 
@@ -1791,22 +2624,9 @@ msgid "Cost per kWh"
 msgstr "Cena za kWh"
 
 #: app/templates/charging/form.html:135 app/templates/charging/index.html:26
-#: app/templates/fuel/quick.html:63
+#: app/templates/fuel/form.html:88 app/templates/fuel/quick.html:75
 msgid "Total Cost"
 msgstr "Celková cena"
-
-#: app/templates/charging/form.html:144 app/templates/stations/form.html:74
-#: app/templates/trips/form.html:100
-msgid "Notes"
-msgstr "Poznámky"
-
-#: app/templates/charging/form.html:154 app/templates/documents/form.html:122
-#: app/templates/maintenance/form.html:156
-#: app/templates/maintenance/index.html:152
-#: app/templates/recurring/form.html:128 app/templates/stations/form.html:101
-#: app/templates/trips/form.html:110
-msgid "Cancel"
-msgstr "Zrušit"
 
 #: app/templates/charging/index.html:7
 msgid "Charging Sessions"
@@ -1825,15 +2645,16 @@ msgid "Total Energy"
 msgstr "Celková energie"
 
 #: app/templates/charging/index.html:38 app/templates/documents/index.html:23
-#: app/templates/trips/index.html:46
+#: app/templates/reminders/index.html:27 app/templates/trips/index.html:53
 msgid "All Vehicles"
 msgstr "Všechna vozidla"
 
-#: app/templates/charging/index.html:45 app/templates/trips/index.html:71
+#: app/templates/charging/index.html:45 app/templates/reminders/index.html:48
+#: app/templates/trips/index.html:78
 msgid "Filter"
 msgstr "Filtr"
 
-#: app/templates/charging/index.html:49 app/templates/trips/index.html:75
+#: app/templates/charging/index.html:49 app/templates/trips/index.html:82
 msgid "Clear"
 msgstr "Vyčistit"
 
@@ -1868,7 +2689,12 @@ msgstr "Nahrát dokument"
 msgid "File"
 msgstr "Soubor"
 
-#: app/templates/documents/form.html:48
+#: app/templates/documents/form.html:43
+msgid "PDF, images, Word, Excel, text files, or ePub (max 300MB)"
+msgstr ""
+
+#: app/templates/documents/form.html:48 app/templates/notes/form.html:44
+#: app/templates/reminders/form.html:44
 msgid "Title"
 msgstr "Titul"
 
@@ -1877,6 +2703,8 @@ msgid "e.g., Insurance Policy 2024"
 msgstr "např. pojistná smlouva 2024"
 
 #: app/templates/documents/form.html:56 app/templates/maintenance/form.html:43
+#: app/templates/reminders/form.html:53 app/templates/reminders/index.html:34
+#: app/templates/vehicles/form.html:26 app/templates/vehicles/view.html:51
 msgid "Type"
 msgstr "Typ"
 
@@ -1896,12 +2724,6 @@ msgstr "Datum vystavení"
 msgid "Expiry Date"
 msgstr "Datum vypršení platnosti"
 
-#: app/templates/documents/form.html:91 app/templates/documents/view.html:96
-#: app/templates/maintenance/form.html:57 app/templates/recurring/form.html:96
-#: app/templates/trips/form.html:92 app/templates/trips/report.html:101
-msgid "Description"
-msgstr "Popis"
-
 #: app/templates/documents/form.html:94 app/templates/recurring/form.html:99
 msgid "Optional notes"
 msgstr "Volitelné poznámky"
@@ -1913,11 +2735,6 @@ msgstr "Připomeň mi před vypršením platnosti"
 #: app/templates/documents/form.html:105
 msgid "Days before to remind"
 msgstr "Dny před připomenutím"
-
-#: app/templates/documents/form.html:114 app/templates/recurring/form.html:120
-#: app/templates/stations/form.html:93
-msgid "Delete"
-msgstr "Vymazat"
 
 #: app/templates/documents/form.html:126
 msgid "Upload"
@@ -1947,11 +2764,6 @@ msgstr "Žádné dokumenty"
 msgid "Store your vehicle documents, insurance policies, and MOT certificates."
 msgstr "Uložte si dokumenty k vozidlu, pojistné smlouvy a technické kontroly."
 
-#: app/templates/documents/view.html:30 app/templates/maintenance/index.html:83
-#: app/templates/stations/index.html:65
-msgid "Edit"
-msgstr "Upravit"
-
 #: app/templates/documents/view.html:44
 msgid "This document has expired!"
 msgstr "Platnost tohoto dokumentu vypršela!"
@@ -1964,52 +2776,231 @@ msgstr "Platnost tohoto dokumentu brzy vyprší."
 msgid "Preview"
 msgstr "Náhled"
 
-#: app/templates/fuel/form.html:82 app/templates/fuel/quick.html:81
+#: app/templates/expenses/form.html:2 app/templates/expenses/form.html:8
+#, fuzzy
+msgid "Edit Expense"
+msgstr "Přidat výdaj"
+
+#: app/templates/expenses/form.html:2 app/templates/expenses/form.html:8
+#: app/templates/expenses/form.html:109 app/templates/expenses/index.html:15
+#: app/templates/expenses/index.html:107 app/templates/vehicles/view.html:175
+msgid "Add Expense"
+msgstr "Přidat výdaj"
+
+#: app/templates/expenses/form.html:7
+#, fuzzy
+msgid "Back to expenses"
+msgstr "Zpět k opakujícím se výdajům"
+
+#: app/templates/expenses/form.html:37 app/templates/expenses/index.html:28
+#: app/templates/recurring/form.html:42
+msgid "Category"
+msgstr "Kategorie"
+
+#: app/templates/expenses/form.html:50
+#, fuzzy
+msgid "e.g., Oil change, Annual service"
+msgstr "např. výměna oleje"
+
+#: app/templates/expenses/form.html:69
+msgid "Vendor / Service Provider"
+msgstr ""
+
+#: app/templates/expenses/form.html:72
+#, fuzzy
+msgid "e.g., Local Garage"
+msgstr "např. výměna oleje"
+
+#: app/templates/expenses/form.html:83 app/templates/fuel/form.html:149
+msgid "Receipt / Attachment"
+msgstr ""
+
+#: app/templates/expenses/form.html:90 app/templates/fuel/form.html:156
+#, fuzzy
+msgid "Delete this attachment?"
+msgstr "Smazat tento dokument?"
+
+#: app/templates/expenses/index.html:8
+msgid "Track maintenance, repairs, insurance, and other costs"
+msgstr ""
+
+#: app/templates/expenses/index.html:62 app/templates/vehicles/view.html:828
+#, fuzzy
+msgid "Delete this expense?"
+msgstr "Smazat tento opakující se výdaj?"
+
+#: app/templates/expenses/index.html:75
+msgid "Vendor / Provider:"
+msgstr ""
+
+#: app/templates/expenses/index.html:81
+#, fuzzy
+msgid "Notes:"
+msgstr "Poznámky"
+
+#: app/templates/expenses/index.html:99
+#, fuzzy
+msgid "No expenses"
+msgstr "Výdaje"
+
+#: app/templates/expenses/index.html:100
+msgid "Start tracking your vehicle expenses."
+msgstr ""
+
+#: app/templates/fuel/form.html:2 app/templates/fuel/form.html:8
+#, fuzzy
+msgid "Edit Fuel Log"
+msgstr "Přidat protokol paliva"
+
+#: app/templates/fuel/form.html:2 app/templates/fuel/form.html:8
+#: app/templates/fuel/form.html:175 app/templates/fuel/index.html:15
+#: app/templates/fuel/index.html:85 app/templates/vehicles/view.html:151
+msgid "Add Fuel Log"
+msgstr "Přidat protokol paliva"
+
+#: app/templates/fuel/form.html:7
+#, fuzzy
+msgid "Back to fuel logs"
+msgstr "Záznamy o palivu"
+
+#: app/templates/fuel/form.html:33 app/templates/trips/form.html:47
+msgid "Last odometer"
+msgstr "Poslední stav tachometru"
+
+#: app/templates/fuel/form.html:50 app/templates/fuel/quick.html:139
+#, fuzzy
+msgid "From Tessie"
+msgstr "Načíst z Tessie"
+
+#: app/templates/fuel/form.html:57
+msgid "Odometer is automatically tracked via Tessie for this vehicle."
+msgstr ""
+
+#: app/templates/fuel/form.html:70 app/templates/fuel/quick.html:65
+#: app/templates/stations/prices.html:83
+msgid "Price per"
+msgstr "Cena za"
+
+#: app/templates/fuel/form.html:78
+#, fuzzy
+msgid "Discount per"
+msgstr "Cena za"
+
+#: app/templates/fuel/form.html:84
+msgid "Optional loyalty discount, subtracted from the price per unit."
+msgstr ""
+
+#: app/templates/fuel/form.html:95 app/templates/fuel/quick.html:93
 msgid "Station"
 msgstr "Stanice"
 
-#: app/templates/fuel/form.html:86
+#: app/templates/fuel/form.html:99 app/templates/fuel/quick.html:97
 msgid "Select station or enter manually..."
 msgstr "Vyberte stanici nebo zadejte ručně..."
 
-#: app/templates/fuel/form.html:97
+#: app/templates/fuel/form.html:110
 msgid "e.g., Shell, BP"
 msgstr "např. Shell, BP"
 
-#: app/templates/fuel/form.html:101
+#: app/templates/fuel/form.html:114
 msgid "Add saved stations"
 msgstr "Přidat uložené stanice"
 
-#: app/templates/fuel/form.html:101
+#: app/templates/fuel/form.html:114
 msgid "for quick selection and price tracking"
 msgstr "pro rychlý výběr a sledování cen"
+
+#: app/templates/fuel/form.html:120 app/templates/vehicles/form.html:59
+#, fuzzy
+msgid "Fuel Type"
+msgstr "Typ"
+
+#: app/templates/fuel/form.html:131
+#, fuzzy
+msgid "Full tank fill-up"
+msgstr "Plná nádrž"
+
+#: app/templates/fuel/form.html:138
+msgid "Missed fill-up (incomplete data)"
+msgstr ""
+
+#: app/templates/fuel/index.html:8
+msgid "Track your fuel fill-ups and consumption"
+msgstr ""
+
+#: app/templates/fuel/index.html:30
+#, fuzzy
+msgid "Consumption"
+msgstr "Spotřeba paliva"
+
+#: app/templates/fuel/index.html:47
+#, fuzzy
+msgid "Full"
+msgstr "Palivo"
+
+#: app/templates/fuel/index.html:50
+#, fuzzy
+msgid "Missed"
+msgstr "Datum vystavení"
+
+#: app/templates/fuel/index.html:61 app/templates/vehicles/view.html:784
+#, fuzzy
+msgid "Delete this fuel log?"
+msgstr "Smazat tuto stanici?"
+
+#: app/templates/fuel/index.html:77
+#, fuzzy
+msgid "No fuel logs"
+msgstr "Záznamy o palivu"
+
+#: app/templates/fuel/index.html:78
+msgid "Start tracking your fuel fill-ups."
+msgstr ""
+
+#: app/templates/fuel/index.html:94
+#, fuzzy
+msgid "Charging History"
+msgstr "Historie cen"
+
+#: app/templates/fuel/index.html:95
+msgid "Sessions logged for your electric and plug-in hybrid vehicles"
+msgstr ""
+
+#: app/templates/fuel/index.html:102
+#, fuzzy
+msgid "Add Charging Session"
+msgstr "Upravit záznam o nabíjení"
+
+#: app/templates/fuel/index.html:113
+msgid "kWh"
+msgstr ""
 
 #: app/templates/fuel/quick.html:8
 msgid "Fast fuel logging for mobile"
 msgstr "Rychlé zaznamenávání paliva pro mobilní zařízení"
 
-#: app/templates/fuel/quick.html:48
+#: app/templates/fuel/quick.html:49 app/templates/fuel/quick.html:138
 msgid "Last"
 msgstr "Poslední"
 
-#: app/templates/fuel/quick.html:76
+#: app/templates/fuel/quick.html:88
 msgid "Full tank"
 msgstr "Plná nádrž"
 
-#: app/templates/fuel/quick.html:83 app/templates/maintenance/index.html:125
+#: app/templates/fuel/quick.html:107 app/templates/maintenance/index.html:125
 #: app/templates/maintenance/index.html:144
 msgid "Optional"
 msgstr "Volitelný"
 
-#: app/templates/fuel/quick.html:99
+#: app/templates/fuel/quick.html:118
 msgid "Save"
 msgstr "Uložit"
 
-#: app/templates/fuel/quick.html:106
+#: app/templates/fuel/quick.html:125
 msgid "Save & Add Another"
 msgstr "Uložit a přidat další"
 
-#: app/templates/fuel/quick.html:113
+#: app/templates/fuel/quick.html:132
 msgid "Need more options? Use full form"
 msgstr "Potřebujete více možností? Použijte celý formulář"
 
@@ -2026,7 +3017,8 @@ msgid "New Maintenance Schedule"
 msgstr "Nový plán údržby"
 
 #: app/templates/maintenance/form.html:34 app/templates/recurring/form.html:34
-#: app/templates/stations/form.html:20
+#: app/templates/stations/form.html:20 app/templates/vehicles/form.html:18
+#: app/templates/vehicles/part_form.html:29
 msgid "Name"
 msgstr "Jméno"
 
@@ -2047,8 +3039,8 @@ msgid ""
 "Set how often this maintenance should be performed. You can set distance,"
 " time, or both."
 msgstr ""
-"Nastavte, jak často se má tato údržba provádět. Můžete nastavit vzdálenost, "
-"čas nebo obojí."
+"Nastavte, jak často se má tato údržba provádět. Můžete nastavit "
+"vzdálenost, čas nebo obojí."
 
 #: app/templates/maintenance/form.html:70
 msgid "Every (km)"
@@ -2081,7 +3073,8 @@ msgstr "Naposledy provedeno"
 #: app/templates/maintenance/form.html:96
 msgid "When was this maintenance last done? Leave blank if never."
 msgstr ""
-"Kdy byla tato údržba provedena naposledy? Pokud nikdy, nechte pole prázdné."
+"Kdy byla tato údržba provedena naposledy? Pokud nikdy, nechte pole "
+"prázdné."
 
 #: app/templates/maintenance/form.html:109
 msgid "e.g., 50000"
@@ -2175,6 +3168,57 @@ msgstr "Prodejce"
 msgid "Complete"
 msgstr "Kompletní"
 
+#: app/templates/notes/form.html:2 app/templates/notes/form.html:8
+#, fuzzy
+msgid "Edit Note"
+msgstr "Upravit cestu"
+
+#: app/templates/notes/form.html:2 app/templates/notes/form.html:8
+#: app/templates/notes/form.html:67 app/templates/notes/index.html:15
+#: app/templates/notes/index.html:85
+#, fuzzy
+msgid "Add Note"
+msgstr "Uložit a přidat další"
+
+#: app/templates/notes/form.html:7
+#, fuzzy
+msgid "Back to notes"
+msgstr "Zpět k výletům"
+
+#: app/templates/notes/form.html:47
+msgid "e.g., DPF regeneration"
+msgstr ""
+
+#: app/templates/notes/form.html:52 app/templates/notes/index.html:28
+#, fuzzy
+msgid "Note"
+msgstr "Poznámky"
+
+#: app/templates/notes/form.html:54
+msgid "What happened?"
+msgstr ""
+
+#: app/templates/notes/index.html:8
+msgid ""
+"Record events and observations that don't fit fuel, expenses or "
+"maintenance"
+msgstr ""
+
+#: app/templates/notes/index.html:54
+#, fuzzy
+msgid "Delete this note?"
+msgstr "Smazat tento dokument?"
+
+#: app/templates/notes/index.html:77
+#, fuzzy
+msgid "No notes"
+msgstr "Poznámky"
+
+#: app/templates/notes/index.html:78
+#, fuzzy
+msgid "Jot down anything worth remembering about your vehicles."
+msgstr "Nastavte si, jak chcete dostávat upomínky týkající se vašich vozidel"
+
 #: app/templates/recurring/form.html:6
 msgid "Back to Recurring Expenses"
 msgstr "Zpět k opakujícím se výdajům"
@@ -2190,10 +3234,6 @@ msgstr "Přidat opakující se výdaje"
 #: app/templates/recurring/form.html:37
 msgid "e.g., Car Insurance, Road Tax"
 msgstr "např. pojištění automobilu, silniční daň"
-
-#: app/templates/recurring/form.html:42
-msgid "Category"
-msgstr "Kategorie"
 
 #: app/templates/recurring/form.html:54
 msgid "Frequency"
@@ -2214,10 +3254,6 @@ msgstr "Pololetně (každých 6 měsíců)"
 #: app/templates/recurring/form.html:60
 msgid "Yearly"
 msgstr "Roční"
-
-#: app/templates/recurring/form.html:65
-msgid "Amount"
-msgstr "Množství"
 
 #: app/templates/recurring/form.html:75
 msgid "Leave blank if amount varies"
@@ -2276,6 +3312,124 @@ msgid "Set up recurring expenses like insurance, road tax, or parking permits."
 msgstr ""
 "Nastavte si opakující se výdaje, jako je pojištění, silniční daň nebo "
 "parkovací povolení."
+
+#: app/templates/reminders/form.html:2 app/templates/reminders/form.html:18
+#, fuzzy
+msgid "Edit Reminder"
+msgstr "Přidat připomenutí"
+
+#: app/templates/reminders/form.html:2 app/templates/reminders/form.html:18
+#, fuzzy
+msgid "New Reminder"
+msgstr "Správa připomenutí"
+
+#: app/templates/reminders/form.html:11
+#, fuzzy
+msgid "Back to Reminders"
+msgstr "Vlastní připomenutí"
+
+#: app/templates/reminders/form.html:47
+#, fuzzy
+msgid "e.g., MOT Due, Insurance Renewal"
+msgstr "např. pojištění automobilu, silniční daň"
+
+#: app/templates/reminders/form.html:66
+#, fuzzy
+msgid "Due Date"
+msgstr "Datum vystavení"
+
+#: app/templates/reminders/form.html:74
+#, fuzzy
+msgid "Description (optional)"
+msgstr "Popis"
+
+#: app/templates/reminders/form.html:76
+msgid "Additional notes about this reminder"
+msgstr ""
+
+#: app/templates/reminders/form.html:82
+#, fuzzy
+msgid "Recurrence"
+msgstr "Měna"
+
+#: app/templates/reminders/form.html:85
+#, fuzzy
+msgid "Every"
+msgstr "Každých (km)"
+
+#: app/templates/reminders/form.html:100
+msgid ""
+"e.g. \"Every 2 Year(s)\" for an MOT due every two years. When marked "
+"complete, the next occurrence is created automatically."
+msgstr ""
+
+#: app/templates/reminders/form.html:105
+#, fuzzy
+msgid "Notify me"
+msgstr "ntfy"
+
+#: app/templates/reminders/form.html:130
+#, fuzzy
+msgid "Update Reminder"
+msgstr "Přidat připomenutí"
+
+#: app/templates/reminders/form.html:130
+#, fuzzy
+msgid "Create Reminder"
+msgstr "Povolit připomenutí"
+
+#: app/templates/reminders/index.html:8
+msgid "Keep track of important dates for your vehicles"
+msgstr ""
+
+#: app/templates/reminders/index.html:16 app/templates/reminders/index.html:138
+#: app/templates/vehicles/view.html:182
+msgid "Add Reminder"
+msgstr "Přidat připomenutí"
+
+#: app/templates/reminders/index.html:36
+#, fuzzy
+msgid "All Types"
+msgstr "Všechny roky"
+
+#: app/templates/reminders/index.html:45
+#, fuzzy
+msgid "Show completed"
+msgstr "Kompletní"
+
+#: app/templates/reminders/index.html:51
+#, fuzzy
+msgid "Clear filters"
+msgstr "Filtr"
+
+#: app/templates/reminders/index.html:63 app/templates/vehicles/view.html:620
+msgid "Overdue"
+msgstr ""
+
+#: app/templates/reminders/index.html:80
+#, fuzzy
+msgid "Upcoming"
+msgstr "Nadcházející připomenutí"
+
+#: app/templates/reminders/index.html:97
+#, fuzzy
+msgid "Later"
+msgstr "Filtr"
+
+#: app/templates/reminders/index.html:114
+#, fuzzy
+msgid "Completed"
+msgstr "Kompletní"
+
+#: app/templates/reminders/index.html:130
+#, fuzzy
+msgid "No reminders"
+msgstr "Připomenutí"
+
+#: app/templates/reminders/index.html:131
+#, fuzzy
+msgid "Get started by adding a reminder for your vehicle."
+msgstr "Nastavte si pro svá vozidla pravidelné připomenutí údržby."
 
 #: app/templates/stations/cheapest.html:6 app/templates/stations/prices.html:11
 msgid "Back to stations"
@@ -2384,21 +3538,27 @@ msgstr "Žádné čerpací stanice"
 #: app/templates/stations/index.html:83
 msgid "Save your favorite stations for quick access when logging fuel."
 msgstr ""
-"Uložte si své oblíbené stanice pro rychlý přístup při zaznamenávání paliva."
+"Uložte si své oblíbené stanice pro rychlý přístup při zaznamenávání "
+"paliva."
 
-#: app/templates/stations/prices.html:46
+#: app/templates/stations/prices.html:44
+msgid "Delete this price entry? This cannot be undone."
+msgstr ""
+
+#: app/templates/stations/prices.html:47
+#, fuzzy
+msgid "Delete this entry"
+msgstr "Smazat tento dokument?"
+
+#: app/templates/stations/prices.html:60
 msgid "No price history available for this station."
 msgstr "Pro tuto stanici není k dispozici historie cen."
 
-#: app/templates/stations/prices.html:47
+#: app/templates/stations/prices.html:61
 msgid "Prices are automatically recorded when you log fuel at this station."
 msgstr ""
 "Ceny se automaticky zaznamenávají při natankování paliva na této čerpací "
 "stanici."
-
-#: app/templates/stations/prices.html:69
-msgid "Price per"
-msgstr "Cena za"
 
 #: app/templates/timeline/index.html:11
 msgid "Back to"
@@ -2429,6 +3589,7 @@ msgid "Charging"
 msgstr "Nabíjení"
 
 #: app/templates/trips/form.html:7 app/templates/trips/report.html:12
+#: app/templates/trips/templates_index.html:7
 msgid "Back to trips"
 msgstr "Zpět k výletům"
 
@@ -2436,45 +3597,55 @@ msgstr "Zpět k výletům"
 msgid "Edit Trip"
 msgstr "Upravit cestu"
 
-#: app/templates/trips/form.html:8 app/templates/trips/form.html:114
-#: app/templates/trips/index.html:23 app/templates/vehicles/view.html:120
+#: app/templates/trips/form.html:8 app/templates/trips/form.html:130
+#: app/templates/trips/index.html:30 app/templates/vehicles/view.html:168
 msgid "Log Trip"
 msgstr "Protokol cest"
 
-#: app/templates/trips/form.html:31
-msgid "Last odometer"
-msgstr "Poslední stav tachometru"
+#: app/templates/trips/form.html:14
+msgid "Load template"
+msgstr ""
 
-#: app/templates/trips/form.html:49 app/templates/trips/index.html:53
+#: app/templates/trips/form.html:17
+msgid "— choose a template —"
+msgstr ""
+
+#: app/templates/trips/form.html:22
+#, fuzzy
+msgid "Manage"
+msgstr "Jazyk"
+
+#: app/templates/trips/form.html:65 app/templates/trips/index.html:60
 #: app/templates/trips/report.html:100
+#: app/templates/trips/template_form.html:42
 msgid "Purpose"
 msgstr "Účel"
 
-#: app/templates/trips/form.html:59
+#: app/templates/trips/form.html:75
 msgid "Start Odometer"
 msgstr "Počáteční stav tachometru"
 
-#: app/templates/trips/form.html:67
+#: app/templates/trips/form.html:83
 msgid "End Odometer"
 msgstr "Konečný stav tachometru"
 
-#: app/templates/trips/form.html:76
+#: app/templates/trips/form.html:92 app/templates/trips/template_form.html:52
 msgid "Start Location"
 msgstr "Výchozí místo"
 
-#: app/templates/trips/form.html:79
+#: app/templates/trips/form.html:95 app/templates/trips/template_form.html:55
 msgid "e.g., Home, Office"
 msgstr "např. Domov, Kancelář"
 
-#: app/templates/trips/form.html:84
+#: app/templates/trips/form.html:100 app/templates/trips/template_form.html:60
 msgid "End Location"
 msgstr "Cílové místo"
 
-#: app/templates/trips/form.html:87
+#: app/templates/trips/form.html:103 app/templates/trips/template_form.html:63
 msgid "e.g., Client Site, Airport"
 msgstr "např. Místo klienta, Letiště"
 
-#: app/templates/trips/form.html:95
+#: app/templates/trips/form.html:111
 msgid "e.g., Client meeting, Site visit"
 msgstr "např. schůzka s klientem, návštěva místa"
 
@@ -2483,34 +3654,38 @@ msgid "Track your trips for mileage and tax deductions"
 msgstr "Sledujte své jízdy kvůli evidenci kilometrů a daňovým odpočtům"
 
 #: app/templates/trips/index.html:16
+msgid "Templates"
+msgstr ""
+
+#: app/templates/trips/index.html:23
 msgid "Report"
 msgstr "Zpráva"
 
-#: app/templates/trips/index.html:35 app/templates/trips/report.html:39
+#: app/templates/trips/index.html:42 app/templates/trips/report.html:39
 msgid "Business Distance"
 msgstr "Služební kilometry"
 
-#: app/templates/trips/index.html:55
+#: app/templates/trips/index.html:62
 msgid "All Purposes"
 msgstr "Všechny účely"
 
-#: app/templates/trips/index.html:62
+#: app/templates/trips/index.html:69 app/templates/vehicles/form.html:97
 msgid "Year"
 msgstr "Rok"
 
-#: app/templates/trips/index.html:64
+#: app/templates/trips/index.html:71
 msgid "All Years"
 msgstr "Všechny roky"
 
-#: app/templates/trips/index.html:144
+#: app/templates/trips/index.html:151
 msgid "No trips logged"
 msgstr "Žádné zaznamenané cesty"
 
-#: app/templates/trips/index.html:145
+#: app/templates/trips/index.html:152
 msgid "Start logging your trips for mileage tracking and tax deductions."
 msgstr "Začněte evidovat své jízdy pro sledování kilometrů a daňové odpočty."
 
-#: app/templates/trips/index.html:152
+#: app/templates/trips/index.html:159
 msgid "Log Your First Trip"
 msgstr "Zaznamenejte si svou první cestu"
 
@@ -2558,94 +3733,791 @@ msgstr "Celkový"
 msgid "No trips logged for"
 msgstr "Žádné zaznamenané cesty pro"
 
-#: app/templates/vehicles/view.html:103
-msgid "Add Fuel Log"
-msgstr "Přidat protokol paliva"
+#: app/templates/trips/template_form.html:2
+#: app/templates/trips/template_form.html:9
+#, fuzzy
+msgid "Edit Template"
+msgstr "Upravit cestu"
 
-#: app/templates/vehicles/view.html:112
-msgid "Add Charging"
-msgstr "Přidat nabíjení"
+#: app/templates/trips/template_form.html:2
+#: app/templates/trips/template_form.html:9
+#: app/templates/trips/templates_index.html:16
+msgid "New Template"
+msgstr ""
 
-#: app/templates/vehicles/view.html:127
-msgid "Add Expense"
-msgstr "Přidat výdaj"
+#: app/templates/trips/template_form.html:7
+#, fuzzy
+msgid "Back to templates"
+msgstr "Zpět k výletům"
 
-#: app/templates/vehicles/view.html:134
-msgid "Add Reminder"
-msgstr "Přidat připomenutí"
+#: app/templates/trips/template_form.html:19
+#, fuzzy
+msgid "Template Name"
+msgstr "Název aplikace"
 
-#: app/templates/vehicles/view.html:141
-msgid "Parts"
-msgstr "Díly"
+#: app/templates/trips/template_form.html:22
+msgid "e.g., Office Commute, Client Visit"
+msgstr ""
 
-#: app/templates/vehicles/view.html:148
-msgid "Timeline"
-msgstr "Časová osa"
+#: app/templates/trips/template_form.html:30
+#: app/templates/trips/templates_index.html:38
+#, fuzzy
+msgid "Any vehicle"
+msgstr "Všechna vozidla"
 
-#: app/templates/vehicles/view.html:160
-msgid "DVLA Status"
-msgstr "Stav DVLA"
+#: app/templates/trips/template_form.html:38
+msgid "Pre-selects this vehicle when using the template"
+msgstr ""
 
-#: app/templates/vehicles/view.html:167 app/templates/vehicles/view.html:276
-msgid "Refresh"
-msgstr "Obnovit"
+#: app/templates/trips/template_form.html:71
+#, fuzzy
+msgid "e.g., Weekly client meeting"
+msgstr "např. schůzka s klientem, návštěva místa"
 
-#: app/templates/vehicles/view.html:174
-msgid "MOT Status"
-msgstr "Stav technické prohlídky"
+#: app/templates/trips/template_form.html:90
+#, fuzzy
+msgid "Save Template"
+msgstr "Uložit e-mail"
 
-#: app/templates/vehicles/view.html:192
-msgid "MOT Expiry"
-msgstr "Vypršení platnosti technické kontroly"
+#: app/templates/trips/templates_index.html:2
+#: app/templates/trips/templates_index.html:8
+#, fuzzy
+msgid "Trip Templates"
+msgstr "Zpráva o cestě"
 
-#: app/templates/vehicles/view.html:202
-msgid "Tax Status"
-msgstr "Daňový stav"
+#: app/templates/trips/templates_index.html:9
+msgid "Save common routes to quickly fill in trip details"
+msgstr ""
 
-#: app/templates/vehicles/view.html:220
-msgid "Tax Due"
-msgstr "Splatná daň"
+#: app/templates/trips/templates_index.html:50
+#, fuzzy
+msgid "Use"
+msgstr "Spotřebováno"
 
-#: app/templates/vehicles/view.html:231 app/templates/vehicles/view.html:333
-msgid "Last updated"
-msgstr "Naposledy aktualizováno"
+#: app/templates/trips/templates_index.html:59
+#, fuzzy
+msgid "Delete this template?"
+msgstr "Smazat tuto stanici?"
 
-#: app/templates/vehicles/view.html:235
-msgid "No DVLA data available for this vehicle."
-msgstr "Pro toto vozidlo nejsou k dispozici žádné údaje DVLA."
+#: app/templates/trips/templates_index.html:78
+msgid "No templates yet"
+msgstr ""
 
-#: app/templates/vehicles/view.html:241
-msgid "Fetch from DVLA"
-msgstr "Načíst z DVLA"
+#: app/templates/trips/templates_index.html:79
+msgid "Save common routes as templates to log trips faster."
+msgstr ""
 
-#: app/templates/vehicles/view.html:258
-msgid "Tessie Status"
-msgstr "Stav Tessie"
+#: app/templates/trips/templates_index.html:86
+#, fuzzy
+msgid "Create Your First Template"
+msgstr "Zaznamenejte si svou první cestu"
 
-#: app/templates/vehicles/view.html:260
-msgid "Live"
-msgstr "Živě"
+#: app/templates/vehicles/form.html:2 app/templates/vehicles/form.html:8
+#, fuzzy
+msgid "Edit Vehicle"
+msgstr "Vozidlo"
 
-#: app/templates/vehicles/view.html:269
-msgid "Import Charges"
-msgstr "Importovat nabíjení"
+#: app/templates/vehicles/form.html:2 app/templates/vehicles/form.html:314
+#: app/templates/vehicles/index.html:32 app/templates/vehicles/index.html:113
+#, fuzzy
+msgid "Add Vehicle"
+msgstr "Všechna vozidla"
 
-#: app/templates/vehicles/view.html:298
-msgid "Battery Level"
-msgstr "Úroveň baterie"
+#: app/templates/vehicles/form.html:7 app/templates/vehicles/view.html:11
+#, fuzzy
+msgid "Back to vehicles"
+msgstr "Všechna vozidla"
 
-#: app/templates/vehicles/view.html:314
-msgid "Est. Range"
-msgstr "Odhadovaný dojezd"
+#: app/templates/vehicles/form.html:8
+#, fuzzy
+msgid "Add New Vehicle"
+msgstr "Všechna vozidla"
 
-#: app/templates/vehicles/view.html:328
+#: app/templates/vehicles/form.html:14
+#, fuzzy
+msgid "Basic Information"
+msgstr "Informace o účtu"
+
+#: app/templates/vehicles/form.html:21
+msgid "e.g., My Daily Driver"
+msgstr ""
+
+#: app/templates/vehicles/form.html:36
+msgid "Tracking Unit"
+msgstr ""
+
+#: app/templates/vehicles/form.html:43
+msgid "Use \"Hours\" for tractors, ATVs, boats, etc."
+msgstr ""
+
+#: app/templates/vehicles/form.html:47
+#, fuzzy
+msgid "Odometer Unit"
+msgstr "Tachometr"
+
+#: app/templates/vehicles/form.html:50
+#, fuzzy
+msgid "Use account default"
+msgstr "Údaje o vašem účtu"
+
+#: app/templates/vehicles/form.html:55
+msgid ""
+"Override the odometer unit for this vehicle. Useful when you have "
+"vehicles with different odometer units."
+msgstr ""
+
+#: app/templates/vehicles/form.html:69
+msgid "Secondary Fuel Type"
+msgstr ""
+
+#: app/templates/vehicles/form.html:72
+#, fuzzy
+msgid "None"
+msgstr "Hotovo"
+
+#: app/templates/vehicles/form.html:77
+msgid ""
+"Optional. Use for vehicles with a secondary fluid to track, e.g. AdBlue "
+"alongside Diesel."
+msgstr ""
+
+#: app/templates/vehicles/form.html:81
+msgid "Make"
+msgstr ""
+
+#: app/templates/vehicles/form.html:84
+#, fuzzy
+msgid "e.g., Toyota"
+msgstr "např., 12"
+
+#: app/templates/vehicles/form.html:89
+#, fuzzy
+msgid "Model"
+msgstr "Více"
+
+#: app/templates/vehicles/form.html:92
+#, fuzzy
+msgid "e.g., Corolla"
+msgstr "např. výměna oleje"
+
+#: app/templates/vehicles/form.html:101
+#, fuzzy
+msgid "e.g., 2020"
+msgstr "např. 6000"
+
+#: app/templates/vehicles/form.html:106
+msgid "Tank Capacity (L)"
+msgstr ""
+
+#: app/templates/vehicles/form.html:109
+#, fuzzy
+msgid "e.g., 50"
+msgstr "např., 50000"
+
+#: app/templates/vehicles/form.html:116
+#, fuzzy
+msgid "Identification"
+msgstr "Oznámení"
+
+#: app/templates/vehicles/form.html:120
+#, fuzzy
+msgid "Registration / License Plate"
+msgstr "Nastavení registrace aktualizováno"
+
+#: app/templates/vehicles/form.html:123
+#, fuzzy
+msgid "e.g., ABC 123"
+msgstr "např., 12"
+
+#: app/templates/vehicles/form.html:128 app/templates/vehicles/view.html:376
 msgid "VIN"
 msgstr "VIN"
 
-#: app/templates/vehicles/view.html:337
+#: app/templates/vehicles/form.html:131
+msgid "Vehicle Identification Number"
+msgstr ""
+
+#: app/templates/vehicles/form.html:138
+#, fuzzy
+msgid "Photo"
+msgstr "PSČ"
+
+#: app/templates/vehicles/form.html:141
+#, fuzzy
+msgid "Vehicle Image"
+msgstr "Vozidlo"
+
+#: app/templates/vehicles/form.html:155 app/templates/vehicles/view.html:572
+#, fuzzy
+msgid "Specifications"
+msgstr "Oznámení"
+
+#: app/templates/vehicles/form.html:156
+msgid "Add technical details like tire sizes, oil type, wiper sizes, etc."
+msgstr ""
+
+#: app/templates/vehicles/form.html:190
+#, fuzzy
+msgid "Add Specification"
+msgstr "Přidat stanici"
+
+#: app/templates/vehicles/form.html:195
+msgid "Annual Mileage Tracking"
+msgstr ""
+
+#: app/templates/vehicles/form.html:196
+msgid ""
+"Set a yearly distance limit to track progress — useful for leasing "
+"contracts or insurance policies."
+msgstr ""
+
+#: app/templates/vehicles/form.html:201
+msgid "Annual Limit"
+msgstr ""
+
+#: app/templates/vehicles/form.html:206
+#, fuzzy
+msgid "e.g. 25000"
+msgstr "např., 50000"
+
+#: app/templates/vehicles/form.html:210
+#, fuzzy
+msgid "Period Start Date"
+msgstr "Datum zahájení"
+
+#: app/templates/vehicles/form.html:214
+msgid "e.g. the date your lease or insurance starts"
+msgstr ""
+
+#: app/templates/vehicles/form.html:216
+msgid "Tracking resets on this date each year."
+msgstr ""
+
+#: app/templates/vehicles/form.html:225
+#, fuzzy
+msgid "General Notes"
+msgstr "Volitelné poznámky"
+
+#: app/templates/vehicles/form.html:227
+msgid "Any additional notes about this vehicle..."
+msgstr ""
+
+#: app/templates/vehicles/form.html:234
+#, fuzzy
+msgid "Status"
+msgstr "Daňový stav"
+
+#: app/templates/vehicles/form.html:239
+msgid "Active (show in lists and calculations)"
+msgstr ""
+
+#: app/templates/vehicles/form.html:245
+msgid "Shared — all users on this instance can view and log against this vehicle"
+msgstr ""
+
+#: app/templates/vehicles/form.html:261
+msgid ""
+"Link this vehicle to Tessie for automatic odometer and battery tracking. "
+"When enabled, manual odometer entry will be disabled."
+msgstr ""
+
+#: app/templates/vehicles/form.html:265
+#, fuzzy
+msgid "Tessie VIN"
+msgstr "Tessie"
+
+#: app/templates/vehicles/form.html:269
+msgid "Enter Tesla VIN or select from list"
+msgstr ""
+
+#: app/templates/vehicles/form.html:277
+#, fuzzy
+msgid "Lookup"
+msgstr "Odhlásit se"
+
+#: app/templates/vehicles/form.html:288
+msgid "Enable Tessie tracking (disables manual odometer entry)"
+msgstr ""
+
+#: app/templates/vehicles/form.html:298
+#, fuzzy
+msgid "Tessie tracking is active for this vehicle"
+msgstr "Pro toto vozidlo zatím nejsou k dispozici žádné údaje o Tessie."
+
+#: app/templates/vehicles/index.html:7
+#, fuzzy
+msgid "Archived Vehicles"
+msgstr "Všechna vozidla"
+
+#: app/templates/vehicles/index.html:8
+msgid "Manage your cars, vans, motorbikes, and scooters"
+msgstr ""
+
+#: app/templates/vehicles/index.html:18
+#, fuzzy
+msgid "Active Vehicles"
+msgstr "Všechna vozidla"
+
+#: app/templates/vehicles/index.html:23
+#, fuzzy
+msgid "Archived"
+msgstr "Aktivovat"
+
+#: app/templates/vehicles/index.html:84
+#, fuzzy
+msgid "Inactive"
+msgstr "Aktivovat"
+
+#: app/templates/vehicles/index.html:87
+#, fuzzy
+msgid "Shared"
+msgstr "Přehled"
+
+#: app/templates/vehicles/index.html:105
+#, fuzzy
+msgid "No vehicles"
+msgstr "Vozidla"
+
+#: app/templates/vehicles/index.html:106
+msgid "Get started by adding your first vehicle."
+msgstr ""
+
+#: app/templates/vehicles/part_form.html:2
+#: app/templates/vehicles/part_form.html:8
+#, fuzzy
+msgid "Edit Part"
+msgstr "Upravit cestu"
+
+#: app/templates/vehicles/part_form.html:2
+#: app/templates/vehicles/part_form.html:8
+#: app/templates/vehicles/part_form.html:102
+#: app/templates/vehicles/parts.html:19 app/templates/vehicles/view.html:715
+#, fuzzy
+msgid "Add Part"
+msgstr "Díly"
+
+#: app/templates/vehicles/part_form.html:7
+#, fuzzy
+msgid "Back to parts"
+msgstr "Zpět k výletům"
+
+#: app/templates/vehicles/part_form.html:15
+#, fuzzy
+msgid "Part Details"
+msgstr "Podrobnosti o účtu"
+
+#: app/templates/vehicles/part_form.html:19
+#, fuzzy
+msgid "Part Type"
+msgstr "Typ nabíječky"
+
+#: app/templates/vehicles/part_form.html:37
+#, fuzzy
+msgid "Specification"
+msgstr "Oznámení"
+
+#: app/templates/vehicles/part_form.html:42
+msgid "Oil viscosity, filter model, tire size, etc."
+msgstr ""
+
+#: app/templates/vehicles/part_form.html:46
+msgid "Quantity"
+msgstr ""
+
+#: app/templates/vehicles/part_form.html:54
+#, fuzzy
+msgid "Unit"
+msgstr "Množství"
+
+#: app/templates/vehicles/part_form.html:57
+#, fuzzy
+msgid "Select unit..."
+msgstr "Vyberte typ..."
+
+#: app/templates/vehicles/part_form.html:58
+msgid "Liters (L)"
+msgstr ""
+
+#: app/templates/vehicles/part_form.html:59
+msgid "Milliliters (ml)"
+msgstr ""
+
+#: app/templates/vehicles/part_form.html:60
+msgid "Gallons (gal)"
+msgstr ""
+
+#: app/templates/vehicles/part_form.html:61
+msgid "Quarts (qt)"
+msgstr ""
+
+#: app/templates/vehicles/part_form.html:62
+#, fuzzy
+msgid "Units"
+msgstr "Poznámky"
+
+#: app/templates/vehicles/part_form.html:63
+#, fuzzy
+msgid "Pieces"
+msgstr "Přístup k API"
+
+#: app/templates/vehicles/part_form.html:64
+#, fuzzy
+msgid "Set"
+msgstr "Použít TLS"
+
+#: app/templates/vehicles/part_form.html:65
+#, fuzzy
+msgid "Pair"
+msgstr "Díly"
+
+#: app/templates/vehicles/part_form.html:70
+msgid "Part Number"
+msgstr ""
+
+#: app/templates/vehicles/part_form.html:78
+msgid "Supplier URL"
+msgstr ""
+
+#: app/templates/vehicles/part_form.html:83
+msgid "Link to purchase this part"
+msgstr ""
+
+#: app/templates/vehicles/parts.html:2 app/templates/vehicles/parts.html:11
+#: app/templates/vehicles/view.html:663
+msgid "Parts & Consumables"
+msgstr ""
+
+#: app/templates/vehicles/parts.html:47
+msgid "Qty:"
+msgstr ""
+
+#: app/templates/vehicles/parts.html:94
+#, fuzzy
+msgid "No parts added"
+msgstr "Přidaná energie"
+
+#: app/templates/vehicles/parts.html:95
+msgid "Track the parts and consumables needed for servicing this vehicle."
+msgstr ""
+
+#: app/templates/vehicles/parts.html:102
+#, fuzzy
+msgid "Add First Part"
+msgstr "Přidat stanici"
+
+#: app/templates/vehicles/share.html:2 app/templates/vehicles/share.html:20
+#: app/templates/vehicles/view.html:44
+#, fuzzy
+msgid "Share"
+msgstr "Uložit"
+
+#: app/templates/vehicles/share.html:8
+#, fuzzy
+msgid "Share Vehicle"
+msgstr "Všechna vozidla"
+
+#: app/templates/vehicles/share.html:9
+msgid "Allow other users to view and add logs to this vehicle"
+msgstr ""
+
+#: app/templates/vehicles/share.html:13
+#, fuzzy
+msgid "Add User"
+msgstr "Vytvořit uživatele"
+
+#: app/templates/vehicles/share.html:16
+#, fuzzy
+msgid "Enter username"
+msgstr "Uživatelské jméno SMTP"
+
+#: app/templates/vehicles/share.html:27
+msgid "Shared With"
+msgstr ""
+
+#: app/templates/vehicles/share.html:39
+#, fuzzy
+msgid "Remove"
+msgstr "Odebrat logo"
+
+#: app/templates/vehicles/share.html:45
+msgid "This vehicle is not shared with anyone yet."
+msgstr ""
+
+#: app/templates/vehicles/view.html:32
+#, fuzzy
+msgid "Download PDF Report"
+msgstr "Stáhnout ZIP"
+
+#: app/templates/vehicles/view.html:56 app/templates/vehicles/view.html:60
+#, fuzzy
+msgid "Not set"
+msgstr "Poznámky"
+
+#: app/templates/vehicles/view.html:63
+#, fuzzy
+msgid "Last Odometer"
+msgstr "Poslední stav tachometru"
+
+#: app/templates/vehicles/view.html:111
+#, fuzzy
+msgid "Avg. Consumption"
+msgstr "Spotřeba paliva"
+
+#: app/templates/vehicles/view.html:118
+msgid "A missed fill-up in the range means we can’t calculate this honestly."
+msgstr ""
+
+#: app/templates/vehicles/view.html:120
+msgid "Not enough distance or fuel data yet to calculate this."
+msgstr ""
+
+#: app/templates/vehicles/view.html:122
+msgid "Needs at least two full-tank fill-ups."
+msgstr ""
+
+#: app/templates/vehicles/view.html:131
+#, fuzzy
+msgid "Avg. Charging"
+msgstr "Nabíjení elektromobilů"
+
+#: app/templates/vehicles/view.html:160
+msgid "Add Charging"
+msgstr "Přidat nabíjení"
+
+#: app/templates/vehicles/view.html:189
+msgid "Parts"
+msgstr "Díly"
+
+#: app/templates/vehicles/view.html:196
+msgid "Timeline"
+msgstr "Časová osa"
+
+#: app/templates/vehicles/view.html:208
+msgid "DVLA Status"
+msgstr "Stav DVLA"
+
+#: app/templates/vehicles/view.html:215 app/templates/vehicles/view.html:324
+msgid "Refresh"
+msgstr "Obnovit"
+
+#: app/templates/vehicles/view.html:222
+msgid "MOT Status"
+msgstr "Stav technické prohlídky"
+
+#: app/templates/vehicles/view.html:240
+msgid "MOT Expiry"
+msgstr "Vypršení platnosti technické kontroly"
+
+#: app/templates/vehicles/view.html:250
+msgid "Tax Status"
+msgstr "Daňový stav"
+
+#: app/templates/vehicles/view.html:268
+msgid "Tax Due"
+msgstr "Splatná daň"
+
+#: app/templates/vehicles/view.html:279 app/templates/vehicles/view.html:381
+msgid "Last updated"
+msgstr "Naposledy aktualizováno"
+
+#: app/templates/vehicles/view.html:283
+msgid "No DVLA data available for this vehicle."
+msgstr "Pro toto vozidlo nejsou k dispozici žádné údaje DVLA."
+
+#: app/templates/vehicles/view.html:289
+msgid "Fetch from DVLA"
+msgstr "Načíst z DVLA"
+
+#: app/templates/vehicles/view.html:306
+msgid "Tessie Status"
+msgstr "Stav Tessie"
+
+#: app/templates/vehicles/view.html:308
+msgid "Live"
+msgstr "Živě"
+
+#: app/templates/vehicles/view.html:317
+msgid "Import Charges"
+msgstr "Importovat nabíjení"
+
+#: app/templates/vehicles/view.html:346
+msgid "Battery Level"
+msgstr "Úroveň baterie"
+
+#: app/templates/vehicles/view.html:362
+msgid "Est. Range"
+msgstr "Odhadovaný dojezd"
+
+#: app/templates/vehicles/view.html:385
 msgid "No Tessie data available for this vehicle yet."
 msgstr "Pro toto vozidlo zatím nejsou k dispozici žádné údaje o Tessie."
 
-#: app/templates/vehicles/view.html:343
+#: app/templates/vehicles/view.html:391
 msgid "Fetch from Tessie"
 msgstr "Načíst z Tessie"
+
+#: app/templates/vehicles/view.html:406
+msgid ""
+"This vehicle is archived. It won't appear in regular lists or "
+"calculations."
+msgstr ""
+
+#: app/templates/vehicles/view.html:420
+msgid "Annual Mileage"
+msgstr ""
+
+#: app/templates/vehicles/view.html:425
+msgid "Over limit"
+msgstr ""
+
+#: app/templates/vehicles/view.html:429
+msgid "Approaching limit"
+msgstr ""
+
+#: app/templates/vehicles/view.html:433
+msgid "On pace"
+msgstr ""
+
+#: app/templates/vehicles/view.html:437
+msgid "Over pace"
+msgstr ""
+
+#: app/templates/vehicles/view.html:453 app/templates/vehicles/view.html:460
+#, fuzzy
+msgid "Time elapsed"
+msgstr "Časová osa"
+
+#: app/templates/vehicles/view.html:460
+msgid "of year elapsed"
+msgstr ""
+
+#: app/templates/vehicles/view.html:469
+#, fuzzy
+msgid "remaining"
+msgstr "Vzhled a logo"
+
+#: app/templates/vehicles/view.html:473
+msgid "days remaining"
+msgstr ""
+
+#: app/templates/vehicles/view.html:477
+msgid "projected year-end"
+msgstr ""
+
+#: app/templates/vehicles/view.html:481
+#, fuzzy
+msgid "expected at this point"
+msgstr "Smazat tento dokument?"
+
+#: app/templates/vehicles/view.html:496
+#, fuzzy
+msgid "Upcoming Reminders"
+msgstr "Nadcházející připomenutí"
+
+#: app/templates/vehicles/view.html:508
+#, fuzzy
+msgid "Mark as completed"
+msgstr "Označit jako dokončené"
+
+#: app/templates/vehicles/view.html:535
+#, python-format
+msgid "%(days)s days overdue"
+msgstr ""
+
+#: app/templates/vehicles/view.html:537
+#, fuzzy
+msgid "Due today"
+msgstr "Splatné nyní"
+
+#: app/templates/vehicles/view.html:539
+#, fuzzy
+msgid "Due tomorrow"
+msgstr "Splatné nyní"
+
+#: app/templates/vehicles/view.html:541
+#, python-format
+msgid "In %(days)s days"
+msgstr ""
+
+#: app/templates/vehicles/view.html:606
+#, fuzzy
+msgid "Upcoming Maintenance"
+msgstr "Zpět k údržbě"
+
+#: app/templates/vehicles/view.html:622
+#, fuzzy
+msgid "Due soon"
+msgstr "Brzy splatné"
+
+#: app/templates/vehicles/view.html:656
+msgid "Toggle section"
+msgstr ""
+
+#: app/templates/vehicles/view.html:709
+msgid "No parts added yet."
+msgstr ""
+
+#: app/templates/vehicles/view.html:743
+#, fuzzy
+msgid "Fuel Consumption Trend"
+msgstr "Spotřeba paliva"
+
+#: app/templates/vehicles/view.html:767
+#, fuzzy
+msgid "(Full)"
+msgstr "Palivo"
+
+#: app/templates/vehicles/view.html:859
+#, fuzzy
+msgid "Archive this vehicle"
+msgstr "Neplatné vozidlo"
+
+#: app/templates/vehicles/view.html:860
+msgid ""
+"Archived vehicles won't appear in regular lists or calculations. You can "
+"restore them later."
+msgstr ""
+
+#: app/templates/vehicles/view.html:862
+#, fuzzy
+msgid "Restore this vehicle"
+msgstr "Vaše vozidla"
+
+#: app/templates/vehicles/view.html:863
+msgid ""
+"Restore this vehicle to make it active again and include it in "
+"calculations."
+msgstr ""
+
+#: app/templates/vehicles/view.html:871
+#, fuzzy
+msgid "Archive Vehicle"
+msgstr "Neplatné vozidlo"
+
+#: app/templates/vehicles/view.html:879
+#, fuzzy
+msgid "Restore Vehicle"
+msgstr "Vaše vozidla"
+
+#: app/templates/vehicles/view.html:889
+#, fuzzy
+msgid "Delete this vehicle"
+msgstr "Smazat tento dokument?"
+
+#: app/templates/vehicles/view.html:890
+msgid ""
+"Once you delete a vehicle, there is no going back. This will also delete "
+"all associated fuel logs and expenses."
+msgstr ""
+
+#: app/templates/vehicles/view.html:893
+msgid ""
+"Are you sure you want to delete this vehicle? This action cannot be "
+"undone."
+msgstr ""
+
+#: app/templates/vehicles/view.html:897
+#, fuzzy
+msgid "Delete Vehicle"
+msgstr "Všechna vozidla"
+
