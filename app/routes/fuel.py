@@ -5,6 +5,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request,
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from app import db
+from app.utils import parse_decimal
 from app.models import Vehicle, FuelLog, Attachment, FuelStation, FuelPriceHistory, FUEL_TYPES
 from app.security import validate_file_upload, secure_filename_with_uuid, validate_positive_number
 from flask_babel import gettext as _
@@ -192,11 +193,11 @@ def edit(log_id):
                 log.vehicle_id = new_vehicle_id
         date_str = request.form.get('date')
         log.date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else log.date
-        log.odometer = float(request.form.get('odometer'))
-        log.volume = float(request.form.get('volume')) if request.form.get('volume') else None
-        log.price_per_unit = float(request.form.get('price_per_unit')) if request.form.get('price_per_unit') else None
-        log.discount_per_unit = float(request.form.get('discount_per_unit')) if request.form.get('discount_per_unit') else None
-        log.total_cost = float(request.form.get('total_cost')) if request.form.get('total_cost') else None
+        log.odometer = parse_decimal(request.form.get('odometer'))
+        log.volume = parse_decimal(request.form.get('volume')) if request.form.get('volume') else None
+        log.price_per_unit = parse_decimal(request.form.get('price_per_unit')) if request.form.get('price_per_unit') else None
+        log.discount_per_unit = parse_decimal(request.form.get('discount_per_unit')) if request.form.get('discount_per_unit') else None
+        log.total_cost = parse_decimal(request.form.get('total_cost')) if request.form.get('total_cost') else None
         log.fuel_type = request.form.get('fuel_type') or None
         log.is_full_tank = request.form.get('is_full_tank') == 'on'
         log.is_missed = request.form.get('is_missed') == 'on'
@@ -361,9 +362,9 @@ def quick():
             flash(_('Access denied'), 'error')
             return redirect(url_for('fuel.quick'))
 
-        volume = float(request.form.get('volume')) if request.form.get('volume') else None
-        total_cost = float(request.form.get('total_cost')) if request.form.get('total_cost') else None
-        price_per_unit = float(request.form.get('price_per_unit')) if request.form.get('price_per_unit') else None
+        volume = parse_decimal(request.form.get('volume')) if request.form.get('volume') else None
+        total_cost = parse_decimal(request.form.get('total_cost')) if request.form.get('total_cost') else None
+        price_per_unit = parse_decimal(request.form.get('price_per_unit')) if request.form.get('price_per_unit') else None
 
         # Derive missing value if two of the three are provided
         if volume and price_per_unit and not total_cost:
@@ -375,7 +376,7 @@ def quick():
             vehicle_id=vehicle_id,
             user_id=current_user.id,
             date=datetime.now().date(),
-            odometer=float(request.form.get('odometer')),
+            odometer=parse_decimal(request.form.get('odometer')),
             volume=volume,
             total_cost=total_cost,
             price_per_unit=price_per_unit,

@@ -7,6 +7,7 @@ from flask_login import login_required, current_user
 from flask_babel import gettext as _
 from werkzeug.utils import secure_filename
 from app import db
+from app.utils import parse_decimal
 from app.models import Vehicle, VehicleSpec, VehiclePart, FuelLog, Expense, User, Reminder, MaintenanceSchedule, VEHICLE_TYPES, FUEL_TYPES, VEHICLE_SPEC_TYPES, REMINDER_TYPES, PART_TYPES, TRACKING_UNITS, ODOMETER_UNITS, AppSettings
 from app.services.tessie import TessieService
 
@@ -55,9 +56,9 @@ def new():
             vin=request.form.get('vin'),
             fuel_type=request.form.get('fuel_type'),
             secondary_fuel_type=request.form.get('secondary_fuel_type') or None,
-            tank_capacity=float(request.form.get('tank_capacity')) if request.form.get('tank_capacity') else None,
+            tank_capacity=parse_decimal(request.form.get('tank_capacity')) if request.form.get('tank_capacity') else None,
             notes=request.form.get('notes'),
-            annual_mileage_limit=float(request.form.get('annual_mileage_limit')) if request.form.get('annual_mileage_limit') else None,
+            annual_mileage_limit=parse_decimal(request.form.get('annual_mileage_limit')) if request.form.get('annual_mileage_limit') else None,
             annual_mileage_start_date=datetime.strptime(request.form.get('annual_mileage_start_date'), '%Y-%m-%d').date() if request.form.get('annual_mileage_start_date') else None,
         )
 
@@ -201,9 +202,9 @@ def edit(vehicle_id):
         vehicle.vin = request.form.get('vin')
         vehicle.fuel_type = request.form.get('fuel_type')
         vehicle.secondary_fuel_type = request.form.get('secondary_fuel_type') or None
-        vehicle.tank_capacity = float(request.form.get('tank_capacity')) if request.form.get('tank_capacity') else None
+        vehicle.tank_capacity = parse_decimal(request.form.get('tank_capacity')) if request.form.get('tank_capacity') else None
         vehicle.notes = request.form.get('notes')
-        vehicle.annual_mileage_limit = float(request.form.get('annual_mileage_limit')) if request.form.get('annual_mileage_limit') else None
+        vehicle.annual_mileage_limit = parse_decimal(request.form.get('annual_mileage_limit')) if request.form.get('annual_mileage_limit') else None
         vehicle.annual_mileage_start_date = datetime.strptime(request.form.get('annual_mileage_start_date'), '%Y-%m-%d').date() if request.form.get('annual_mileage_start_date') else None
 
         vehicle.is_active = request.form.get('is_active') == 'on'
@@ -478,7 +479,7 @@ def new_part(vehicle_id):
             name=request.form.get('name'),
             part_type=request.form.get('part_type'),
             specification=request.form.get('specification') or None,
-            quantity=float(request.form.get('quantity')) if request.form.get('quantity') else None,
+            quantity=parse_decimal(request.form.get('quantity')) if request.form.get('quantity') else None,
             unit=request.form.get('unit') or None,
             part_number=request.form.get('part_number') or None,
             supplier_url=request.form.get('supplier_url') or None,
@@ -518,7 +519,7 @@ def edit_part(vehicle_id, part_id):
         part.name = request.form.get('name')
         part.part_type = request.form.get('part_type')
         part.specification = request.form.get('specification') or None
-        part.quantity = float(request.form.get('quantity')) if request.form.get('quantity') else None
+        part.quantity = parse_decimal(request.form.get('quantity')) if request.form.get('quantity') else None
         part.unit = request.form.get('unit') or None
         part.part_number = request.form.get('part_number') or None
         part.supplier_url = request.form.get('supplier_url') or None

@@ -5,6 +5,7 @@ from flask_login import LoginManager, current_user
 from flask_wtf.csrf import CSRFProtect
 from flask_babel import Babel, gettext as _
 from config import Config
+from app.utils import first_day_of_week
 import os
 import secrets
 
@@ -297,8 +298,11 @@ def create_app(config_class=Config):
     @app.context_processor
     def inject_globals():
         branding = AppSettings.get_all_branding()
+        current_locale = str(get_locale() or 'en')
         return {
             'LANGUAGES': LANGUAGES,
+            'CURRENT_LOCALE': current_locale,
+            'FIRST_DAY_OF_WEEK': first_day_of_week(current_locale),
             'APP_NAME': branding.get('app_name', 'May'),
             'APP_TAGLINE': branding.get('app_tagline', 'Vehicle Management'),
             'APP_LOGO': branding.get('logo_filename'),
