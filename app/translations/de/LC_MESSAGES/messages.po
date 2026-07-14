@@ -166,7 +166,7 @@ msgstr "Kennzeichen"
 
 #: app/models.py:938
 msgid "Pickup / Ute"
-msgstr ""
+msgstr "Pickup / UTE"
 
 #: app/models.py:939
 msgid "Tractor"
@@ -266,21 +266,21 @@ msgstr "Keine Wiederholung"
 
 #: app/models.py:989
 msgid "Day(s)"
-msgstr ""
+msgstr Tag(e)""
 
 #: app/models.py:990
 msgid "Week(s)"
-msgstr ""
+msgstr "Woche(n)"
 
 #: app/models.py:991
 #, fuzzy
 msgid "Month(s)"
-msgstr "Monatlich"
+msgstr "Monat(e)"
 
 #: app/models.py:992
 #, fuzzy
 msgid "Year(s)"
-msgstr "Jahr"
+msgstr "Jahr(e)"
 
 #: app/models.py:997
 msgid "Business"
@@ -488,7 +488,7 @@ msgstr "Zugriff verweigert"
 
 #: app/routes/allowance.py:55 app/routes/allowance.py:90
 msgid "Invalid data submitted. Please check the date and amount fields."
-msgstr ""
+msgstr "Es wurden ungültige Daten übermittelt. Bitte überprüfen Sie die Felder für Datum und Betrag."
 
 #: app/routes/allowance.py:61
 #, fuzzy
@@ -797,7 +797,7 @@ msgstr "Ausgabe erfolgreich gelöscht"
 
 #: app/routes/expenses.py:209 app/routes/fuel.py:335
 msgid "Attachment deleted"
-msgstr ""
+msgstr "Anlage gelöscht"
 
 #: app/routes/fuel.py:153
 msgid "Fuel log added successfully"
@@ -836,11 +836,11 @@ msgstr "Wartungsplan \"%(name)s\" gelöscht"
 
 #: app/routes/notes.py:54 app/routes/notes.py:93
 msgid "Invalid data submitted. Please check the date and odometer fields."
-msgstr ""
+msgstr "Es wurden ungültige Daten übermittelt. Bitte überprüfen Sie die Felder für Datum und Kilometerstand."
 
 #: app/routes/notes.py:59 app/routes/notes.py:98
 msgid "Please enter some note text"
-msgstr ""
+msgstr "Bitte einen Text eingeben"
 
 #: app/routes/notes.py:65
 #, fuzzy
@@ -933,7 +933,7 @@ msgstr "Tankstelle \"%(name)s\" gelöscht"
 
 #: app/routes/stations.py:166
 msgid "You can only delete your own price entries"
-msgstr ""
+msgstr "Sie können nur Ihre eigenen Preiseinträge löschen"
 
 #: app/routes/stations.py:173
 #, fuzzy
@@ -954,7 +954,7 @@ msgstr "Fahrt erfolgreich gelöscht"
 
 #: app/routes/trips.py:224
 msgid "Template saved"
-msgstr ""
+msgstr "Template gespeichert"
 
 #: app/routes/trips.py:264
 #, fuzzy
@@ -1101,7 +1101,7 @@ msgstr "Elektro-Laden"
 #: app/templates/base.html:323 app/templates/base.html:401
 #: app/templates/dashboard.html:140 app/templates/vehicles/view.html:94
 msgid "Mileage Allowance"
-msgstr ""
+msgstr "Kilometergeld"
 
 #: app/templates/auth/settings.html:415 app/templates/auth/settings.html:509
 #: app/templates/base.html:326 app/templates/base.html:404
@@ -1137,7 +1137,7 @@ msgstr "Abmelden"
 
 #: app/templates/dashboard.html:12
 msgid "Overview of your vehicles and expenses"
-msgstr ""
+msgstr "Übersicht über Ihre Fahrzeuge und Ausgaben"
 
 #: app/templates/dashboard.html:45 app/templates/vehicles/view.html:75
 msgid "Total Fuel Cost"
@@ -1232,7 +1232,7 @@ msgstr "Entfernung"
 #: app/templates/allowance/form.html:77 app/templates/allowance/index.html:15
 #: app/templates/allowance/index.html:74
 msgid "Add Allowance"
-msgstr ""
+msgstr "Kilometergeld hinzufügen"
 
 #: app/templates/allowance/form.html:7
 #, fuzzy
@@ -1280,7 +1280,7 @@ msgstr "Kilometerstand-Einheit"
 
 #: app/templates/allowance/form.html:57
 msgid "Optional. If set with distance, the amount is calculated for you."
-msgstr ""
+msgstr "Optional. Wenn eine Entfernung angegeben wird, wird der Betrag für Sie berechnet."
 
 #: app/templates/allowance/form.html:61 app/templates/allowance/index.html:27
 #: app/templates/documents/form.html:91 app/templates/documents/view.html:96
@@ -1322,7 +1322,7 @@ msgstr "Änderungen speichern"
 
 #: app/templates/allowance/index.html:8
 msgid "Record allowance income for business use; it offsets your running costs"
-msgstr ""
+msgstr "Erfassen Sie die Pauschale für die geschäftliche Nutzung; sie gleicht Ihre laufenden Kosten aus."
 
 #: app/templates/allowance/index.html:30 app/templates/expenses/index.html:32
 #: app/templates/fuel/index.html:31 app/templates/fuel/index.html:116
@@ -1354,11 +1354,11 @@ msgstr "Löschen"
 
 #: app/templates/allowance/index.html:66
 msgid "No allowance entries"
-msgstr ""
+msgstr "Keine Pauschalen eingetragen"
 
 #: app/templates/allowance/index.html:67
 msgid "Track mileage allowance you receive for business journeys."
-msgstr ""
+msgstr "Erfassen Sie die Kilometerpauschale, die Sie für Geschäftsreisen erhalten."
 
 #: app/templates/auth/create_user.html:8 app/templates/auth/create_user.html:62
 #: app/templates/auth/users.html:9
@@ -1434,35 +1434,35 @@ msgstr "Passwort zurücksetzen"
 
 #: app/templates/auth/forgot_password.html:15
 msgid "Enter your email address and we'll send you a link to reset your password."
-msgstr ""
+msgstr "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts."
 
 #: app/templates/auth/forgot_password.html:27
 msgid "Send Reset Link"
-msgstr ""
+msgstr "Sende einen Rücksetzungslink"
 
 #: app/templates/auth/forgot_password.html:32
 #: app/templates/auth/reset_password.html:36
 #, fuzzy
 msgid "Back to login"
-msgstr "Zurück zu"
+msgstr "Zurück zum Login"
 
 #: app/templates/auth/login.html:33
 #, fuzzy
 msgid "Remember me"
-msgstr "Mitglied seit"
+msgstr "Daten merken"
 
 #: app/templates/auth/login.html:36
 #, fuzzy
 msgid "Forgot password?"
-msgstr "Passwort zurücksetzen"
+msgstr "Passwort vergessen?"
 
 #: app/templates/auth/login.html:42 app/templates/auth/register.html:49
 msgid "Sign in"
-msgstr ""
+msgstr "Anmelden"
 
 #: app/templates/auth/login.html:48
 msgid "Don't have an account?"
-msgstr ""
+msgstr "Noch kein Konto?"
 
 #: app/templates/auth/login.html:49
 #, fuzzy
@@ -1472,22 +1472,22 @@ msgstr "Registrierung"
 #: app/templates/auth/register.html:12
 #, fuzzy
 msgid "Create your account"
-msgstr "Verbinden Sie Ihr Tesla-Konto"
+msgstr "Legen Sie Ihr Konto an"
 
 #: app/templates/auth/register.html:43
 #, fuzzy
 msgid "Create Account"
-msgstr "Konto löschen"
+msgstr "Konto anlegen"
 
 #: app/templates/auth/register.html:48
 #, fuzzy
 msgid "Already have an account?"
-msgstr "E-Mail-Adresse wird bereits von einem anderen Konto verwendet"
+msgstr "Haben Sie schon ein Konto?"
 
 #: app/templates/auth/reset_password.html:12
 #, fuzzy
 msgid "Set a new password"
-msgstr "Neues Passwort"
+msgstr "Neues Passwort setzen"
 
 #: app/templates/auth/settings.html:7
 msgid "Manage your preferences and account"
@@ -1675,7 +1675,7 @@ msgstr "Konto und alle Daten dauerhaft löschen"
 msgid "Customize which menu items to show and your start page"
 msgstr ""
 "Passen Sie an, welche Menüpunkte angezeigt werden und welche Startseite "
-"Sie sehen"
+"Sie sehen."
 
 #: app/templates/auth/settings.html:398
 msgid "Start Page"
@@ -1700,7 +1700,7 @@ msgstr "Fahrzeug löschen"
 msgid ""
 "Pre-selected vehicle when adding fuel logs, expenses, trips, and charging"
 " sessions"
-msgstr ""
+msgstr "Vorausgewähltes Fahrzeug beim Hinzufügen von Tankvorgängen, Ausgaben, Fahrten und Ladevorgängen"
 
 #: app/templates/auth/settings.html:425
 #, fuzzy
@@ -2654,7 +2654,7 @@ msgstr "Datei"
 
 #: app/templates/documents/form.html:43
 msgid "PDF, images, Word, Excel, text files, or ePub (max 300MB)"
-msgstr ""
+msgstr "PDF, images, Word, Excel, text files, or ePub (max. 300 MB)"
 
 #: app/templates/documents/form.html:48 app/templates/notes/form.html:44
 #: app/templates/reminders/form.html:44
@@ -2769,16 +2769,16 @@ msgstr "z.B. Ölwechsel"
 
 #: app/templates/expenses/form.html:69
 msgid "Vendor / Service Provider"
-msgstr ""
+msgstr "Anbieter / Dienstleister"
 
 #: app/templates/expenses/form.html:72
 #, fuzzy
 msgid "e.g., Local Garage"
-msgstr "z.B. Ölwechsel"
+msgstr "z.B. lokale Werkstatt"
 
 #: app/templates/expenses/form.html:83 app/templates/fuel/form.html:149
 msgid "Receipt / Attachment"
-msgstr ""
+msgstr "Rechnung / Dokument"
 
 #: app/templates/expenses/form.html:90 app/templates/fuel/form.html:156
 #, fuzzy
@@ -2787,7 +2787,7 @@ msgstr "Dieses Dokument löschen?"
 
 #: app/templates/expenses/index.html:8
 msgid "Track maintenance, repairs, insurance, and other costs"
-msgstr ""
+msgstr "Instandhaltung, Reparaturen, Versicherung und sonstige Kosten überwachen"
 
 #: app/templates/expenses/index.html:62 app/templates/vehicles/view.html:828
 msgid "Delete this expense?"
@@ -2795,7 +2795,7 @@ msgstr "Diese Ausgabe löschen?"
 
 #: app/templates/expenses/index.html:75
 msgid "Vendor / Provider:"
-msgstr ""
+msgstr "Anbieter / Dienstleister"
 
 #: app/templates/expenses/index.html:81
 #, fuzzy
@@ -2839,7 +2839,7 @@ msgstr "Von Tessie abrufen"
 
 #: app/templates/fuel/form.html:57
 msgid "Odometer is automatically tracked via Tessie for this vehicle."
-msgstr ""
+msgstr "Der Kilometerstand dieses Fahrzeugs wird automatisch über Tessie erfasst."
 
 #: app/templates/fuel/form.html:70 app/templates/fuel/quick.html:65
 #: app/templates/stations/prices.html:83
@@ -2853,7 +2853,7 @@ msgstr "Kosten pro"
 
 #: app/templates/fuel/form.html:84
 msgid "Optional loyalty discount, subtracted from the price per unit."
-msgstr ""
+msgstr "Optionaler Treuerabatt, der vom Preis pro Einheit abgezogen wird."
 
 #: app/templates/fuel/form.html:95 app/templates/fuel/quick.html:93
 msgid "Station"
@@ -2886,11 +2886,11 @@ msgstr "Vollgetankt"
 
 #: app/templates/fuel/form.html:138
 msgid "Missed fill-up (incomplete data)"
-msgstr ""
+msgstr "Versäumter Tankvorgang (unvollständige Daten)"
 
 #: app/templates/fuel/index.html:8
 msgid "Track your fuel fill-ups and consumption"
-msgstr ""
+msgstr "Überwachen Sie Ihre Tankvorgänge und den Verbrauch"
 
 #: app/templates/fuel/index.html:30
 #, fuzzy
@@ -2918,7 +2918,7 @@ msgstr "Tankprotokoll"
 
 #: app/templates/fuel/index.html:78
 msgid "Start tracking your fuel fill-ups."
-msgstr ""
+msgstr "Beginnen Sie, Ihre Tankvorgänge zu erfassen."
 
 #: app/templates/fuel/index.html:94
 #, fuzzy
@@ -2927,7 +2927,7 @@ msgstr "Preisverlauf"
 
 #: app/templates/fuel/index.html:95
 msgid "Sessions logged for your electric and plug-in hybrid vehicles"
-msgstr ""
+msgstr "Für Ihre Elektro- und Plug-in-Hybridfahrzeuge protokollierte Ladevorgänge"
 
 #: app/templates/fuel/index.html:102
 #, fuzzy
@@ -2936,7 +2936,7 @@ msgstr "Ladevorgang bearbeiten"
 
 #: app/templates/fuel/index.html:113
 msgid "kWh"
-msgstr ""
+msgstr "kWh"
 
 #: app/templates/fuel/quick.html:8
 msgid "Fast fuel logging for mobile"
@@ -3148,7 +3148,7 @@ msgstr "Zurück zu Fahrten"
 
 #: app/templates/notes/form.html:47
 msgid "e.g., DPF regeneration"
-msgstr ""
+msgstr "z.B. DPF-Regeneration"
 
 #: app/templates/notes/form.html:52 app/templates/notes/index.html:28
 #, fuzzy
@@ -3157,13 +3157,14 @@ msgstr "Notizen"
 
 #: app/templates/notes/form.html:54
 msgid "What happened?"
-msgstr ""
+msgstr "Was ist passiert?"
 
 #: app/templates/notes/index.html:8
 msgid ""
 "Record events and observations that don't fit fuel, expenses or "
 "maintenance"
-msgstr ""
+msgstr "Erfassen Sie Ereignisse und Beobachtungen, die nicht unter Kraftstoff, Ausgaben oder "
+"Wartung fallen"
 
 #: app/templates/notes/index.html:54
 #, fuzzy
@@ -3306,7 +3307,7 @@ msgstr "Beschreibung"
 
 #: app/templates/reminders/form.html:76
 msgid "Additional notes about this reminder"
-msgstr ""
+msgstr "Zusätzliche Hinweise zu dieser Erinnerung"
 
 #: app/templates/reminders/form.html:82
 #, fuzzy
@@ -3323,6 +3324,8 @@ msgid ""
 "e.g. \"Every 2 Year(s)\" for an MOT due every two years. When marked "
 "complete, the next occurrence is created automatically."
 msgstr ""
+"z.B. \"Alle 2 Jahre\" für eine alle zwei Jahre fällige TÜV-Untersuchung. Wenn der Vorgang als "
+"abgeschlossen markiert wird, wird der nächste Termin automatisch erstellt.“
 
 #: app/templates/reminders/form.html:105
 #, fuzzy
@@ -3341,7 +3344,7 @@ msgstr "Erinnerungen aktivieren"
 
 #: app/templates/reminders/index.html:8
 msgid "Keep track of important dates for your vehicles"
-msgstr ""
+msgstr "Behalten Sie wichtige Termine für Ihre Fahrzeuge im Blick."
 
 #: app/templates/reminders/index.html:16 app/templates/reminders/index.html:138
 #: app/templates/vehicles/view.html:182
@@ -3365,7 +3368,7 @@ msgstr "Luftfilter"
 
 #: app/templates/reminders/index.html:63 app/templates/vehicles/view.html:620
 msgid "Overdue"
-msgstr ""
+msgstr "Überfällig"
 
 #: app/templates/reminders/index.html:80
 #, fuzzy
@@ -3566,11 +3569,11 @@ msgstr "Fahrt erfassen"
 
 #: app/templates/trips/form.html:14
 msgid "Load template"
-msgstr ""
+msgstr "Template laden"
 
 #: app/templates/trips/form.html:17
 msgid "— choose a template —"
-msgstr ""
+msgstr "- Template wählen -"
 
 #: app/templates/trips/form.html:22
 #, fuzzy
@@ -3617,7 +3620,7 @@ msgstr "Erfassen Sie Ihre Fahrten für Kilometerabrechnung und Steuerabzüge"
 
 #: app/templates/trips/index.html:16
 msgid "Templates"
-msgstr ""
+msgstr "Templates"
 
 #: app/templates/trips/index.html:23
 msgid "Report"
@@ -3707,7 +3710,7 @@ msgstr "Teil bearbeiten"
 #: app/templates/trips/template_form.html:9
 #: app/templates/trips/templates_index.html:16
 msgid "New Template"
-msgstr ""
+msgstr "Neues Template"
 
 #: app/templates/trips/template_form.html:7
 #, fuzzy
@@ -3721,7 +3724,7 @@ msgstr "Anwendungsname"
 
 #: app/templates/trips/template_form.html:22
 msgid "e.g., Office Commute, Client Visit"
-msgstr ""
+msgstr "z.B. Arbeitsweg, Kundenbesuch"
 
 #: app/templates/trips/template_form.html:30
 #: app/templates/trips/templates_index.html:38
@@ -3731,7 +3734,7 @@ msgstr "Keine Fahrzeuge"
 
 #: app/templates/trips/template_form.html:38
 msgid "Pre-selects this vehicle when using the template"
-msgstr ""
+msgstr "Wählt dieses Fahrzeug bei Verwendung der Vorlage vorab aus."
 
 #: app/templates/trips/template_form.html:71
 #, fuzzy
@@ -3751,7 +3754,7 @@ msgstr "Fahrtenbericht"
 
 #: app/templates/trips/templates_index.html:9
 msgid "Save common routes to quickly fill in trip details"
-msgstr ""
+msgstr "Speichern Sie häufige Routen, um Reisedaten schnell auszufüllen."
 
 #: app/templates/trips/templates_index.html:50
 #, fuzzy
@@ -3770,7 +3773,7 @@ msgstr "Noch keine Ausgaben vorhanden."
 
 #: app/templates/trips/templates_index.html:79
 msgid "Save common routes as templates to log trips faster."
-msgstr ""
+msgstr "Speichere häufige Routen als Vorlagen, um Fahrten schneller zu erfassen."
 
 #: app/templates/trips/templates_index.html:86
 #, fuzzy
@@ -3800,7 +3803,7 @@ msgstr "Grundlegende Informationen"
 
 #: app/templates/vehicles/form.html:21
 msgid "e.g., My Daily Driver"
-msgstr ""
+msgstr "z.B: meine tägliche Fahrt"
 
 #: app/templates/vehicles/form.html:36
 msgid "Tracking Unit"
@@ -3808,7 +3811,7 @@ msgstr "Messgerät"
 
 #: app/templates/vehicles/form.html:43
 msgid "Use \"Hours\" for tractors, ATVs, boats, etc."
-msgstr "Verwenden Sie Stunden für zum Beispiel Traktoren, ATVs, Boote, usw."
+msgstr "Verwenden Sie \"Stunden\" für zum Beispiel Traktoren, ATVs, Boote, usw."
 
 #: app/templates/vehicles/form.html:47
 msgid "Odometer Unit"
@@ -3842,6 +3845,8 @@ msgid ""
 "Optional. Use for vehicles with a secondary fluid to track, e.g. AdBlue "
 "alongside Diesel."
 msgstr ""
+"Optional. Für Fahrzeuge mit einer weiteren zu erfassenden Flüssigkeit verwenden, z.B. AdBlue"
+"neben Diesel."
 
 #: app/templates/vehicles/form.html:81
 msgid "Make"
@@ -3921,17 +3926,18 @@ msgstr "Spezifikation hinzufügen"
 
 #: app/templates/vehicles/form.html:195
 msgid "Annual Mileage Tracking"
-msgstr ""
+msgstr "Erfassung der jährlichen Fahrleistung"
 
 #: app/templates/vehicles/form.html:196
 msgid ""
 "Set a yearly distance limit to track progress — useful for leasing "
 "contracts or insurance policies."
-msgstr ""
+msgstr "Legen Sie ein jährliches Kilometerlimit fest, "
+"um den Fortschritt zu verfolgen – nützlich für Leasingverträge oder Versicherungspolicen."
 
 #: app/templates/vehicles/form.html:201
 msgid "Annual Limit"
-msgstr ""
+msgstr "Jährliches Limit"
 
 #: app/templates/vehicles/form.html:206
 #, fuzzy
@@ -3945,19 +3951,19 @@ msgstr "Startdatum"
 
 #: app/templates/vehicles/form.html:214
 msgid "e.g. the date your lease or insurance starts"
-msgstr ""
+msgstr "z.B. das Datum, an dem Ihr Miet- oder Versicherungsvertrag beginnt"
 
 #: app/templates/vehicles/form.html:216
 msgid "Tracking resets on this date each year."
-msgstr ""
+msgstr "Am Ende des Jahres wird die Aufzeichnung zurückgesetzt"
 
 #: app/templates/vehicles/form.html:225
 msgid "General Notes"
 msgstr "Allgemeine Notizen"
-
+W
 #: app/templates/vehicles/form.html:227
 msgid "Any additional notes about this vehicle..."
-msgstr ""
+msgstr "Zusätzliche Bemeerkungen zu diesem Fahrzeug..."
 
 #: app/templates/vehicles/form.html:234
 msgid "Status"
@@ -3989,7 +3995,7 @@ msgstr "Tessie FIN"
 
 #: app/templates/vehicles/form.html:269
 msgid "Enter Tesla VIN or select from list"
-msgstr ""
+msgstr "Tesla-VIN eingeben oder von der Liste wählen"
 
 #: app/templates/vehicles/form.html:277
 msgid "Lookup"
@@ -4201,15 +4207,16 @@ msgstr "Durchschnittsverbrauch"
 
 #: app/templates/vehicles/view.html:118
 msgid "A missed fill-up in the range means we can’t calculate this honestly."
-msgstr ""
+msgstr "Ein innerhalb des betrachteten Zeitraums versäumtes Tanken bedeutet, "
+"dass wir dies nicht korrekt berechnen können."
 
 #: app/templates/vehicles/view.html:120
 msgid "Not enough distance or fuel data yet to calculate this."
-msgstr ""
+msgstr "Es liegen noch nicht genügend Daten zu Entfernung oder Kraftstoff vor, um dies zu berechnen."
 
 #: app/templates/vehicles/view.html:122
 msgid "Needs at least two full-tank fill-ups."
-msgstr ""
+msgstr "Erfordert mindestens zwei komplette Tankfüllungen."
 
 #: app/templates/vehicles/view.html:131
 #, fuzzy
@@ -4302,11 +4309,11 @@ msgstr ""
 
 #: app/templates/vehicles/view.html:420
 msgid "Annual Mileage"
-msgstr ""
+msgstr "Jährliche Fahrleistung"
 
 #: app/templates/vehicles/view.html:425
 msgid "Over limit"
-msgstr ""
+msgstr "Über dem Limit"
 
 #: app/templates/vehicles/view.html:429
 #, fuzzy
@@ -4319,29 +4326,29 @@ msgstr ""
 
 #: app/templates/vehicles/view.html:437
 msgid "Over pace"
-msgstr ""
+msgstr "Im Zeitplan"
 
 #: app/templates/vehicles/view.html:453 app/templates/vehicles/view.html:460
 #, fuzzy
 msgid "Time elapsed"
-msgstr "Verlauf"
+msgstr "Verstrichene Zeit"
 
 #: app/templates/vehicles/view.html:460
 msgid "of year elapsed"
-msgstr ""
+msgstr "des Jahres vergangen"
 
 #: app/templates/vehicles/view.html:469
 #, fuzzy
 msgid "remaining"
-msgstr "Reinigung"
+msgstr "bleiben übrig"
 
 #: app/templates/vehicles/view.html:473
 msgid "days remaining"
-msgstr ""
+msgstr "Tage bleiben übrig"
 
 #: app/templates/vehicles/view.html:477
 msgid "projected year-end"
-msgstr ""
+msgstr "prognostizierter Jahresendstand"
 
 #: app/templates/vehicles/view.html:481
 #, fuzzy
@@ -4386,7 +4393,7 @@ msgstr "Bald fällig"
 
 #: app/templates/vehicles/view.html:656
 msgid "Toggle section"
-msgstr ""
+msgstr "Abschnitt umschalten“
 
 #: app/templates/vehicles/view.html:709
 msgid "No parts added yet."
