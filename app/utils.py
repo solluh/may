@@ -31,7 +31,10 @@ def parse_decimal(value, default=None):
         return float(value)
 
     s = str(value).strip()
-    if s == '':
+    if s == '' or s == 'None':
+        # A literal "None" is a server-rendered artefact of a NULL field (a
+        # user wouldn't type it), so treat it as absent rather than invalid
+        # (issues #217, #241).
         return default
 
     # Preserve a leading sign, strip spaces used as grouping separators.

@@ -270,6 +270,12 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
+    # Render None as an empty string in all templates. Nullable model fields
+    # (tank capacity, odometer, notes, ...) otherwise stringify to the literal
+    # text "None" in value="" attributes, which then blocks form validation on
+    # save (issues #217, #241).
+    app.jinja_env.finalize = lambda value: '' if value is None else value
+
     # Babel configuration
     app.config['BABEL_DEFAULT_LOCALE'] = 'en'
     app.config['BABEL_SUPPORTED_LOCALES'] = list(LANGUAGES.keys())
