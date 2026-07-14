@@ -17,6 +17,14 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+def parse_optional_float(value):
+    """Parse an optional numeric form field, treating blank or literal
+    'None' strings as an absent value rather than a parse error."""
+    if value is None or value.strip() == '' or value.strip() == 'None':
+        return None
+    return float(value)
+
+
 @bp.route('/')
 @login_required
 def index():
@@ -59,7 +67,7 @@ def new():
             category=request.form.get('category'),
             description=request.form.get('description'),
             cost=float(request.form.get('cost')),
-            odometer=float(request.form.get('odometer')) if request.form.get('odometer') else None,
+            odometer=parse_optional_float(request.form.get('odometer')),
             vendor=request.form.get('vendor'),
             notes=request.form.get('notes')
         )
@@ -114,7 +122,7 @@ def edit(expense_id):
             expense.category = request.form.get('category')
             expense.description = request.form.get('description')
             expense.cost = float(request.form.get('cost'))
-            expense.odometer = float(request.form.get('odometer')) if request.form.get('odometer') else None
+            expense.odometer = parse_optional_float(request.form.get('odometer'))
             expense.vendor = request.form.get('vendor')
             expense.notes = request.form.get('notes')
         except (ValueError, TypeError):
