@@ -1065,10 +1065,32 @@ class MaintenanceSchedule(db.Model):
             self.next_due_date = self.last_performed_date + relativedelta(months=self.interval_months)
 
         if self.last_performed_odometer:
+            # last_performed_odometer is stored in the vehicle's effective
+            # odometer unit (the same unit next_due_odometer is displayed and
+            # compared in). Convert the interval into that same unit before
+            # adding, so the two operands never mix km and miles (issue #230).
+            unit = self._effective_odometer_unit()
             if self.interval_km:
-                self.next_due_odometer = self.last_performed_odometer + self.interval_km
+                interval = _distance_in(self.interval_km, 'km', unit)
+                self.next_due_odometer = self.last_performed_odometer + interval
             elif self.interval_miles:
-                self.next_due_odometer = self.last_performed_odometer + (self.interval_miles * 1.60934)
+                interval = _distance_in(self.interval_miles, 'mi', unit)
+                self.next_due_odometer = self.last_performed_odometer + interval
+
+    def _effective_odometer_unit(self):
+        """Resolve the odometer unit for this schedule's vehicle.
+
+        Uses the loaded ``vehicle`` relationship when available, otherwise
+        looks it up by ``vehicle_id`` (calculate_next_due runs on new
+        schedules before they are flushed, so the relationship may be unset).
+        Defaults to 'km' when no vehicle can be resolved.
+        """
+        vehicle = self.vehicle
+        if vehicle is None and self.vehicle_id:
+            vehicle = Vehicle.query.get(self.vehicle_id)
+        if vehicle:
+            return vehicle.get_effective_odometer_unit()
+        return 'km'
 
     def is_due(self, current_odometer=None):
         """Check if maintenance is due"""
