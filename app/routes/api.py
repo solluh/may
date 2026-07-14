@@ -271,7 +271,7 @@ def vehicle_stats(vehicle_id):
     if vehicle not in current_user.get_all_vehicles():
         return jsonify({'error': 'Access denied'}), 403
 
-    logs = vehicle.fuel_logs.filter_by(is_full_tank=True).order_by(FuelLog.date).all()
+    logs = vehicle.fuel_logs.filter_by(is_full_tank=True).order_by(FuelLog.date, FuelLog.odometer).all()
     consumption_data = []
     for log in logs:
         consumption = log.get_consumption(current_user.consumption_unit, current_user.volume_unit)
@@ -484,9 +484,9 @@ def api_list_fuel_logs(vehicle_id):
 
     query = vehicle.fuel_logs
     if sort == 'asc':
-        query = query.order_by(FuelLog.date.asc())
+        query = query.order_by(FuelLog.date.asc(), FuelLog.odometer.asc())
     else:
-        query = query.order_by(FuelLog.date.desc())
+        query = query.order_by(FuelLog.date.desc(), FuelLog.odometer.desc())
 
     total = query.count()
     logs = query.offset(offset).limit(limit).all()
@@ -1148,7 +1148,7 @@ def export_csv():
         ])
         for vehicle in current_user.get_all_vehicles():
             odometer_unit = vehicle.get_effective_odometer_unit()
-            for log in vehicle.fuel_logs.order_by(FuelLog.date.desc()).all():
+            for log in vehicle.fuel_logs.order_by(FuelLog.date.desc(), FuelLog.odometer.desc()).all():
                 writer.writerow([
                     log.id, vehicle.id, vehicle.name, log.date.isoformat(),
                     log.odometer, odometer_unit,
@@ -1450,7 +1450,7 @@ def export_json():
             })
 
         # Add fuel logs
-        for log in vehicle.fuel_logs.order_by(FuelLog.date.desc()).all():
+        for log in vehicle.fuel_logs.order_by(FuelLog.date.desc(), FuelLog.odometer.desc()).all():
             vehicle_data['fuel_logs'].append({
                 'id': log.id,
                 'date': log.date.isoformat() if log.date else None,
@@ -1747,7 +1747,7 @@ def export_full_backup():
             })
 
         # Add fuel logs with attachments
-        for log in vehicle.fuel_logs.order_by(FuelLog.date.desc()).all():
+        for log in vehicle.fuel_logs.order_by(FuelLog.date.desc(), FuelLog.odometer.desc()).all():
             log_data = {
                 'id': log.id,
                 'date': log.date.isoformat() if log.date else None,

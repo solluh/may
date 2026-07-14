@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from flask_babel import gettext as _
 from app import db
+from app.utils import parse_decimal
 from app.models import RecurringExpense, Vehicle, Expense, EXPENSE_CATEGORIES
 from datetime import date
 from dateutil.relativedelta import relativedelta
@@ -58,7 +59,7 @@ def new():
             name=request.form['name'],
             category=request.form['category'],
             frequency=request.form['frequency'],
-            amount=float(request.form['amount']) if request.form.get('amount') else None,
+            amount=parse_decimal(request.form['amount']) if request.form.get('amount') else None,
             start_date=start_date,
             next_due=next_due,
             description=request.form.get('description'),
@@ -102,7 +103,7 @@ def edit(recurring_id):
         recurring.name = request.form['name']
         recurring.category = request.form['category']
         recurring.frequency = request.form['frequency']
-        recurring.amount = float(request.form['amount']) if request.form.get('amount') else None
+        recurring.amount = parse_decimal(request.form['amount']) if request.form.get('amount') else None
         recurring.start_date = start_date
         recurring.next_due = next_due
         recurring.description = request.form.get('description')

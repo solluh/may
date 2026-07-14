@@ -339,6 +339,38 @@ class Vehicle(db.Model):
             return (litres / km) * 100  # L/100km
         return None
 
+    def get_consumption_unavailable_reason(self):
+        """Explain why :meth:`get_average_consumption` returns ``None``.
+
+        Returns a stable reason code (translated for display in the template)
+        or ``None`` when a figure is available. Mirrors the exact conditions
+        in ``get_average_consumption`` (issues #169/#194) so the UI can show a
+        helpful empty state instead of a bare dash (issue #214):
+
+        - ``'insufficient_full_tanks'`` — fewer than two full-tank fill-ups
+        - ``'missed_fill_up'`` — a fill-up in the range is flagged missed
+        - ``'insufficient_data'`` — not enough distance/volume to calculate
+        """
+        full_logs = self.fuel_logs.filter_by(is_full_tank=True).order_by(FuelLog.odometer).all()
+        if len(full_logs) < 2:
+            return 'insufficient_full_tanks'
+
+        first_odo = full_logs[0].odometer
+        last_odo = full_logs[-1].odometer
+        range_logs = self.fuel_logs.filter(
+            FuelLog.odometer > first_odo,
+            FuelLog.odometer <= last_odo,
+        ).all()
+        if any(log.is_missed for log in range_logs):
+            return 'missed_fill_up'
+
+        total_fuel = sum(log.volume for log in range_logs if log.volume)
+        total_distance = last_odo - first_odo
+        if total_distance <= 0 or total_fuel <= 0:
+            return 'insufficient_data'
+
+        return None
+
     def uses_tessie_odometer(self):
         """Check if this vehicle uses Tessie for odometer tracking"""
         from app.services.tessie import TessieService
@@ -1065,10 +1097,32 @@ class MaintenanceSchedule(db.Model):
             self.next_due_date = self.last_performed_date + relativedelta(months=self.interval_months)
 
         if self.last_performed_odometer:
+            # last_performed_odometer is stored in the vehicle's effective
+            # odometer unit (the same unit next_due_odometer is displayed and
+            # compared in). Convert the interval into that same unit before
+            # adding, so the two operands never mix km and miles (issue #230).
+            unit = self._effective_odometer_unit()
             if self.interval_km:
-                self.next_due_odometer = self.last_performed_odometer + self.interval_km
+                interval = _distance_in(self.interval_km, 'km', unit)
+                self.next_due_odometer = self.last_performed_odometer + interval
             elif self.interval_miles:
-                self.next_due_odometer = self.last_performed_odometer + (self.interval_miles * 1.60934)
+                interval = _distance_in(self.interval_miles, 'mi', unit)
+                self.next_due_odometer = self.last_performed_odometer + interval
+
+    def _effective_odometer_unit(self):
+        """Resolve the odometer unit for this schedule's vehicle.
+
+        Uses the loaded ``vehicle`` relationship when available, otherwise
+        looks it up by ``vehicle_id`` (calculate_next_due runs on new
+        schedules before they are flushed, so the relationship may be unset).
+        Defaults to 'km' when no vehicle can be resolved.
+        """
+        vehicle = self.vehicle
+        if vehicle is None and self.vehicle_id:
+            vehicle = Vehicle.query.get(self.vehicle_id)
+        if vehicle:
+            return vehicle.get_effective_odometer_unit()
+        return 'km'
 
     def is_due(self, current_odometer=None):
         """Check if maintenance is due"""
