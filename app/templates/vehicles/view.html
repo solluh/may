@@ -500,18 +500,18 @@
     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
         {% for reminder in reminders[:5] %}
         <li class="px-6 py-4 hover:bg-gray-50 dark:bg-gray-700">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <form method="POST" action="{{ url_for('reminders.complete', reminder_id=reminder.id) }}?return_to=vehicle">
+            <div class="flex items-center justify-between gap-4">
+                <div class="flex items-center space-x-3 min-w-0 flex-1">
+                    <form method="POST" action="{{ url_for('reminders.complete', reminder_id=reminder.id) }}?return_to=vehicle" class="flex-shrink-0">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         <button type="submit" class="h-5 w-5 rounded-full border-2 border-gray-300 dark:border-gray-600 hover:border-green-500 hover:bg-green-50 flex items-center justify-center transition-colors"
                                 title="{{ _('Mark as completed') }}">
                         </button>
                     </form>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <p class="text-sm font-medium text-gray-900 dark:text-white">{{ reminder.title }}</p>
-                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ reminder.title }}</p>
+                            <span class="flex-shrink-0 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
                                          {% if reminder.reminder_type == 'mot' %}bg-purple-100 text-purple-800
                                          {% elif reminder.reminder_type == 'service' %}bg-blue-100 text-blue-800
                                          {% elif reminder.reminder_type == 'insurance' %}bg-green-100 text-green-800
@@ -521,11 +521,11 @@
                             </span>
                         </div>
                         {% if reminder.description %}
-                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate max-w-md">{{ reminder.description }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{ reminder.description }}</p>
                         {% endif %}
                     </div>
                 </div>
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-4 flex-shrink-0">
                     <div class="text-right">
                         <p class="text-sm {% if reminder.is_overdue() %}text-red-600 font-medium{% elif reminder.is_upcoming(7) %}text-amber-600{% else %}text-gray-900 dark:text-white{% endif %}">
                             {{ reminder.due_date|format_date }}
@@ -811,7 +811,7 @@
             <li class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700">
                 <div class="flex items-center justify-between">
                     <div class="min-w-0 flex-1">
-                        <p class="text-sm font-medium text-gray-900 dark:text-white">{{ expense.description }}</p>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white break-words">{{ expense.description }}</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400">
                             {{ expense.date|format_date }} &middot;
                             <span class="capitalize">{{ expense.category }}</span>
