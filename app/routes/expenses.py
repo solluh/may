@@ -6,6 +6,7 @@ from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from flask_babel import gettext as _
 from app import db
+from app.utils import parse_decimal
 from app.models import Vehicle, Expense, Attachment, EXPENSE_CATEGORIES
 
 bp = Blueprint('expenses', __name__, url_prefix='/expenses')
@@ -58,8 +59,8 @@ def new():
             date=date,
             category=request.form.get('category'),
             description=request.form.get('description'),
-            cost=float(request.form.get('cost')),
-            odometer=float(request.form.get('odometer')) if request.form.get('odometer') else None,
+            cost=parse_decimal(request.form.get('cost')),
+            odometer=parse_decimal(request.form.get('odometer')) if request.form.get('odometer') else None,
             vendor=request.form.get('vendor'),
             notes=request.form.get('notes')
         )
@@ -113,8 +114,8 @@ def edit(expense_id):
             expense.date = datetime.strptime(date_str, '%Y-%m-%d').date() if date_str else expense.date
             expense.category = request.form.get('category')
             expense.description = request.form.get('description')
-            expense.cost = float(request.form.get('cost'))
-            expense.odometer = float(request.form.get('odometer')) if request.form.get('odometer') else None
+            expense.cost = parse_decimal(request.form.get('cost'))
+            expense.odometer = parse_decimal(request.form.get('odometer')) if request.form.get('odometer') else None
             expense.vendor = request.form.get('vendor')
             expense.notes = request.form.get('notes')
         except (ValueError, TypeError):

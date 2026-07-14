@@ -38,6 +38,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- User date format preference for flatpickr -->
     <meta name="date-format" content="{{ current_user.date_format if current_user.is_authenticated and current_user.date_format else 'DD/MM/YYYY' }}">
+    <!-- Active locale and derived calendar week start (0 = Sunday, 1 = Monday) -->
+    <meta name="app-locale" content="{{ CURRENT_LOCALE }}">
+    <meta name="first-day-of-week" content="{{ FIRST_DAY_OF_WEEK }}">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="{{ APP_NAME }}">
@@ -569,6 +572,16 @@
         var userFormat = meta ? meta.getAttribute('content') : 'DD/MM/YYYY';
         var fpFormat = formatMap[userFormat] || 'd/m/Y';
 
+        // Derive the first day of the week from the active locale. The server
+        // computes it (0 = Sunday, 1 = Monday) so calendars match locale
+        // conventions: de/fr/etc start on Monday per ISO 8601, en on Sunday.
+        var fdowMeta = document.querySelector('meta[name="first-day-of-week"]');
+        var firstDayOfWeek = 1;
+        if (fdowMeta) {
+            var parsed = parseInt(fdowMeta.getAttribute('content'), 10);
+            if (parsed === 0 || parsed === 1) firstDayOfWeek = parsed;
+        }
+
         function initDatePickers() {
             if (typeof flatpickr === 'undefined') return;
             document.querySelectorAll('[data-datepicker]').forEach(function(el) {
@@ -577,7 +590,8 @@
                     dateFormat: 'Y-m-d',
                     altInput: true,
                     altFormat: fpFormat,
-                    allowInput: true
+                    allowInput: true,
+                    locale: { firstDayOfWeek: firstDayOfWeek }
                 };
                 if (el.hasAttribute('data-default-today') && !el.value) {
                     opts.defaultDate = 'today';
@@ -591,6 +605,93 @@
         } else {
             initDatePickers();
         }
+    })();
+    </script>
+
+    <script>
+    // Locale-tolerant decimal inputs (#237).
+    // Native <input type="number"> only accepts a period as the decimal
+    // separator, so a German user typing "9,99" has their value silently
+    // dropped before it ever reaches the server. We convert decimal-capable
+    // number inputs to inputmode="decimal" text inputs (which submit their raw
+    // text) and canonicalise a comma decimal to a dot on blur and on submit, so
+    // both the inline auto-calculations and the backend receive a clean number.
+    (function() {
+        // Mirror of the server-side parse_decimal() canonicalisation, but
+        // returns a string (dot-decimal) and leaves un-parseable input untouched.
+        function normaliseDecimalString(raw) {
+            if (raw == null) return raw;
+            var s = String(raw).trim();
+            if (s === '') return raw;
+            var hasDot = s.indexOf('.') !== -1;
+            var hasComma = s.indexOf(',') !== -1;
+            var out = s;
+            if (hasDot && hasComma) {
+                if (s.lastIndexOf(',') > s.lastIndexOf('.')) {
+                    out = s.replace(/\./g, '').replace(',', '.');
+                } else {
+                    out = s.replace(/,/g, '');
+                }
+            } else if (hasComma) {
+                if ((s.match(/,/g) || []).length > 1) {
+                    out = s.replace(/,/g, '');
+                } else {
+                    out = s.replace(',', '.');
+                }
+            }
+            // Only rewrite if the result is a valid number; otherwise leave the
+            // original so browser validation can flag genuinely bad input.
+            return isNaN(parseFloat(out)) || !/^-?[0-9]*\.?[0-9]+$/.test(out) ? raw : out;
+        }
+        window.normaliseDecimalString = normaliseDecimalString;
+
+        function isDecimalInput(el) {
+            if (el.tagName !== 'INPUT') return false;
+            var step = el.getAttribute('step') || '';
+            return step === 'any' || step.indexOf('.') !== -1;
+        }
+
+        function convertDecimalInputs(root) {
+            (root || document).querySelectorAll('input[type="number"]').forEach(function(el) {
+                if (!isDecimalInput(el)) return;
+                el.type = 'text';
+                el.setAttribute('inputmode', 'decimal');
+                if (!el.getAttribute('pattern')) {
+                    el.setAttribute('pattern', '[0-9]*[.,]?[0-9]*');
+                }
+                el.addEventListener('blur', function() {
+                    if (this.value) this.value = normaliseDecimalString(this.value);
+                });
+            });
+        }
+
+        function wireFormNormalisation() {
+            document.querySelectorAll('form').forEach(function(form) {
+                if (form._decimalNormaliserBound) return;
+                form._decimalNormaliserBound = true;
+                form.addEventListener('submit', function() {
+                    form.querySelectorAll('input[inputmode="decimal"]').forEach(function(el) {
+                        if (el.value) el.value = normaliseDecimalString(el.value);
+                    });
+                });
+            });
+        }
+
+        function init() {
+            convertDecimalInputs(document);
+            wireFormNormalisation();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+        // Handle HTMX-swapped content (forms loaded into the page dynamically).
+        document.body.addEventListener('htmx:afterSwap', function(evt) {
+            convertDecimalInputs(evt.target);
+            wireFormNormalisation();
+        });
     })();
     </script>
 </body>
