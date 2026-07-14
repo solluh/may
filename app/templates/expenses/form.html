@@ -61,14 +61,14 @@
                 <div>
                     <label for="odometer" id="odometer-label" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Odometer ({{ current_user.distance_unit }})</label>
                     <input type="number" name="odometer" id="odometer" step="0.1"
-                           value="{{ expense.odometer if expense else '' }}"
+                           value="{{ expense.odometer if expense and expense.odometer is not none else '' }}"
                            class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
                 </div>
 
                 <div>
                     <label for="vendor" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Vendor / Service Provider</label>
                     <input type="text" name="vendor" id="vendor"
-                           value="{{ expense.vendor if expense else '' }}"
+                           value="{{ expense.vendor if expense and expense.vendor is not none else '' }}"
                            placeholder="e.g., Local Garage"
                            class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">
                 </div>
@@ -76,7 +76,7 @@
                 <div class="sm:col-span-2">
                     <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Notes</label>
                     <textarea name="notes" id="notes" rows="2"
-                              class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">{{ expense.notes if expense else '' }}</textarea>
+                              class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500">{{ expense.notes if expense and expense.notes is not none else '' }}</textarea>
                 </div>
 
                 <div class="sm:col-span-2">
@@ -119,6 +119,10 @@
     (function() {
         const vehicleSelect = document.getElementById('vehicle_id');
         const odometerLabel = document.getElementById('odometer-label');
+
+        if (!vehicleSelect || !odometerLabel) {
+            return;
+        }
 
         function updateOdometerUnit() {
             const selected = vehicleSelect.options[vehicleSelect.selectedIndex];
