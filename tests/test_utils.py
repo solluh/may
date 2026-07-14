@@ -8,6 +8,12 @@ class TestParseDecimal:
     def test_period_decimal_unchanged(self):
         assert parse_decimal('9.99') == 9.99
 
+    def test_literal_none_string_treated_as_absent(self):
+        # A NULL field rendered into a form comes back as the text "None";
+        # treat it like an empty submission rather than a parse error (#241).
+        assert parse_decimal('None') is None
+        assert parse_decimal('None', default=0) == 0
+
     def test_comma_decimal(self):
         assert parse_decimal('9,99') == 9.99
 
