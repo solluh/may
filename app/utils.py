@@ -65,15 +65,25 @@ def parse_decimal(value, default=None):
 # else (the ISO 8601 default used across most of Europe) starts on Monday.
 _SUNDAY_FIRST_LOCALES = {'en', 'ja', 'ko', 'zh', 'pt'}
 
+# Territory-specific exceptions to the base-language rule above: these regions
+# use Monday-first calendars even though their base language defaults to Sunday
+# (e.g. en-GB vs en-US, pt-PT vs pt-BR).
+_MONDAY_FIRST_TAGS = {'en-gb', 'en-ie', 'en-au', 'en-nz', 'en-za', 'pt-pt', 'zh-cn'}
+
 
 def first_day_of_week(locale):
     """Return the first day of the week for a locale (0 = Sunday, 1 = Monday).
 
-    Uses a small locale -> first-day mapping. Region-agnostic language codes are
-    resolved by their base language (``de-DE`` -> ``de``). Unknown locales default
-    to Monday, matching ISO 8601 and most non-US conventions.
+    Uses a small locale -> first-day mapping. Full tags are checked first so
+    territories can override their base language (``en-GB`` -> Monday), then
+    region-agnostic codes resolve by base language (``de-DE`` -> ``de``).
+    Unknown locales default to Monday, matching ISO 8601 and most non-US
+    conventions.
     """
     if not locale:
         return 1
-    base = re.split(r'[-_]', str(locale).strip().lower(), maxsplit=1)[0]
+    tag = re.sub(r'_', '-', str(locale).strip().lower())
+    if tag in _MONDAY_FIRST_TAGS:
+        return 1
+    base = tag.split('-', 1)[0]
     return 0 if base in _SUNDAY_FIRST_LOCALES else 1

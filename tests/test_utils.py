@@ -71,6 +71,15 @@ class TestFirstDayOfWeek:
         assert first_day_of_week('en_US') == 0
         assert first_day_of_week('de_DE') == 1
 
+    def test_territory_overrides_base_language(self):
+        # UK/Irish/Antipodean English and European Portuguese are Monday-first
+        # despite their base languages defaulting to Sunday.
+        assert first_day_of_week('en-GB') == 1
+        assert first_day_of_week('en_GB') == 1
+        assert first_day_of_week('en-IE') == 1
+        assert first_day_of_week('pt-PT') == 1
+        assert first_day_of_week('pt-BR') == 0
+
     def test_unknown_locale_defaults_monday(self):
         assert first_day_of_week('xx-YY') == 1
 
